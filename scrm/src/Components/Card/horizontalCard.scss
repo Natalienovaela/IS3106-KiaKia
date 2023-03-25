@@ -1,27 +1,69 @@
 .card {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding: 0;
+    gap: 10px;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
     overflow: hidden;
+
+    .card-image {
+        position: relative;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 30%;
+        object-fit: cover;
+        height: auto;
+    }
+
+    .places {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 0;
+        padding: 1rem 0;
+        font-size: 16px;
+        line-height: 1;
+      }
+      
+    .city {
+        display:flex;
+        padding: 0px 10px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1;
+      }
+      
+    .city:not(:first-child)::before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        margin-right: 10px;
+        border-right: 1px solid black;
+      }
+
+
   }
   
-  .card-image {
-    width: 30%;
-    height: auto;
-    object-fit: cover;
-  }
+  
+
+  
+  
   
   .card-content {
+   
     padding: 10px;
   }
   
   .card-title {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
-    margin: 0 0 5px 0;
+    
+    padding: 2rem 1rem 0rem 0;
   }
   
   .card-description {

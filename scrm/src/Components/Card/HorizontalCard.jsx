@@ -7,7 +7,19 @@ const HorizontalCard = () => {
     <div className="card">
         <img src={image} alt="Card" className="card-image" />
         <div className="card-content">
+            <small>Summer 2023 - 14 days trip</small>
             <h2 className="card-title">Card Title</h2>
+            <ul className="places">
+              <li className="city">
+                  Tokyo
+              </li>
+              <li className="city">
+                  Osaka
+              </li>
+              <li className="city">
+                  Kyoto
+              </li>
+            </ul>
             <p className="card-description">this is the description</p>
         </div>
     </div>
