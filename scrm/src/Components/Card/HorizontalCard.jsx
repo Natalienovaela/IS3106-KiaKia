@@ -5,9 +5,12 @@ import './horizontalCard.css'
 const HorizontalCard = () => {
   return (
     <div className="card">
+      <div className="imageDiv">
         <img src={image} alt="Card" className="card-image" />
+      </div>
+        
         <div className="card-content">
-            <small>Summer 2023 - 14 days trip</small>
+            <small className="tripTag">Summer 2023 - 14 days trip</small>
             <h2 className="card-title">Card Title</h2>
             <ul className="places">
               <li className="city">
@@ -20,7 +23,7 @@ const HorizontalCard = () => {
                   Kyoto
               </li>
             </ul>
-            <p className="card-description">this is the description</p>
+            <p className="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
         </div>
     </div>
     

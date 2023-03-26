@@ -1,23 +1,41 @@
+:root {
+  --PrimaryColor: #f87171;
+  --SecondaryColor: #ff8f66;
+  --gradientColor: linear-gradient(to right, #f87171, #ff8f66);
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --textColor: hsl(240, 4%, 35%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --greyText: rgb(190, 190, 190);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: rgb(240, 240, 246);
+  --cardBG: rgb(225, 225, 235);
+  --orangeColor: #FB923C;
+}
+
 .card {
   display: flex;
   align-items: flex-start;
   padding: 0;
   gap: 10px;
-  width: 100%;
+  width: 609px;
+  height: 223px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
   overflow: hidden;
-}
-.card .card-image {
   position: relative;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  box-shadow: 0 2px 4px rgba(140, 140, 141, 0.54);
+}
+.card .imageDiv {
+  position: relative;
+  height: 100%;
   width: 30%;
+}
+.card .imageDiv .card-image {
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-  height: auto;
 }
 .card .places {
   list-style: none;
@@ -25,13 +43,13 @@
   flex-direction: row;
   justify-content: center;
   margin: 0;
-  padding: 1rem 0;
+  padding-bottom: 1rem;
   font-size: 16px;
   line-height: 1;
 }
 .card .city {
   display: flex;
-  padding: 0px 10px;
+  padding: 0px 15px 0px 0px;
   margin: 0;
   font-size: 16px;
   line-height: 1;
@@ -43,18 +61,32 @@
   margin-right: 10px;
   border-right: 1px solid black;
 }
+.card .tripTag {
+  font-weight: 300;
+  font-size: 14px;
+}
 
 .card-content {
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 2rem 1rem;
+  position: relative;
+  width: 401px;
+  height: 118px;
 }
 
 .card-title {
   font-size: 24px;
-  font-weight: bold;
-  padding: 2rem 1rem 0rem 0;
+  font-weight: 700;
+  padding: 0;
 }
 
 .card-description {
   font-size: 14px;
+  color: var(--textColor);
+  font-weight: 400;
   margin: 0;
+  height: 60px;
 }/*# sourceMappingURL=horizontalCard.css.map */
