@@ -1,0 +1,99 @@
+:root {
+    --PrimaryColor: #f87171;
+    --SecondaryColor: #ff8f66;
+    --gradientColor: linear-gradient(to right, #f87171, #ff8f66);
+    --whiteColor: hsl(0, 0%, 100%);
+    --blackColor: hsl(201, 33%, 16%);
+    --textColor: hsl(240, 4%, 35%);
+    --whiteColorDeam: hsl(0, 0%, 93%);
+    --greyText: rgb(190, 190, 190);
+    --inputColor: rgb(239, 239, 239);
+    --bodyColor: rgb(240, 240, 246);
+    --cardBG: rgb(225, 225, 235);
+    --orangeColor: #FB923C;
+   }
+   
+
+.card {
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
+    gap: 10px;
+    width: 609px;
+    height: 223px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position:relative;
+    box-shadow: 0 2px 4px rgba(140, 140, 141, 0.54);
+    
+    .imageDiv{
+        position: relative;
+        height: 100%;
+        width: 30%;
+
+        .card-image{
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .places {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 0;
+        padding-bottom: 1rem;
+        font-size: 16px;
+        line-height: 1;
+      }
+      
+    .city {
+        display:flex;
+        padding: 0px 15px 0px 0px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1;
+      }
+      
+    .city:not(:first-child)::before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        margin-right: 10px;
+        border-right: 1px solid black;
+      }
+
+    .tripTag {
+        font-weight: 300;
+        font-size: 14px;
+    }
+  }
+  
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 2rem 1rem;
+    position: relative;
+    width: 401px;
+    height: 118px;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0;
+  }
+  
+  .card-description {
+    font-size: 14px;
+    color: var(--textColor);
+    font-weight: 400;
+    margin: 0;
+    height: 60px;
+  }

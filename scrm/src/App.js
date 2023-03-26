@@ -1,17 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
-import moment from "moment";
+import React from 'react';
+import "./App.css";
+import Navbar from "./Components/Navbar/Navbar";
+import Main from "./Components/Main/Main";
+import Footer from "./Components/Footer/Footer";
+import Home from "./Components/Home/Home";
+import HorizontalCard from './Components/Card/HorizontalCard';
 
-function App() {
-  const tomorrow = moment().add(1, "days").format("MMM DD YYYY"); 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Tomorrow is {tomorrow}</p>
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <>
+            <Navbar/>
+            <HorizontalCard />
+            <HorizontalCard />
+            <HorizontalCard />
+        </>
+    )
 }
 
-export default App;
+export default App
