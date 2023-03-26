@@ -5,6 +5,9 @@
  */
 package session;
 
+import entity.Note;
+import error.NoteNotFoundException;
+import error.UnknownPersistenceException;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +16,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface NoteSessionBeanLocal {
+
+    public void updateNote(Note u) throws NoteNotFoundException;
+
+    public Note retrieveNoteByNoteId(Long noteId) throws NoteNotFoundException;
+
+    public Long createNewNote(Note note) throws UnknownPersistenceException;
     
 }

@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import static org.jboss.weld.util.reflection.Formats.version;
 
 /**
  *
