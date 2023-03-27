@@ -11,30 +11,38 @@
     --bodyColor: rgb(240, 240, 246);
     --cardBG: rgb(225, 225, 235);
     --orangeColor: #FB923C;
+    --cardHover: rgb(255, 216, 202);
    }
    
 
 .card {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    align-items: i;
     padding: 0;
     gap: 10px;
     width: 609px;
     height: 223px;
     border: 1px solid #ccc;
+    
     border-radius: 5px;
     margin-bottom: 10px;
     overflow: hidden;
     position:relative;
     box-shadow: 0 2px 4px rgba(140, 140, 141, 0.54);
     
+    &:hover{
+        background: var(--cardHover);
+        box-shadow: 1 4px 4px rgba(85, 85, 114, 0.94);
+        transition: .3s ease;
+    }
     .imageDiv{
-        position: relative;
+        position: absolute;
         height: 100%;
         width: 30%;
 
         .card-image{
             height: 100%;
+            width: 100%;
             object-fit: cover;
         }
     }
@@ -70,6 +78,7 @@
         font-weight: 300;
         font-size: 14px;
     }
+    
   }
   
   
@@ -79,9 +88,15 @@
     align-items: flex-start;
     gap: 2px;
     padding: 2rem 1rem;
-    position: relative;
+    position: absolute;
     width: 401px;
     height: 118px;
+    &:hover{
+        background: var(--cardHover);
+        box-shadow: 1 4px 4px rgba(85, 85, 114, 0.94);
+        transition: .3s ease;
+        transform: translate(2%);
+    }
   }
   
   .card-title {
@@ -97,3 +112,5 @@
     margin: 0;
     height: 60px;
   }
+
+ 
