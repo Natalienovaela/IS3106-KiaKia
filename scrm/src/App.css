@@ -6,6 +6,11 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
+html {
+    overflow-y: scroll;
+    width: 100%;
+}
 /* Colors and styling */
 :root {
  --PrimaryColor: #f87171;

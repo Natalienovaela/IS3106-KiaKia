@@ -1,18 +1,35 @@
 import React from 'react';
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar";
-import Main from "./Components/Main/Main";
-import Footer from "./Components/Footer/Footer";
-import Home from "./Components/Home/Home";
-import HorizontalCard from './Components/Card/HorizontalCard';
+import Wishlist from "./Pages/Wishlist/Wishlist";
+import Trip from "./Pages/Trip/Trip";
+import Profile from "./Pages/Profile/Profile";
+
 
 const App = () => {
+    
+    let page
+    switch(window.location.pathname) {
+        case "/":
+            page = <App/>;
+            break
+        case "/Trip":
+            page = <Trip/>;
+            break;
+        case "/Wishlist":
+            page = <Wishlist/>;
+            break;
+        case "/Profile":
+            page = <Profile/>;
+            break
+        default: 
+            page = <App/>
+    }
+    
     return (
         <>
             <Navbar/>
-            <HorizontalCard />
-            <HorizontalCard />
-            <HorizontalCard />
+            {page}
         </>
     )
 }
