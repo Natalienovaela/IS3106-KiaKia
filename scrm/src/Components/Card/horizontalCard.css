@@ -7,6 +7,7 @@
   --textColor: hsl(240, 4%, 35%);
   --whiteColorDeam: hsl(0, 0%, 93%);
   --greyText: rgb(190, 190, 190);
+  --greyBorder: rgb(190, 190, 190);
   --inputColor: rgb(239, 239, 239);
   --bodyColor: rgb(240, 240, 246);
   --cardBG: rgb(225, 225, 235);
@@ -15,91 +16,78 @@
 }
 
 .card {
-  display: grid;
-  align-items: i;
-  padding: 0;
-  gap: 10px;
-  width: 609px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 610px;
   height: 223px;
-  border: 1px solid #ccc;
+  border: 0.5px solid var(--greyBorder);
   border-radius: 5px;
   margin-bottom: 10px;
-  overflow: hidden;
-  position: relative;
   box-shadow: 0 2px 4px rgba(140, 140, 141, 0.54);
+  filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.1)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.05));
 }
 .card:hover {
   background: var(--cardHover);
   box-shadow: 1 4px 4px rgba(85, 85, 114, 0.94);
-  transition: 0.3s ease;
 }
 .card .imageDiv {
-  position: absolute;
+  width: 100%;
   height: 100%;
-  width: 30%;
+  display: flex;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .card .imageDiv .card-image {
   height: 100%;
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
-.card .places {
+.card .card-content {
+  gap: 2px;
+  padding: 1.2rem 1rem;
+}
+.card .card-content:hover {
+  transition: 0.3s ease;
+  transform: translate(2%);
+}
+.card .card-content .card-title {
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0;
+}
+.card .card-content .card-description {
+  font-size: 14px;
+  color: var(--textColor);
+  font-weight: 400;
+  margin: 0;
+  height: 60px;
+}
+.card .card-content .tripTag {
+  font-weight: 300;
+  font-size: 14px;
+}
+.card .card-content .places {
   list-style: none;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 0;
   padding-bottom: 1rem;
   font-size: 16px;
   line-height: 1;
 }
-.card .city {
+.card .card-content .city {
   display: flex;
   padding: 0px 15px 0px 0px;
   margin: 0;
   font-size: 16px;
   line-height: 1;
 }
-.card .city:not(:first-child)::before {
+.card .card-content .city:not(:first-child)::before {
   content: "";
   display: inline-block;
   height: 100%;
   margin-right: 10px;
   border-right: 1px solid black;
-}
-.card .tripTag {
-  font-weight: 300;
-  font-size: 14px;
-}
-
-.card-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 2rem 1rem;
-  position: absolute;
-  width: 401px;
-  height: 118px;
-}
-.card-content:hover {
-  background: var(--cardHover);
-  box-shadow: 1 4px 4px rgba(85, 85, 114, 0.94);
-  transition: 0.3s ease;
-  transform: translate(2%);
-}
-
-.card-title {
-  font-size: 24px;
-  font-weight: 700;
-  padding: 0;
-}
-
-.card-description {
-  font-size: 14px;
-  color: var(--textColor);
-  font-weight: 400;
-  margin: 0;
-  height: 60px;
 }/*# sourceMappingURL=horizontalCard.css.map */
