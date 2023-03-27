@@ -11,7 +11,7 @@ const App = () => {
     let page
     switch(window.location.pathname) {
         case "/":
-            page = <App/>;
+            page = <Wishlist/>;
             break
         case "/Trip":
             page = <Trip/>;
@@ -23,7 +23,7 @@ const App = () => {
             page = <Profile/>;
             break
         default: 
-            page = <App/>
+            page = <Wishlist/>
     }
     
     return (
