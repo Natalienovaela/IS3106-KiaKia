@@ -54,6 +54,12 @@ public class Trip implements Serializable {
     @OneToMany
     private List<Document> documents;
     
+    @OneToMany
+    private List<CheckList> checkLists;
+    
+    @OneToMany
+    private List<Poll> polls;
+    
     /*@OneToMany
     private List<BudgetListItem> budgetListItems;*/
     
@@ -162,6 +168,22 @@ public class Trip implements Serializable {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
+    }
+
+    public List<CheckList> getCheckLists() {
+        return checkLists;
+    }
+
+    public void setCheckLists(List<CheckList> checkLists) {
+        this.checkLists = checkLists;
+    }
+
+    public List<Poll> getPolls() {
+        return polls;
+    }
+
+    public void setPolls(List<Poll> polls) {
+        this.polls = polls;
     }
     
 }
