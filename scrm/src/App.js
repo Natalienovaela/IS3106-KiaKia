@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import Wishlist from "./Pages/Wishlist/Wishlist";
 import Trip from "./Pages/Trip/Trip";
 import Profile from "./Pages/Profile/Profile";
+import Home from "./Pages/Home/Home";
 
 
 const App = () => {
@@ -23,7 +24,7 @@ const App = () => {
             page = <Profile/>;
             break
         default: 
-            page = <Wishlist/>
+            page = <Home/>
     }
     
     return (

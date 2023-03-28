@@ -1,13 +1,14 @@
-import React, {useState} from 'react'
-import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './navbar.css'
-import Wishlist from '../../Pages/Wishlist/Wishlist'
+import Wishlist from '../../Pages/Wishlist/Wishlist';
+import Trip from '../../Pages/Trip/Trip';
 import { MdOutlineTravelExplore } from 'react-icons/md'
-import { AiFillCloseCircle} from 'react-icons/ai'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { TbGridDots } from 'react-icons/tb'
 
 const Navbar = () => {
-  const [active, setActive]= useState('navBar')
+  const [active, setActive] = useState('navBar')
   // function to toggle navbar
   const showNav = () => {
     setActive('navBar activeNavbar')
@@ -20,59 +21,59 @@ const Navbar = () => {
 
   return (
     <section className='navBarSection'>
-        <header className="header flex">
-          
-            <div className="logoDiv">
-                <a href="#" className="logo flex">
-                    <h1> <MdOutlineTravelExplore className="iicon"/> KiaKia</h1>
-                </a>
-            </div>
-          
-            <div className={active}>
-            <Router>
-             <nav>
-                <ul className="navLists flex">
-                  <li className="navItem">
-                    <Link to="/" className="navLink">Trip</Link>
-                  </li>
+      <header className="header flex">
 
-                  <li className="navItem">
-                    <Link to="/" className="navLink">Explore</Link>
-                  </li>
+        <div className="logoDiv">
+          <a href="#" className="logo flex">
+            <h1> <MdOutlineTravelExplore className="iicon" /> KiaKia</h1>
+          </a>
+        </div>
 
-                  <li className="navItem">
-                    <Link to="/Wishlist" className="navLink">Wishlist</Link>
-                  </li>
+        <div className={active}>
+          <Router>
+            <nav>
+              <ul className="navLists flex">
+                <li className="navItem">
+                  <Link to="/Trip" className="navLink">Trip</Link>
+                </li>
 
-                  <button className="btn">
-                    <Link to="/">Plan A Trip</Link>
-                  </button>
+                <li className="navItem">
+                  <Link to="/" className="navLink">Explore</Link>
+                </li>
 
-                  {/*need to edit late*/}
-                  <span className="profile">
-                    hello, Natasha
-                  </span>
+                <li className="navItem">
+                  <Link to="/Wishlist" className="navLink">Wishlist</Link>
+                </li>
 
-                </ul>
-                </nav>
-                  <Routes>
-                    <Route path="/Wishlist" component={Wishlist} />
-                  </Routes>
-                </Router>
-              <div onClick={closeNav} className="closeNavbar">
-                <AiFillCloseCircle className="icon"/>
-              </div>
+                <button className="btn">
+                  <Link to="/">Plan A Trip</Link>
+                </button>
 
-            </div>
+                {/*need to edit late*/}
+                <span className="profile">
+                  hello, Natasha
+                </span>
 
-           
+              </ul>
+            </nav>
+            <Routes>
+              <Route path="/Wishlist" element={<Wishlist />} />
+            </Routes>
+          </Router>
+          <div onClick={closeNav} className="closeNavbar">
+            <AiFillCloseCircle className="icon" />
+          </div>
 
-            <div onClick={showNav} className="toggleNavbar">
-              <TbGridDots className="icon"/>
-            </div>
-            
+        </div>
 
-        </header>
+
+
+        <div onClick={showNav} className="toggleNavbar">
+          <TbGridDots className="icon" />
+        </div>
+
+
+      </header>
 
     </section>
   )
