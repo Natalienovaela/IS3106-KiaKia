@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useMatch, useResolvedPath } from 'react-router-dom';
 import './navbar.css'
-import Wishlist from '../../Pages/Wishlist/Wishlist';
-import Trip from '../../Pages/Trip/Trip';
 import { MdOutlineTravelExplore } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { TbGridDots } from 'react-icons/tb'
 
-const Navbar = () => {
+function Navbar() {
+
   const [active, setActive] = useState('navBar')
   // function to toggle navbar
   const showNav = () => {
@@ -24,29 +23,29 @@ const Navbar = () => {
         <header className="header flex">
           
             <div className="logoDiv">
-                <a href="#" className="logo flex">
+                <Link to="/" className="logo flex">
                     <h1> <MdOutlineTravelExplore className="icon"/> KiaKia</h1>
-                </a>
+                </Link>
             </div>
           
             <div className={active}>
-            <Router>
+
              <nav>
                 <ul className="navLists flex">
                   <li className="navItem">
-                    <Link to="/Trip" className="navLink">Trip</Link>
+                    <CustomLink to="/Trip" className="navLink">Trip</CustomLink>
                   </li>
 
                 <li className="navItem">
-                  <Link to="/" className="navLink">Explore</Link>
+                  <CustomLink to="/Explore" className="navLink">Explore</CustomLink>
                 </li>
 
                 <li className="navItem">
-                  <Link to="/Wishlist" className="navLink">Wishlist</Link>
+                  <CustomLink to="/Wishlist" className="navLink">Wishlist</CustomLink>
                 </li>
 
                 <button className="btn">
-                  <Link to="/">Plan A Trip</Link>
+                  <CustomLink to="/">Plan A Trip</CustomLink>
                 </button>
 
                 {/*need to edit late*/}
@@ -56,18 +55,12 @@ const Navbar = () => {
 
               </ul>
             </nav>
-            <Routes>
-              <Route path="/Wishlist" element={<Wishlist />} />
-            </Routes>
-          </Router>
+         
           <div onClick={closeNav} className="closeNavbar">
             <AiFillCloseCircle className="icon" />
           </div>
 
         </div>
-
-
-
         <div onClick={showNav} className="toggleNavbar">
           <TbGridDots className="icon" />
         </div>
@@ -79,4 +72,17 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;
+
+function CustomLink({ to, children, ...props}) {
+  const resolvedPath = useResolvedPath(to)
+  const isActive = useMatch({path: resolvedPath.pathname, end: true})
+
+  return (
+   <li className={isActive ? "active" : ""}>
+    <Link to={to} {...props}>
+      {children}
+    </Link>
+   </li> 
+  )
+}
