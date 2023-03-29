@@ -1,13 +1,14 @@
-import React, {useState} from 'react'
-import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './navbar.css'
-import Wishlist from '../../Pages/Wishlist/Wishlist'
+import Wishlist from '../../Pages/Wishlist/Wishlist';
+import Trip from '../../Pages/Trip/Trip';
 import { MdOutlineTravelExplore } from 'react-icons/md'
-import { AiFillCloseCircle} from 'react-icons/ai'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { TbGridDots } from 'react-icons/tb'
 
 const Navbar = () => {
-  const [active, setActive]= useState('navBar')
+  const [active, setActive] = useState('navBar')
   // function to toggle navbar
   const showNav = () => {
     setActive('navBar activeNavbar')
@@ -33,46 +34,46 @@ const Navbar = () => {
              <nav>
                 <ul className="navLists flex">
                   <li className="navItem">
-                    <Link to="/" className="navLink">Trip</Link>
+                    <Link to="/Trip" className="navLink">Trip</Link>
                   </li>
 
-                  <li className="navItem">
-                    <Link to="/" className="navLink">Explore</Link>
-                  </li>
+                <li className="navItem">
+                  <Link to="/" className="navLink">Explore</Link>
+                </li>
 
-                  <li className="navItem">
-                    <Link to="/Wishlist" className="navLink">Wishlist</Link>
-                  </li>
+                <li className="navItem">
+                  <Link to="/Wishlist" className="navLink">Wishlist</Link>
+                </li>
 
-                  <button className="btn">
-                    <Link to="/">Plan A Trip</Link>
-                  </button>
+                <button className="btn">
+                  <Link to="/">Plan A Trip</Link>
+                </button>
 
-                  {/*need to edit late*/}
-                  <span className="profile">
-                    hello, Natasha
-                  </span>
+                {/*need to edit late*/}
+                <span className="profile">
+                  hello, Natasha
+                </span>
 
-                </ul>
-                </nav>
-                  <Routes>
-                    <Route path="/Wishlist" component={Wishlist} />
-                  </Routes>
-                </Router>
-              <div onClick={closeNav} className="closeNavbar">
-                <AiFillCloseCircle className="icon"/>
-              </div>
+              </ul>
+            </nav>
+            <Routes>
+              <Route path="/Wishlist" element={<Wishlist />} />
+            </Routes>
+          </Router>
+          <div onClick={closeNav} className="closeNavbar">
+            <AiFillCloseCircle className="icon" />
+          </div>
 
-            </div>
+        </div>
 
-           
 
-            <div onClick={showNav} className="toggleNavbar">
-              <TbGridDots className="icon"/>
-            </div>
-            
 
-        </header>
+        <div onClick={showNav} className="toggleNavbar">
+          <TbGridDots className="icon" />
+        </div>
+
+
+      </header>
 
     </section>
   )

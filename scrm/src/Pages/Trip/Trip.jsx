@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react';
+
 
 function Trip() {
   return (
@@ -6,4 +7,4 @@ function Trip() {
   )
 }
 
-export default Trip
+export default Trip;
