@@ -1,5 +1,5 @@
 import React from 'react'
-import image from '../../Assets/img.jpg'
+import image from '../../../Assets/img.jpg'
 import './horizontalCard.css'
 
 const HorizontalCard = () => {

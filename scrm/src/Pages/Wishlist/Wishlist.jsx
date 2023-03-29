@@ -1,9 +1,10 @@
 import React from 'react';
 import "./wishlist.css";
-import Navbar from "../../Components/Navbar/Navbar";
-import HorizontalCard from '../../Components/Card/HorizontalCard';
+import HorizontalCard from '../../Components/Card/HorizontalCard/HorizontalCard';
+import ItineraryCard from '../../Components/Card/ItineraryCard/ItineraryCard';
 import img from '../../Assets/img.jpg'
 import {MdOutlineEdit} from 'react-icons/md'
+import { Button } from '@mui/material';
 
 const Wishlist = () => {
     return (
@@ -24,6 +25,7 @@ const Wishlist = () => {
                         <HorizontalCard />
                         <HorizontalCard />
                         <HorizontalCard />
+                        
                     </div> 
                 </div>
                 <div className="subSec">
@@ -38,6 +40,8 @@ const Wishlist = () => {
                 </div>
                 
             </div>
+
+            
             
         </>
     )
