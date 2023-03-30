@@ -6,6 +6,7 @@ import Trip from "./Pages/Trip/Trip";
 import Profile from "./Pages/Profile/Profile";
 import Home from "./Pages/Home/Home";
 import Explore from "./Pages/Explore/Explore";
+import Footer from "./Components/Footer/Footer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -22,7 +23,8 @@ const App = () => {
                     <Route path="/Explore" element={<Explore/>}/>
                 </Routes>   
             </div>
-
+            {/* Will change this component */}
+            <Footer/>
         </>
     )
 }

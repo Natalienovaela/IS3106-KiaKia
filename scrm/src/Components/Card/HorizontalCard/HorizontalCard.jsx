@@ -1,29 +1,20 @@
 import React from 'react'
-import image from '../../../Assets/img.jpg'
 import './horizontalCard.css'
 
-const HorizontalCard = () => {
+
+const HorizontalCard = (props) => {
+  const cityList = props.places?.map((city) => (<li className="city">{city}</li>))
   return (
     <div className="card">
       <div className="imageDiv">
-        <img src={image} alt="Card" className="card-image" />
+        <img src={props.img} alt="Card" className="card-image" />
       </div>
         
         <div className="card-content">
-            <small className="tripTag">Summer 2023 - 14 days trip</small>
-            <h2 className="card-title">Card Title</h2>
-            <ul className="places">
-              <li className="city">
-                  Tokyo
-              </li>
-              <li className="city">
-                  Osaka
-              </li>
-              <li className="city">
-                  Kyoto
-              </li>
-            </ul>
-            <p className="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+            <small className="tripTag">{props.tripTag}</small>
+            <h2 className="card-title">{props.cardTitle}</h2>
+            <ul className="places">{cityList}</ul>
+            <p className="card-description">{props.description}</p>
         </div>
     </div>
     
