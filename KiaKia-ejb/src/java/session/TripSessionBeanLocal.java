@@ -45,14 +45,6 @@ public interface TripSessionBeanLocal {
     public List<Trip> getAllPersonalTrips();
 
     public List<Trip> getAllGroupTrips();
-    
-    
-
-    public List<Trip> getAllTrips();
-
-    public List<Trip> getAllPersonalTrips();
-
-    public List<Trip> getAllGroupTrips();
 
     public void acceptTripInvite(String token, String role) throws TripNotFoundException, UserNotFoundException;
 
