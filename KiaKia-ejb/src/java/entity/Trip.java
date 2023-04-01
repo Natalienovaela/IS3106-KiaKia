@@ -35,9 +35,11 @@ public class Trip implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     
+    private String name;
+    
     private String description;
     
-    private Boolean isShared;
+    private Boolean isShared = Boolean.FALSE;
     
     @ManyToMany(mappedBy="trip")
     private List<User> admins;
@@ -67,7 +69,17 @@ public class Trip implements Serializable {
     private List<BudgetListItem> budgetListItems;*/
     
     //private enum countryEnum;
+    
+    public Trip() {
+        
+    }
 
+    public Trip(String name, Date startDate, Date endDate){
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+    
     public Long getTripId() {
         return tripId;
     }
@@ -195,6 +207,14 @@ public class Trip implements Serializable {
 
     public void setBucketList(List<PlaceLineItem> bucketList) {
         this.bucketList = bucketList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

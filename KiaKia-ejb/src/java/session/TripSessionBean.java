@@ -75,6 +75,8 @@ public class TripSessionBean implements TripSessionBeanLocal {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS NOT EMPTY OR t.viewers IS NOT EMPTY").getResultList();
     }
     
+    
+    
     @Override
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
