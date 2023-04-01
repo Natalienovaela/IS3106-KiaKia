@@ -10,13 +10,21 @@ import entity.Note;
 import entity.Poll;
 import entity.Trip;
 import entity.User;
+import enumeration.UserRole;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
+import error.UserNotFoundException;
+import java.util.List;
+import java.util.UUID;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,23 +35,29 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
-    
+
+    @EJB
+    private EmailSessionBeanLocal emailSessionBeanLocal;
+
+    @EJB
+    private UserSessionBeanLocal userSessionBeanLocal;
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @Override
     public void addNewTrip(Trip trip) {
-        if(trip != null) {
+        if (trip != null) {
             em.persist(trip);
-        } 
+        }
 
     }
-    
+
     @Override
     public void updateTrip(Trip newTrip) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, newTrip);
-        
-        if(trip != null) {
+
+        if (trip != null) {
+            //trip.setCountry(newTrip.getCountry());
             trip.setAdmins(newTrip.getAdmins());
             trip.setCheckLists(newTrip.getCheckLists());
             trip.setDescription(newTrip.getDescription());
@@ -58,104 +72,184 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new TripNotFoundException("Trip not found in the database");
         }
     }
-    
+
     @Override
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         CheckList checkList = em.find(CheckList.class, checkListId);
-        
-        if(trip != null && checkList != null) {
+
+        if (trip != null && checkList != null) {
             trip.getCheckLists().remove(checkList);
         } else {
-            if(trip == null) {
+            if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
             }
-            if(checkList == null) {
+            if (checkList == null) {
                 throw new CheckListNotFoundException("Checklist not found in the database");
             }
         }
     }
-    
+
     @Override
     public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         Note note = em.find(Note.class, noteId);
-        
-        if(trip != null && note != null) {
+
+        if (trip != null && note != null) {
             trip.getNotes().remove(note);
         } else {
-            if(trip == null) {
+            if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
             }
-            if(note == null) {
+            if (note == null) {
                 throw new NoteNotFoundException("Note not found in the database");
             }
         }
     }
-    
+
     @Override
     public void removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         Poll poll = em.find(Poll.class, pollId);
-        
-        if(trip != null && poll != null) {
+
+        if (trip != null && poll != null) {
             trip.getPolls().remove(poll);
         } else {
-            if(trip == null) {
+            if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
             }
-            if(poll == null) {
+            if (poll == null) {
                 throw new PollNotFoundException("Poll not found in the database");
             }
         }
     }
-    
+
     @Override
     public void addCheckList(Long tripId, CheckList checkList) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
-        
-        if(checkList != null) {
+
+        if (checkList != null) {
             em.persist(checkList);
         }
-        
-        if(trip != null && checkList != null) {
+
+        if (trip != null && checkList != null) {
             trip.getCheckLists().add(checkList);
         } else {
-                throw new TripNotFoundException("Trip not found in the database");
+            throw new TripNotFoundException("Trip not found in the database");
 
         }
     }
-    
+
     @Override
     public void addNotes(Long tripId, Note note) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
-        
-        if(note!= null) {
+
+        if (note != null) {
             em.persist(note);
         }
-        
-        if(trip != null && note != null) {
+
+        if (trip != null && note != null) {
             trip.getNotes().add(note);
         } else {
-                throw new TripNotFoundException("Trip not found in the database");
+            throw new TripNotFoundException("Trip not found in the database");
 
         }
     }
-    
+
     @Override
     public void addPolls(Long tripId, Poll poll) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
-        
-        if(poll!= null) {
+
+        if (poll != null) {
             em.persist(poll);
         }
-        
-        if(trip != null && poll != null) {
+
+        if (trip != null && poll != null) {
             trip.getPolls().add(poll);
         } else {
-                throw new TripNotFoundException("Trip not found in the database");
+            throw new TripNotFoundException("Trip not found in the database");
 
         }
     }
-    
+
+    @Override
+    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException {
+        try {
+            em.persist(trip);
+            em.flush();
+            
+            for (int i = 0; i < userEmails.size(); i++) {
+                String email = userEmails.get(i);
+                UserRole role = userRoles.get(i);
+                inviteUserToTrip(trip.getTripId(), email, role);
+            }
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void inviteUserToTrip(Long tripId, String email, UserRole role) throws UserNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            User user = userSessionBeanLocal.retrieveUserByEmail(email);
+            String token = user.getUsername() + ":" + UUID.randomUUID().toString();
+            trip.setInviteToken(token);
+            String userRole = role.toString();
+
+            try {
+                emailSessionBeanLocal.emailInvitationToUserAsync(user, trip, userRole, email);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Trip retrieveTripByInviteToken(String token) throws TripNotFoundException {
+        Query query = em.createQuery("SELECT t FROM Trip t WHERE t.inviteToken = :inToken");
+        query.setParameter("inToken", token);
+
+        try {
+            return (Trip) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new TripNotFoundException("Invalid trip invite token!");
+        }
+    }
+
+    @Override
+    public void acceptTripInvite(String token, String role) throws TripNotFoundException, UserNotFoundException {
+        try {
+            Trip trip = retrieveTripByInviteToken(token);
+            String[] parts = token.split(":");
+            String username = parts[0];
+            User user = userSessionBeanLocal.retrieveUserByUsername(username);
+            UserRole userRole = UserRole.valueOf(role);
+
+            switch (userRole) {
+                case ADMIN:
+                    trip.getAdmins().add(user);
+                    user.getAdminTrips().add(trip);
+                    break;
+                case EDITOR:
+                    trip.getEditors().add(user);
+                    user.getEditorTrips().add(trip);
+                    break;
+                case VIEWER:
+                    trip.getViewers().add(user);
+                    user.getViewerTrips().add(trip);
+                    break;
+                default:
+                    break;
+            }
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+
+    }
+
 }

@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,13 +40,15 @@ public class Trip implements Serializable {
     
     private Boolean isShared;
     
-    @ManyToMany(mappedBy="trip")
+    private String inviteToken;
+    
+    @ManyToMany(mappedBy="adminTrips")
     private List<User> admins;
     
-    @ManyToMany(mappedBy="trip")
+    @ManyToMany(mappedBy="viewerTrips")
     private List<User> viewers;
     
-    @ManyToMany(mappedBy="trip")
+    @ManyToMany(mappedBy="editorTrips")
     private List<User> editors;
     
     @OneToMany
@@ -63,7 +66,7 @@ public class Trip implements Serializable {
     /*@OneToMany
     private List<BudgetListItem> budgetListItems;*/
     
-    //private enum countryEnum;
+    //private CountryEnum country;
 
     public Long getTripId() {
         return tripId;
@@ -184,6 +187,14 @@ public class Trip implements Serializable {
 
     public void setPolls(List<Poll> polls) {
         this.polls = polls;
+    }
+
+    public String getInviteToken() {
+        return inviteToken;
+    }
+
+    public void setInviteToken(String inviteToken) {
+        this.inviteToken = inviteToken;
     }
     
 }
