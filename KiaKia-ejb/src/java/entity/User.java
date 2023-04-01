@@ -32,6 +32,7 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dob;
     private String photo; //store image path as string
+    private Wishlist wishlist;
 
     public Long getUserId() {
         return userId;
@@ -113,5 +114,15 @@ public class User implements Serializable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
+    }
+    
+    
     
 }
