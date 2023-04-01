@@ -14,6 +14,7 @@ import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,6 +58,21 @@ public class TripSessionBean implements TripSessionBeanLocal {
         } else {
             throw new TripNotFoundException("Trip not found in the database");
         }
+    }
+    
+    @Override
+    public List<Trip> getAllTrips() {
+        return em.createQuery("SELECT t FROM Trip t").getResultList();
+    }
+    
+    @Override
+    public List<Trip> getAllPersonalTrips() {
+        return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
+    }
+    
+    @Override
+    public List<Trip> getAllGroupTrips() {
+        return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS NOT EMPTY OR t.viewers IS NOT EMPTY").getResultList();
     }
     
     @Override
