@@ -4,32 +4,27 @@ import Navbar from "./Components/Navbar/Navbar";
 import Wishlist from "./Pages/Wishlist/Wishlist";
 import Trip from "./Pages/Trip/Trip";
 import Profile from "./Pages/Profile/Profile";
-
+import Home from "./Pages/Home/Home";
+import Explore from "./Pages/Explore/Explore";
+import Footer from "./Components/Footer/Footer";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
-    
-    let page
-    switch(window.location.pathname) {
-        case "/":
-            page = <Wishlist/>;
-            break
-        case "/Trip":
-            page = <Trip/>;
-            break;
-        case "/Wishlist":
-            page = <Wishlist/>;
-            break;
-        case "/Profile":
-            page = <Profile/>;
-            break
-        default: 
-            page = <Wishlist/>
-    }
-    
+
     return (
         <>
             <Navbar/>
-            {page}
+            <div className="container">
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/Trip" element={<Trip/>}/>
+                    <Route path="/Wishlist" element={<Wishlist/>}/>
+                    <Route path="/Profile" element={<Profile/>}/>
+                    <Route path="/Explore" element={<Explore/>}/>
+                </Routes>   
+            </div>
+            {/* Will change this component */}
+            <Footer/>
         </>
     )
 }

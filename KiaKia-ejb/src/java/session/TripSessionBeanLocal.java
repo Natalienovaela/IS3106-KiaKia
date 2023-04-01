@@ -40,6 +40,12 @@ public interface TripSessionBeanLocal {
 
     public void addPolls(Long tripId, Poll poll) throws TripNotFoundException;
 
+    public List<Trip> getAllTrips();
+
+    public List<Trip> getAllPersonalTrips();
+
+    public List<Trip> getAllGroupTrips();
+
     public void acceptTripInvite(String token, String role) throws TripNotFoundException, UserNotFoundException;
 
     public Trip retrieveTripByInviteToken(String token) throws TripNotFoundException;

@@ -63,6 +63,9 @@ public class Trip implements Serializable {
     @OneToMany
     private List<Poll> polls;
     
+    @OneToMany
+    private List<PlaceLineItem> bucketList;
+    
     /*@OneToMany
     private List<BudgetListItem> budgetListItems;*/
     
@@ -189,6 +192,14 @@ public class Trip implements Serializable {
         this.polls = polls;
     }
 
+    public List<PlaceLineItem> getBucketList() {
+        return bucketList;
+    }
+
+    public void setBucketList(List<PlaceLineItem> bucketList) {
+        this.bucketList = bucketList;
+    }
+    
     public String getInviteToken() {
         return inviteToken;
     }

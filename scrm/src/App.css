@@ -34,7 +34,10 @@ a {
 li {
     list-style: none;
 }
-
+.pageTitle {
+    font-weight: 600;
+    font-size: 30px;
+}
 .section {
     padding: 4rem 0 2rem;
     
@@ -43,7 +46,7 @@ li {
 .container {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    
+    padding-bottom: 5rem;
 }
 
 .icon {
@@ -73,6 +76,13 @@ li {
 .btn a{
     color: var(--whiteColor);
     font-weight: 500;
+}
+.btn-no {
+    border: none;
+}
+.btn-no:hover {
+    color: var(--PrimaryColor);
+    transform: translate(5%);
 }
 
 .btn:hover {
