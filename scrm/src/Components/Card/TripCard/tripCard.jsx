@@ -3,13 +3,16 @@ import './tripCard.css';
 
 
 const TripCard = (props) => {
-  const tripList = props.trips?.map((trip) => (<li className="trip">{trip}</li>))
   return (
     <div className="card">
       <div className="imageDiv">
         <img src={props.img} alt="Card" className="card-image" />
-        <ul className="places">{tripList}</ul>
       </div>
+
+      <div className="card-content">
+            <h2 className="card-title">{props.title}</h2>
+            <p className="card-description">{props.description}</p>
+        </div>
     </div>
     
   )

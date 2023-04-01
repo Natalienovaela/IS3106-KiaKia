@@ -1,210 +1,46 @@
-import React, { useState, useEffect } from "react";
-import { Link, animateScroll as scroll } from "react-scroll";
-import { Divider, Grid } from "@mui/material";
+import React from "react";
+import Api from "../../Helpers/Api";
+import { useEffect, useState } from "react";
 
 function Trip() {
-  return (
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    reloadData();
+    }, []);
+
+  {/*later on need to get all trips from particular id --> user, and specify personal or group trip */}
+  const reloadData = () => {
+    Api.getAllTrips()
+    .then((res) => res.json())
+    .then((trips) => {
+    for (const trip of trips) {
+    const { name, startDate, endDate } = trip;
+    }
+    setData(trips);
+    });
+    };
+
+  return(
     <>
-      <Grid container>
-        <Grid item xs={12}>
-          <section className="trip-header">
-            <h2>Picture here</h2>
-            <p>Here's a rough outline of what your trip might look like:</p>
-            <ul>
-              <li>
-                Day 1: Arrive at your destination and check in to your
-                accommodations
-              </li>
-              <li>Day 2: Explore the local area and try some new foods</li>
-              <li>
-                Day 3: Take a guided tour of the city and learn about its
-                history
-              </li>
-              <li>
-                Day 4: Relax at a nearby beach or go on a hike in the mountains
-              </li>
-            </ul>
-          </section>
-        </Grid>
-        <Grid item xs={1.7}>
-          <aside
-            className="trip-sidebar"
-            style={{ position: "sticky", top: 0 }}
-          >
-            <ul className="trip-sidebar-list">
-              <li className="trip-sidebar-list-item">
-                <Link
-                  activeClass="active"
-                  to="overview"
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                >
-                  Overview
-                </Link>
-              </li>
-              <li className="trip-sidebar-list-item">
-                <Link
-                  activeClass="active"
-                  to="ideaBucket"
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                >
-                  Idea Bucket
-                </Link>
-              </li>
-              <li className="trip-sidebar-list-item">
-                <Link
-                  activeClass="active"
-                  to="itinerary"
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                >
-                  Itinerary
-                </Link>
-              </li>
-              <li className="trip-sidebar-list-item">
-                <Link
-                  activeClass="active"
-                  to="expenses"
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                >
-                  Expenses
-                </Link>
-              </li>
-            </ul>
-          </aside>
-        </Grid>
-        <Grid item xs>
-          <div className="trip-main-content">
-            <section
-              className="trip-main-content-item"
-              title="Overview"
-              id="overview"
-            >
-              <h2>Overview</h2>
-              <p>Here are some ideas for things to do on your trip:</p>
-              <ul>
-                <li>Hike to the top of the nearest mountain</li>
-                <li>
-                  Take a cooking class and learn how to make local cuisine
-                </li>
-                <li>Visit a museum or historical site</li>
-                <li>Relax on a nearby beach or lake</li>
-              </ul>
-              <p>Here are some ideas for things to do on your trip:</p>
-              <ul>
-                <li>Hike to the top of the nearest mountain</li>
-                <li>
-                  Take a cooking class and learn how to make local cuisine
-                </li>
-                <li>Visit a museum or historical site</li>
-                <li>Relax on a nearby beach or lake</li>
-              </ul>
-            </section>
-            <section
-              className="trip-main-content-item"
-              title="Idea Bucket"
-              id="ideaBucket"
-            >
-              <h2>Idea Bucket</h2>
-              <p>Here's a rough outline of what your trip might look like:</p>
-              <ul>
-                <li>
-                  Day 1: Arrive at your destination and check in to your
-                  accommodations
-                </li>
-                <li>Day 2: Explore the local area and try some new foods</li>
-                <li>
-                  Day 3: Take a guided tour of the city and learn about its
-                  history
-                </li>
-                <li>
-                  Day 4: Relax at a nearby beach or go on a hike in the
-                  mountains
-                </li>
-                <li>Day 5: Take a day trip to a nearby town or attraction</li>
-              </ul>
-              <p>Here are some ideas for things to do on your trip:</p>
-              <ul>
-                <li>Hike to the top of the nearest mountain</li>
-                <li>
-                  Take a cooking class and learn how to make local cuisine
-                </li>
-                <li>Visit a museum or historical site</li>
-                <li>Relax on a nearby beach or lake</li>
-              </ul>
-            </section>
-            <section
-              className="trip-main-content-item"
-              title="Itinerary"
-              id="itinerary"
-            >
-              <h2>Itinerary</h2>
-              <p>Here's a rough outline of what your trip might look like:</p>
-              <ul>
-                <li>
-                  Day 1: Arrive at your destination and check in to your
-                  accommodations
-                </li>
-                <li>Day 2: Explore the local area and try some new foods</li>
-                <li>
-                  Day 3: Take a guided tour of the city and learn about its
-                  history
-                </li>
-                <li>
-                  Day 4: Relax at a nearby beach or go on a hike in the
-                  mountains
-                </li>
-                <li>Day 5: Take a day trip to a nearby town or attraction</li>
-              </ul>
-              <p>Here are some ideas for things to do on your trip:</p>
-              <ul>
-                <li>Hike to the top of the nearest mountain</li>
-                <li>
-                  Take a cooking class and learn how to make local cuisine
-                </li>
-                <li>Visit a museum or historical site</li>
-                <li>Relax on a nearby beach or lake</li>
-              </ul>
-            </section>
-            <section
-              className="trip-main-content-item"
-              title="Expenses"
-              id="expenses"
-            >
-              <h2>Expenses</h2>
-              <p>Here's a rough outline of what your trip might look like:</p>
-              <ul>
-                <li>
-                  Day 1: Arrive at your destination and check in to your
-                  accommodations
-                </li>
-                <li>Day 2: Explore the local area and try some new foods</li>
-                <li>
-                  Day 3: Take a guided tour of the city and learn about its
-                  history
-                </li>
-                <li>
-                  Day 4: Relax at a nearby beach or go on a hike in the
-                  mountains
-                </li>
-                <li>Day 5: Take a day trip to a nearby town or attraction</li>
-              </ul>
-            </section>
-          </div>
-        </Grid>
-      </Grid>
+    <div className="pageTitle">
+      <h1>Your Upcoming Trip(s)</h1>
+    </div>
+
+    <div className="sec">
+      <div className="secTitle">
+        <h2>Personal</h2>
+
+      </div>
+    </div>
+    <div className="sec">
+      <div className="secTitle">
+        <h2>Group</h2>
+      </div>
+    </div>
     </>
-  );
+  )
 }
 
 export default Trip;
