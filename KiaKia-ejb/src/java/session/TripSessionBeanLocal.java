@@ -9,10 +9,13 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
+import enumeration.UserRole;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
+import error.UserNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -36,7 +39,19 @@ public interface TripSessionBeanLocal {
     public void addNotes(Long tripId, Note note) throws TripNotFoundException;
 
     public void addPolls(Long tripId, Poll poll) throws TripNotFoundException;
-    
-    
 
+    public List<Trip> getAllTrips();
+
+    public List<Trip> getAllPersonalTrips();
+
+    public List<Trip> getAllGroupTrips();
+
+    public void acceptTripInvite(String token, String role) throws TripNotFoundException, UserNotFoundException;
+
+    public Trip retrieveTripByInviteToken(String token) throws TripNotFoundException;
+
+    public void inviteUserToTrip(Long tripId, String email, UserRole role) throws UserNotFoundException;
+
+    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException;
+    
 }

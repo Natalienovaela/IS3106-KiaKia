@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,18 +36,25 @@ public class Trip implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     
+    private String name;
+    
     private String description;
     
-    private Boolean isShared;
+    private Boolean isShared = Boolean.FALSE;
     
-    @ManyToMany(mappedBy="trip")
+    private String inviteToken;
+    
+    @ManyToMany(mappedBy="adminTrips")
     private List<User> admins;
     
-    @ManyToMany(mappedBy="trip")
+    @ManyToMany(mappedBy="viewerTrips")
     private List<User> viewers;
     
-    @ManyToMany(mappedBy="trip")
+    @ManyToMany(mappedBy="editorTrips")
     private List<User> editors;
+    
+    @ManyToMany(mappedBy="wishlistTrips")
+    private List<User> wishlisted;
     
     @OneToMany
     private List<Note> notes;
@@ -67,7 +75,17 @@ public class Trip implements Serializable {
     private List<BudgetListItem> budgetListItems;*/
     
     //private enum countryEnum;
+    
+    public Trip() {
+        
+    }
 
+    public Trip(String name, Date startDate, Date endDate){
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+    
     public Long getTripId() {
         return tripId;
     }
@@ -195,6 +213,30 @@ public class Trip implements Serializable {
 
     public void setBucketList(List<PlaceLineItem> bucketList) {
         this.bucketList = bucketList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getInviteToken() {
+        return inviteToken;
+    }
+
+    public void setInviteToken(String inviteToken) {
+        this.inviteToken = inviteToken;
+    }
+
+    public List<User> getWishlisted() {
+        return wishlisted;
+    }
+
+    public void setWishlisted(List<User> wishlisted) {
+        this.wishlisted = wishlisted;
     }
     
 }
