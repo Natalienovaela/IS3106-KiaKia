@@ -7,6 +7,7 @@ package session;
 
 import entity.Note;
 import error.NoteNotFoundException;
+import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import javax.ejb.Local;
 
@@ -21,6 +22,6 @@ public interface NoteSessionBeanLocal {
 
     public Note retrieveNoteByNoteId(Long noteId) throws NoteNotFoundException;
 
-    public Long createNewNote(Note note) throws UnknownPersistenceException;
+    public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
     
 }

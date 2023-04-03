@@ -51,6 +51,16 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
 
     }
+    
+    @Override
+    public Trip retrieveTripByTripId(Long tripId) throws TripNotFoundException {
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip != null) {
+            return trip;
+        } else {
+            throw new TripNotFoundException("Trip not found in the database");
+        }
+    }
 
     @Override
     public void updateTrip(Trip newTrip) throws TripNotFoundException {
@@ -155,37 +165,37 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
     }
 
-    @Override
-    public void addNotes(Long tripId, Note note) throws TripNotFoundException {
-        Trip trip = em.find(Trip.class, tripId);
-
-        if (note != null) {
-            em.persist(note);
-        }
-
-        if (trip != null && note != null) {
-            trip.getNotes().add(note);
-        } else {
-            throw new TripNotFoundException("Trip not found in the database");
-
-        }
-    }
-
-    @Override
-    public void addPolls(Long tripId, Poll poll) throws TripNotFoundException {
-        Trip trip = em.find(Trip.class, tripId);
-
-        if (poll != null) {
-            em.persist(poll);
-        }
-
-        if (trip != null && poll != null) {
-            trip.getPolls().add(poll);
-        } else {
-            throw new TripNotFoundException("Trip not found in the database");
-
-        }
-    }
+//    @Override
+//    public void addNotes(Long tripId, Note note) throws TripNotFoundException {
+//        Trip trip = em.find(Trip.class, tripId);
+//
+//        if (note != null) {
+//            em.persist(note);
+//        }
+//
+//        if (trip != null && note != null) {
+//            trip.getNotes().add(note);
+//        } else {
+//            throw new TripNotFoundException("Trip not found in the database");
+//
+//        }
+//    }
+//
+//    @Override
+//    public void addPolls(Long tripId, Poll poll) throws TripNotFoundException {
+//        Trip trip = em.find(Trip.class, tripId);
+//
+//        if (poll != null) {
+//            em.persist(poll);
+//        }
+//
+//        if (trip != null && poll != null) {
+//            trip.getPolls().add(poll);
+//        } else {
+//            throw new TripNotFoundException("Trip not found in the database");
+//
+//        }
+//    }
 
     @Override
     public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException {
