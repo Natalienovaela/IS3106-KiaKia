@@ -42,12 +42,12 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
         }
     }
 
-    @Override
+    /*@Override
     public List<Wishlist> searchWishlistByFolderName(String folderName, Long id) throws WishlistNotFoundException {
         Wishlist currentWishlist = getwishlistbyId(id);
-       
+       return List
         
-    }
+    }*/
 
     @Override
     public List<Wishlist> searchWishlistByTripCountry(String countryName) {
