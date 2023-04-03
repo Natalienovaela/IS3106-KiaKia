@@ -6,14 +6,17 @@
 package datainit;
 
 import entity.Trip;
+import entity.User;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.UserSessionBeanLocal;
 
 /**
  *
@@ -26,12 +29,22 @@ public class DataInitSessionBean {
 
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
+        if (em.find(User.class, 1l) == null) {
+            initialiseUser();
+        }
         if(em.find(Trip.class, 1l) == null) {
             initialiseTrip();
         }
+    }
+    
+    public void initialiseUser() {
+        userSessionBeanLocal.createUser(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"));
     }
     
     public void initialiseTrip() {

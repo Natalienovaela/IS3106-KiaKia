@@ -55,6 +55,13 @@ public class User implements Serializable {
     @ManyToMany
     private List<Place> wishlistPlaces; // pending
 
+    public User(String username, String email, String password, String name) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
     public Long getUserId() {
         return userId;
     }
