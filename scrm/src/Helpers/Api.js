@@ -47,7 +47,7 @@ const Api = {
             method: "DELETE",
         });
     },
-};
+
 
   getTrip(tripId) {
     return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
@@ -66,6 +66,6 @@ const Api = {
       }
     );
   },
-}
+};
 
 export default Api;
