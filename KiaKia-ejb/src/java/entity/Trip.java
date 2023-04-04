@@ -6,8 +6,11 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,35 +46,38 @@ public class Trip implements Serializable {
     
     private String inviteToken;
     
-    @ManyToMany(mappedBy="adminTrips")
-    private List<User> admins;
+    @ManyToMany(mappedBy="trips")
+    private List<User> admins = new ArrayList<>();
     
-    @ManyToMany(mappedBy="viewerTrips")
-    private List<User> viewers;
+    @ManyToMany(mappedBy="trips")
+    private List<User> viewers = new ArrayList<>();
     
-    @ManyToMany(mappedBy="editorTrips")
-    private List<User> editors;
+    @ManyToMany(mappedBy="trips")
+    private List<User> editors = new ArrayList<>();
     
-    @ManyToMany(mappedBy="wishlistTrips")
-    private List<User> wishlisted;
-    
-    @OneToMany
-    private List<Note> notes;
+    @ManyToMany(mappedBy="trips")
+    private List<User> wishlisted = new ArrayList<>();
     
     @OneToMany
-    private List<Document> documents;
+    private List<Note> notes = new ArrayList<>();
     
     @OneToMany
-    private List<CheckList> checkLists;
+    private List<Document> documents = new ArrayList<>();
     
     @OneToMany
-    private List<Poll> polls;
+    private List<CheckList> checkLists = new ArrayList<>();
     
     @OneToMany
-    private List<PlaceLineItem> bucketList;
+    private List<Poll> polls = new ArrayList<>();
+    
+    @OneToMany
+    private List<PlaceLineItem> bucketList = new ArrayList<>();
+    
+    @OneToMany
+    private List<DayItinerary> itinerary = new ArrayList<>();
     
     /*@OneToMany
-    private List<BudgetListItem> budgetListItems;*/
+    private List<BudgetListItem> budgetListItems = new ArrayList<>();*/
     
     //private enum countryEnum;
     
@@ -236,6 +242,14 @@ public class Trip implements Serializable {
 
     public void setWishlisted(List<User> wishlisted) {
         this.wishlisted = wishlisted;
+    }
+
+    public List<DayItinerary> getItinerary() {
+        return itinerary;
+    }
+
+    public void setItinerary(List<DayItinerary> itinerary) {
+        this.itinerary = itinerary;
     }
     
 }
