@@ -11,8 +11,6 @@ import error.NoteNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -39,30 +37,36 @@ public class TripsResource {
 
     @EJB
     private TripSessionBeanLocal tripSessionBeanLocal;
-    
+
     @EJB
     private NoteSessionBeanLocal noteSessionBeanLocal;
     
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> getAllTrips() {
         return tripSessionBeanLocal.getAllTrips();
     }
+    
+    @GET
+    public Response test() {
+            return Response.status(204).build();
+    }
 
     @GET
+    @Path("/personal")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> getAllPersonalTrips() {
         return tripSessionBeanLocal.getAllPersonalTrips();
     }
 
     @GET
+    @Path("/group")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> getAllGroupTrips() {
         return tripSessionBeanLocal.getAllGroupTrips();
     }
-    
-    
-    
+
     @GET
     @Path("/{trip_id}/notes")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,15 +82,15 @@ public class TripsResource {
                     .build();
 
             return Response.status(404).entity(exception).build();
-        } 
+        }
     }
-    
+
     @POST
     @Path("/{trip_id}/notes")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNote(@PathParam("trip_id") Long tripId, Note n) {
-        
+
         try {
             noteSessionBeanLocal.createNewNote(n, tripId);
             Trip trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
@@ -99,7 +103,7 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @PUT
     @Path("/{trip_id}/notes/{note_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -117,7 +121,7 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @DELETE
     @Path("/{trip_id}/notes/{note_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -140,7 +144,7 @@ public class TripsResource {
         try {
             Trip trip = tripSessionBeanLocal.getTrip(tripId);
             return Response.status(200).entity(trip).type(MediaType.APPLICATION_JSON).build();
-            
+
         } catch (TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", "Not found")

@@ -22,18 +22,17 @@ public class ApplicationConfig extends Application {
         return resources;
     }
 
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(webservices.restful.CORSFilter.class);
         resources.add(webservices.restful.ItineraryResource.class);
         resources.add(webservices.restful.KiaKiaResource.class);
         resources.add(webservices.restful.TripsResource.class);
         resources.add(webservices.restful.UsersResource.class);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
