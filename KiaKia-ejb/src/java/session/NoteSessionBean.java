@@ -10,6 +10,9 @@ import entity.Trip;
 import error.NoteNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -75,6 +78,35 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
 
     public void persist(Object object) {
         em.persist(object);
+    }
+    
+    @Override
+    public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
+        Trip trip = em.find(Trip.class, tripId);
+        Note note = em.find(Note.class, noteId);
+
+        if (trip != null && note != null) {
+            trip.getNotes().remove(note);
+        } else {
+            if (trip == null) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+            if (note == null) {
+                throw new NoteNotFoundException("Note not found in the database");
+            }
+        }
+    }
+    
+    @Override
+    public List<Note> retrieveAllNotesInTrip(Long tripId) throws TripNotFoundException {
+        Trip trip;
+        try {
+            trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        }
+        return trip.getNotes();
+        
     }
 
 }

@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -60,6 +61,15 @@ public class TripsResource {
         return tripSessionBeanLocal.getAllGroupTrips();
     }
     
+    
+    
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Note retrieveAllNotesInTrip() {
+//        return tripSessionBeanLocal.getAllGroupTrips();
+//    }
+    
     @POST
     @Path("/{trip_id}/notes")
     @Produces(MediaType.APPLICATION_JSON)
@@ -93,6 +103,22 @@ public class TripsResource {
                     .add("error", ex.getMessage())
                     .build();
 
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @DELETE
+    @Path("/{trip_id}/notes/{note_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteNote(@PathParam("trip_id") Long tripId,
+            @PathParam("note_id") Long noteId) {
+        try {
+            noteSessionBeanLocal.removeNote(tripId, noteId);
+            return Response.status(204).build();
+        } catch (TripNotFoundException | NoteNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
             return Response.status(404).entity(exception).build();
         }
     }

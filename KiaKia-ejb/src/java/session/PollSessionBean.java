@@ -117,5 +117,21 @@ public class PollSessionBean implements PollSessionBeanLocal {
         em.persist(object);
     }
 
+        @Override
+    public void removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
+        Trip trip = em.find(Trip.class, tripId);
+        Poll poll = em.find(Poll.class, pollId);
+
+        if (trip != null && poll != null) {
+            trip.getPolls().remove(poll);
+        } else {
+            if (trip == null) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+            if (poll == null) {
+                throw new PollNotFoundException("Poll not found in the database");
+            }
+        }
+    }
     
 }
