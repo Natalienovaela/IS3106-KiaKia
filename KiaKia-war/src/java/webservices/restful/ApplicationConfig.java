@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(webservices.restful.CORSFilter.class);
         resources.add(webservices.restful.KiaKiaResource.class);
         resources.add(webservices.restful.TripsResource.class);
+        resources.add(webservices.restful.UsersResource.class);
     }
     
 }

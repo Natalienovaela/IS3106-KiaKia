@@ -7,6 +7,7 @@ package datainit;
 
 import entity.Note;
 import entity.Trip;
+import entity.User;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import java.util.Calendar;
@@ -21,6 +22,7 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import session.NoteSessionBeanLocal;
+import session.UserSessionBeanLocal;
 
 /**
  *
@@ -36,14 +38,24 @@ public class DataInitSessionBean {
 
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
-        if (em.find(Trip.class, 1l) == null) {
+        if (em.find(User.class, 1l) == null) {
+            initialiseUser();
+        }
+        if(em.find(Trip.class, 1l) == null) {
             initialiseTrip();
         }
     }
-
+    
+    public void initialiseUser() {
+        userSessionBeanLocal.createUser(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"));
+    }
+    
     public void initialiseTrip() {
         try {
             Trip trip = new Trip("First Trip", new GregorianCalendar(2024, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2024, Calendar.FEBRUARY, 15).getTime());

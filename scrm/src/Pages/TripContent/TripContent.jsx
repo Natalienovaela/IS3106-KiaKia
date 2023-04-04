@@ -1,26 +1,52 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
+import {DatePicker} from 'antd';
+import moment from "moment";
+const {RangePicker} = DatePicker;
 
-function TripContent() {
+
+function TripContent(props) {
   const { id } = useParams();
 
-  {/*useEffect(() => {
+  const [name, setName] = useState("");
+  const [startDate, setStartDate] = useState(moment("1990-01-01").toDate());
+  const [endDate, setEndDate] = useState(moment("1990-01-01").toDate());
+  const [dateRange, setDateRange] = useState(null);
+  const handleDateRangeChange = (value) => {
+    setDateRange(value);
+    setStartDate(moment(value[0]).format('YYYY-MM-DD'));
+    setEndDate(moment(value[1]).endOf('day').format('YYYY-MM-DD'));
+
+    Api.createItinerary({
+      startDate, 
+      endDate
+    })
+  };
+
+  {
+    /*useEffect(() => {
     if (id) {
       Api.get(id)
         .then((res) => res.json())
         .then((customer) => {
-          const { name, dob, gender } = customer;
+          const { name, startDate, endDate} = customer;
           setName(name);
           setGender(gender);
           setDob(moment(dob, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
         });
     }
-  }, [id]);*/}
+  }, [id]);*/
+  }
 
-  
+  {
+    /*{const reloadData = () => {
+
+    } */
+  }
+
   return (
     <>
       <Grid container>
@@ -167,6 +193,10 @@ function TripContent() {
               id="itinerary"
             >
               <h2>Itinerary</h2>
+                <div className="date-range-picker">
+                  <RangePicker format={dateFormat} onChange={handleDateRangeChange} />
+                </div>
+
               <p>Here's a rough outline of what your trip might look like:</p>
               <ul>
                 <li>

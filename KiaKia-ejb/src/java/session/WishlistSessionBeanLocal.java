@@ -18,8 +18,10 @@ import javax.ejb.Local;
 public interface WishlistSessionBeanLocal {
     public void createWishlist(Wishlist w);
     public Wishlist getwishlistbyId(Long id) throws WishlistNotFoundException;
-    public List<Wishlist> searchWishlistByFolderName(String folderName);
+    /*public List<Wishlist> searchWishlistByFolderName(String folderName);*/
     public List<Wishlist> searchWishlistByTripCountry(String countryName);
     public void deleteWishlist(Long id);
     public void addTripToWishlist(Long tripId, Long wishlistId);
+
+    public List<Wishlist> searchWishlistByFolderName(String folderName);
 }
