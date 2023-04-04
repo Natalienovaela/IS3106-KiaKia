@@ -33,4 +33,22 @@
         <local>session.TripSessionBeanLocal</local>
         <ejb-link>KiaKia-ejb.jar#TripSessionBean</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>NoteSessionBeanLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>session.NoteSessionBeanLocal</local>
+        <ejb-link>KiaKia-ejb.jar#NoteSessionBean</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>PollSessionBeanLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>session.PollSessionBeanLocal</local>
+        <ejb-link>KiaKia-ejb.jar#PollSessionBean</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>NoteSessionBeanLocal1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>session.NoteSessionBeanLocal</local>
+        <ejb-link>KiaKia-ejb.jar#NoteSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

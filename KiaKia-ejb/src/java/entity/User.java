@@ -55,6 +55,9 @@ public class User implements Serializable {
     @ManyToMany
     private List<Place> wishlistPlaces = new ArrayList<>(); // pending
 
+    public User() {
+    }
+
     public User(String username, String email, String password, String name) {
         this.username = username;
         this.email = email;

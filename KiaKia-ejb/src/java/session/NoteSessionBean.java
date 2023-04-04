@@ -6,8 +6,14 @@
 package session;
 
 import entity.Note;
+import entity.Trip;
 import error.NoteNotFoundException;
+import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,19 +26,30 @@ import javax.persistence.PersistenceException;
 @Stateless
 public class NoteSessionBean implements NoteSessionBeanLocal {
 
+    @EJB
+    private TripSessionBeanLocal tripSessionBeanLocal;
+
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
 
     @Override
-    public Long createNewNote(Note note) throws UnknownPersistenceException {
-
+    public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
         try {
-            em.persist(note);
-            em.flush(); //only need to flush bcs we are returning the id!
-            return note.getNoteId();
+            Trip trip = em.find(Trip.class, tripId);
+
+            if (trip != null && note != null) {
+                em.persist(note);
+                trip.getNotes().add(note);
+                em.flush();
+                return note.getNoteId();
+            } else {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+
         } catch (PersistenceException ex) {
 
             throw new UnknownPersistenceException(ex.getMessage());
+
         }
     }
 
@@ -46,7 +63,7 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
             throw new NoteNotFoundException("Note ID " + noteId + " does not exist!");
         }
     }
-    
+
     @Override
     public void updateNote(Note u) throws NoteNotFoundException {
         try {
@@ -57,6 +74,39 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
         } catch (NoteNotFoundException ex) {
             throw new NoteNotFoundException(ex.getMessage());
         }
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
+    
+    @Override
+    public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
+        Trip trip = em.find(Trip.class, tripId);
+        Note note = em.find(Note.class, noteId);
+
+        if (trip != null && note != null) {
+            trip.getNotes().remove(note);
+        } else {
+            if (trip == null) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+            if (note == null) {
+                throw new NoteNotFoundException("Note not found in the database");
+            }
+        }
+    }
+    
+    @Override
+    public List<Note> retrieveAllNotesInTrip(Long tripId) throws TripNotFoundException {
+        Trip trip;
+        try {
+            trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        }
+        return trip.getNotes();
+        
     }
 
 }

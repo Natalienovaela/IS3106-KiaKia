@@ -63,6 +63,11 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
     public void addTripToWishlist(Long tripId, Long wishlistId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Wishlist> searchWishlistByFolderName(String folderName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

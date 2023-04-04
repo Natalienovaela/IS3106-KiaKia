@@ -28,15 +28,16 @@ public class Poll implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pollId;
     private String description;
-    private HashMap<String, List<Long>> options;
+    private HashMap<Long, String> options;
+    private HashMap<Long, List<Long>> voting;
     private boolean isClosed;
     
-//    @ManyToOne(optional=false)
-//    @JoinColumn(nullable=false)
-//    private User creator;
+    @ManyToOne(optional=false)
+    @JoinColumn(nullable=false)
+    private User creator;
     
-//    @ManyToMany
-//    private List<User> participants;
+    @ManyToMany
+    private List<User> polledBy;
 
     public Long getPollId() {
         return pollId;
@@ -79,11 +80,11 @@ public class Poll implements Serializable {
         this.description = description;
     }
 
-    public HashMap<String, List<Long>> getOptions() {
+    public HashMap<Long, String> getOptions() {
         return options;
     }
 
-    public void setOptions(HashMap<String, List<Long>> options) {
+    public void setOptions(HashMap<Long, String> options) {
         this.options = options;
     }
 
@@ -93,6 +94,30 @@ public class Poll implements Serializable {
 
     public void setIsClosed(boolean isClosed) {
         this.isClosed = isClosed;
+    }
+
+    public HashMap<Long, List<Long>> getVoting() {
+        return voting;
+    }
+
+    public void setVoting(HashMap<Long, List<Long>> voting) {
+        this.voting = voting;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public List<User> getPolledBy() {
+        return polledBy;
+    }
+
+    public void setPolledBy(List<User> polledBy) {
+        this.polledBy = polledBy;
     }
     
 }

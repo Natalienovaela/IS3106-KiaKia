@@ -22,4 +22,6 @@ public interface WishlistSessionBeanLocal {
     public List<Wishlist> searchWishlistByTripCountry(String countryName);
     public void deleteWishlist(Long id);
     public void addTripToWishlist(Long tripId, Long wishlistId);
+
+    public List<Wishlist> searchWishlistByFolderName(String folderName);
 }

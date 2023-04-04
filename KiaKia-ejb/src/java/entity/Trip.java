@@ -76,8 +76,17 @@ public class Trip implements Serializable {
     @OneToMany
     private List<DayItinerary> itinerary = new ArrayList<>();
     
-    /*@OneToMany
-    private List<BudgetListItem> budgetListItems = new ArrayList<>();*/
+    @OneToMany
+    private List<Budget> budgets;
+    
+    @OneToMany
+    private List<Expense> expenses;
+    
+    @OneToMany
+    private List<Debt> debts;
+
+    @OneToMany
+    private List<BudgetExpenseCategory> categories;
     
     //private enum countryEnum;
     
@@ -250,6 +259,38 @@ public class Trip implements Serializable {
 
     public void setItinerary(List<DayItinerary> itinerary) {
         this.itinerary = itinerary;
+    }
+    
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public List<Debt> getDebts() {
+        return debts;
+    }
+
+    public void setDebts(List<Debt> debts) {
+        this.debts = debts;
+    }
+
+    public List<BudgetExpenseCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<BudgetExpenseCategory> categories) {
+        this.categories = categories;
     }
     
 }
