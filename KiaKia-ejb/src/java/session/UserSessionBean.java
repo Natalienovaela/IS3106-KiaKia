@@ -6,7 +6,9 @@
 package session;
 
 import entity.Trip;
+import entity.TripAssignment;
 import entity.User;
+import enumeration.UserRoleEnum;
 import error.InvalidLoginException;
 import error.ResetPasswordException;
 import error.UserNotFoundException;
@@ -42,10 +44,11 @@ public class UserSessionBean implements UserSessionBeanLocal {
     }
     
     @Override
-    public void createUserTemporary(User u, Trip trip) {
-        em.persist(u);
+    public void createUserTemporary(User user, Trip trip) {
+        em.persist(user);
         em.flush();
-        u.getTrips().add(trip);
+        TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+        em.persist(tripAssignment);
         //trip.getEditors().add(u);
     }
 

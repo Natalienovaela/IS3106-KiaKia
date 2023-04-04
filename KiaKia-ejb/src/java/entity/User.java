@@ -5,11 +5,16 @@
  */
 package entity;
 
+import enumeration.UserRoleEnum;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -42,12 +49,7 @@ public class User implements Serializable {
     private String resetPasswordToken;
     @Temporal(TemporalType.DATE)
     private Date tokenExpiryDate;
-
-    @ManyToMany
-    @JoinTable(name = "user_trip",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "trip_id"))
-    private List<Trip> trips = new ArrayList<>();
+    
 
     @ManyToMany
     private List<Trip> wishlistTrips = new ArrayList<>(); // pending
@@ -63,10 +65,6 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.name = name;
-    }
-    
-    public User() {
-        
     }
 
     public Long getUserId() {
@@ -188,14 +186,6 @@ public class User implements Serializable {
 
     public void setTokenExpiryDate(Date tokenExpiryDate) {
         this.tokenExpiryDate = tokenExpiryDate;
-    }
-
-    public List<Trip> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
     }
 
 }

@@ -8,7 +8,9 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -46,16 +48,7 @@ public class Trip implements Serializable {
     
     private String inviteToken;
     
-    @ManyToMany(mappedBy="trips")
-    private List<User> admins = new ArrayList<>();
-    
-    @ManyToMany(mappedBy="trips")
-    private List<User> viewers = new ArrayList<>();
-    
-    @ManyToMany(mappedBy="trips")
-    private List<User> editors = new ArrayList<>();
-    
-    @ManyToMany(mappedBy="trips")
+    @ManyToMany(mappedBy="wishlistTrips")
     private List<User> wishlisted = new ArrayList<>();
     
     @OneToMany
@@ -163,30 +156,6 @@ public class Trip implements Serializable {
 
     public void setIsShared(Boolean isShared) {
         this.isShared = isShared;
-    }
-
-    public List<User> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<User> admins) {
-        this.admins = admins;
-    }
-
-    public List<User> getViewers() {
-        return viewers;
-    }
-
-    public void setViewers(List<User> viewers) {
-        this.viewers = viewers;
-    }
-
-    public List<User> getEditors() {
-        return editors;
-    }
-
-    public void setEditors(List<User> editors) {
-        this.editors = editors;
     }
 
     public List<Note> getNotes() {

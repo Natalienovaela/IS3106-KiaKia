@@ -9,7 +9,7 @@ package enumeration;
  *
  * @author YC
  */
-public enum UserRole {
+public enum UserRoleEnum {
     ADMIN,
     VIEWER,
     EDITOR
