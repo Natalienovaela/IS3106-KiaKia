@@ -43,12 +43,14 @@ public class TripsResource {
     
 
     @GET
+    @Path("/AllTrip")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> getAllTrips() {
         return tripSessionBeanLocal.getAllTrips();
     }
     
     @GET
+    @Path("/random")
     public Response test() {
             return Response.status(204).build();
     }

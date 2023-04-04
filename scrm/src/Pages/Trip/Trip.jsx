@@ -16,7 +16,7 @@ function Trip() {
     /*later on need to get all trips from particular id --> user, and specify personal or group trip */
   }
   const reloadPersonalData = () => {
-    Api.getAllTrips()
+    Api.getAllPersonalTrips()
       .then((res) => res.json())
       .then((trips) => {
         for (const trip of trips) {

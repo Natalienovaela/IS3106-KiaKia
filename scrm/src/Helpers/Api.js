@@ -1,4 +1,4 @@
-const SERVER_PREFIX = "http://localhost:8080/KiaKia/webresources";
+const SERVER_PREFIX = "http://localhost:8080/KiaKia-war/webresources";
 
 const Api = {
   getAllTrips() {
@@ -6,7 +6,7 @@ const Api = {
   },
 
   getAllPersonalTrips() {
-    return fetch(`${SERVER_PREFIX}/trips/personal`);
+    return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
   },
 
   getAllGroupTrips() {

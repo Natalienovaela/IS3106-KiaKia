@@ -40,12 +40,12 @@ function TripContent() {
   useEffect(() => {
     Api.getTrip(id)
       .then((res) => res.json())
-      .then((customer) => {
-        const { name, startDate, endDate } = customer;
+      .then((trip) => {
+        const { name, startDate, endDate } = trip;
         setName(name);
         setDateRange([moment(startDate), moment(endDate)]);
       });
-  }, [id]);
+  });
 
   {
     /*{const reloadData = () => {
