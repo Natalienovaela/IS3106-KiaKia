@@ -63,12 +63,23 @@ public class TripsResource {
     
     
     
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Note retrieveAllNotesInTrip() {
-//        return tripSessionBeanLocal.getAllGroupTrips();
-//    }
+    @GET
+    @Path("/{trip_id}/notes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response retrieveAllNotesInTrip(@PathParam("trip_id") Long tripId) {
+        List<Note> notes;
+        try {
+            notes = noteSessionBeanLocal.retrieveAllNotesInTrip(tripId);
+            return Response.status(200).entity(notes).build();
+        } catch (TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        } 
+    }
     
     @POST
     @Path("/{trip_id}/notes")

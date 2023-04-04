@@ -68,6 +68,7 @@ public class DataInitSessionBean {
 
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
+            em.flush();
             Note note3 = new Note("My Third Note", "blablabla", false);
             noteSessionBeanLocal.createNewNote(note3, trip2.getTripId());
 

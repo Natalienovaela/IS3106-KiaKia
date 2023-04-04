@@ -12,6 +12,15 @@ const Api = {
     getAllGroupTrips() {
         return fetch(`${SERVER_PREFIX}/trips`);
     },
+    // getAllNotesInTrip(tripId, signal) {
+    //     return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
+    //         headers: {
+    //             Accept: "application/json",
+    //             "Content-Type": "application/json",
+    //         },
+    //         method: "GET",
+    //     });
+    // },
     createNote(tripId, note) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
             headers: {

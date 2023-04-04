@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
-import {DatePicker} from 'antd';
+import { DatePicker } from "antd";
 import moment from "moment";
-const {RangePicker} = DatePicker;
-
+const { RangePicker } = DatePicker;
 
 function TripContent(props) {
   const { id } = useParams();
@@ -17,13 +16,13 @@ function TripContent(props) {
   const [dateRange, setDateRange] = useState(null);
   const handleDateRangeChange = (value) => {
     setDateRange(value);
-    setStartDate(moment(value[0]).format('YYYY-MM-DD'));
-    setEndDate(moment(value[1]).endOf('day').format('YYYY-MM-DD'));
+    setStartDate(moment(value[0]).format("YYYY-MM-DD"));
+    setEndDate(moment(value[1]).endOf("day").format("YYYY-MM-DD"));
 
     Api.createItinerary({
-      startDate, 
-      endDate
-    })
+      startDate,
+      endDate,
+    });
   };
 
   {
@@ -193,9 +192,9 @@ function TripContent(props) {
               id="itinerary"
             >
               <h2>Itinerary</h2>
-                <div className="date-range-picker">
-                  <RangePicker format={dateFormat} onChange={handleDateRangeChange} />
-                </div>
+              <div className="date-range-picker">
+                <RangePicker onChange={handleDateRangeChange} />
+              </div>
 
               <p>Here's a rough outline of what your trip might look like:</p>
               <ul>
