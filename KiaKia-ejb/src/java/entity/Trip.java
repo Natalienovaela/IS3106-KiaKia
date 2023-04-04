@@ -70,8 +70,17 @@ public class Trip implements Serializable {
     @OneToMany
     private List<PlaceLineItem> bucketList;
     
-    /*@OneToMany
-    private List<BudgetListItem> budgetListItems;*/
+    @OneToMany
+    private List<Budget> budgets;
+    
+    @OneToMany
+    private List<Expense> expenses;
+    
+    @OneToMany
+    private List<Debt> debts;
+
+    @OneToMany
+    private List<BudgetExpenseCategory> categories;
     
     //private enum countryEnum;
     
@@ -236,6 +245,38 @@ public class Trip implements Serializable {
 
     public void setWishlisted(List<User> wishlisted) {
         this.wishlisted = wishlisted;
+    }
+    
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public List<Debt> getDebts() {
+        return debts;
+    }
+
+    public void setDebts(List<Debt> debts) {
+        this.debts = debts;
+    }
+
+    public List<BudgetExpenseCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<BudgetExpenseCategory> categories) {
+        this.categories = categories;
     }
     
 }
