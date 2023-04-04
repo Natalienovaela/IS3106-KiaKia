@@ -79,6 +79,17 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
     
     @Override
+    public Trip getTrip(Long tripId) throws TripNotFoundException {
+        try{
+            Trip trip = em.find(Trip.class, tripId);
+            return trip;
+        } 
+        catch(NoResultException ex) {
+            throw new TripNotFoundException();
+        }
+    }
+    
+    @Override
     public List<Trip> getAllPersonalTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
     }
@@ -246,15 +257,15 @@ public class TripSessionBean implements TripSessionBeanLocal {
             switch (userRole) {
                 case ADMIN:
                     trip.getAdmins().add(user);
-                    user.getAdminTrips().add(trip);
+                    user.getTrips().add(trip);
                     break;
                 case EDITOR:
                     trip.getEditors().add(user);
-                    user.getEditorTrips().add(trip);
+                    user.getTrips().add(trip);
                     break;
                 case VIEWER:
                     trip.getViewers().add(user);
-                    user.getViewerTrips().add(trip);
+                    user.getTrips().add(trip);
                     break;
                 default:
                     break;

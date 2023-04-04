@@ -53,5 +53,7 @@ public interface TripSessionBeanLocal {
     public void inviteUserToTrip(Long tripId, String email, UserRole role) throws UserNotFoundException;
 
     public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException;
+
+    public Trip getTrip(Long tripId) throws TripNotFoundException;
     
 }

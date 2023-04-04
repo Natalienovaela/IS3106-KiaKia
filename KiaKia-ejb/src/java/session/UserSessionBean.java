@@ -5,6 +5,7 @@
  */
 package session;
 
+import entity.Trip;
 import entity.User;
 import error.InvalidLoginException;
 import error.ResetPasswordException;
@@ -38,6 +39,14 @@ public class UserSessionBean implements UserSessionBeanLocal {
     @Override
     public void createUser(User u) {
         em.persist(u);
+    }
+    
+    @Override
+    public void createUserTemporary(User u, Trip trip) {
+        em.persist(u);
+        em.flush();
+        u.getTrips().add(trip);
+        //trip.getEditors().add(u);
     }
 
     @Override

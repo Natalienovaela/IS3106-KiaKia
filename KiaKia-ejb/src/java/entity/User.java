@@ -7,12 +7,15 @@ package entity;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,25 +44,26 @@ public class User implements Serializable {
     private Date tokenExpiryDate;
 
     @ManyToMany
-    private List<Trip> adminTrips;
+    @JoinTable(name = "user_trip",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "trip_id"))
+    private List<Trip> trips = new ArrayList<>();
 
     @ManyToMany
-    private List<Trip> viewerTrips;
+    private List<Trip> wishlistTrips = new ArrayList<>(); // pending
 
     @ManyToMany
-    private List<Trip> editorTrips;
-
-    @ManyToMany
-    private List<Trip> wishlistTrips; // pending
-
-    @ManyToMany
-    private List<Place> wishlistPlaces; // pending
+    private List<Place> wishlistPlaces = new ArrayList<>(); // pending
 
     public User(String username, String email, String password, String name) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.name = name;
+    }
+    
+    public User() {
+        
     }
 
     public Long getUserId() {
@@ -150,32 +154,6 @@ public class User implements Serializable {
     public void setWishlist(Wishlist wishlist) {
         this.wishlist = wishlist;
     }
-    
-    
-    
-    public List<Trip> getAdminTrips() {
-        return adminTrips;
-    }
-
-    public void setAdminTrips(List<Trip> adminTrips) {
-        this.adminTrips = adminTrips;
-    }
-
-    public List<Trip> getViewerTrips() {
-        return viewerTrips;
-    }
-
-    public void setViewerTrips(List<Trip> viewerTrips) {
-        this.viewerTrips = viewerTrips;
-    }
-
-    public List<Trip> getEditorTrips() {
-        return editorTrips;
-    }
-
-    public void setEditorTrips(List<Trip> editorTrips) {
-        this.editorTrips = editorTrips;
-    }
 
     public List<Trip> getWishlistTrips() {
         return wishlistTrips;
@@ -207,6 +185,14 @@ public class User implements Serializable {
 
     public void setTokenExpiryDate(Date tokenExpiryDate) {
         this.tokenExpiryDate = tokenExpiryDate;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 
 }
