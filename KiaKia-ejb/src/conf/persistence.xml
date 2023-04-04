@@ -11,6 +11,10 @@
     <class>entity.Place</class>
     <class>entity.PlaceLineItem</class>
     <class>entity.Trip</class>
+    <class>entity.Budget</class>
+    <class>entity.BudgetExpenseCategory</class>
+    <class>entity.Debt</class>
+    <class>entity.Expense</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
