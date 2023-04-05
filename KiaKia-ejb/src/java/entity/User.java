@@ -5,15 +5,26 @@
  */
 package entity;
 
+import enumeration.UserRoleEnum;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 //import util.security.CryptographicHelper;
@@ -36,26 +47,18 @@ public class User implements Serializable {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
+    @OneToOne
     private Wishlist wishlist;
     private File photo;
     private String resetPasswordToken;
     @Temporal(TemporalType.DATE)
     private Date tokenExpiryDate;
+    
+    @ManyToMany
+    private List<Trip> wishlistTrips = new ArrayList<>(); // pending
 
     @ManyToMany
-    private List<Trip> adminTrips;
-
-    @ManyToMany
-    private List<Trip> viewerTrips;
-
-    @ManyToMany
-    private List<Trip> editorTrips;
-
-    @ManyToMany
-    private List<Trip> wishlistTrips; // pending
-
-    @ManyToMany
-    private List<Place> wishlistPlaces; // pending
+    private List<Place> wishlistPlaces = new ArrayList<>(); // pending
 
     public User() {
     }
@@ -67,6 +70,13 @@ public class User implements Serializable {
         this.name = name;
         this.password = password;
     }
+
+    public User(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+    
 
     public Long getUserId() {
         return userId;
@@ -163,32 +173,6 @@ public class User implements Serializable {
 
     public void setWishlist(Wishlist wishlist) {
         this.wishlist = wishlist;
-    }
-    
-    
-    
-    public List<Trip> getAdminTrips() {
-        return adminTrips;
-    }
-
-    public void setAdminTrips(List<Trip> adminTrips) {
-        this.adminTrips = adminTrips;
-    }
-
-    public List<Trip> getViewerTrips() {
-        return viewerTrips;
-    }
-
-    public void setViewerTrips(List<Trip> viewerTrips) {
-        this.viewerTrips = viewerTrips;
-    }
-
-    public List<Trip> getEditorTrips() {
-        return editorTrips;
-    }
-
-    public void setEditorTrips(List<Trip> editorTrips) {
-        this.editorTrips = editorTrips;
     }
 
     public List<Trip> getWishlistTrips() {

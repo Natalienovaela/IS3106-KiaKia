@@ -7,10 +7,9 @@ package enumeration;
 
 /**
  *
- * @author YC
+ * @author MK
  */
-public enum UserRole {
-    ADMIN,
-    VIEWER,
-    EDITOR
+public enum SplitType {
+    EQUAL,
+    NOT_SPLIT
 }

@@ -1,104 +1,126 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
 import Api from '../../Helpers/Api';
 
 function Login({ handleLogin }) {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error] = useState(null);
+    const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = React.useState(false);
     const navigate = useNavigate();
 
-    const validateName = () => {
-        return name.trim().length > 0;
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
     };
 
-    const validateUsername = () => {
-        return /^[a-zA-Z0-9]+$/.test(username) && !/\s/.test(username) && !/:/.test(username);
+    const handleEmailChange = (event) => {
+        const emailValue = event.target.value;
+        setEmail(emailValue);
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) ? "Email must be a valid email address!" : undefined
+        }));
     };
-    
-    const validateEmail = () => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const handlePasswordChange = (event) => {
+        const passwordValue = event.target.value;
+        setPassword(passwordValue);
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: passwordValue.length === 0 ? "Please enter your password" : undefined
+        }));
     };
-    
-    const validatePassword = () => {
-        return password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password);
-    };
-    
-    const validateConfirmPassword = () => {
-        return password === confirmPassword;
-    };
-    
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        let errors = [];
-        if (!validateName()) {
-            errors.push("Name cannot be empty!");
+        const formErrors = {};
+        if (!/^[^\s@]+@[^\s@]+.[^\s@]+$/.test(email)) {
+            formErrors.email = "Email must be a valid email address!";
         }
-        if (!validateUsername()) {
-            errors.push("Username cannot be empty, contain spaces, or have a colon (:) character!");
+        if (password.length === 0) {
+            formErrors.password = "Please enter your password";
         }
-        if (!validateEmail()) {
-            errors.push("Email must be a valid email address!");
-        }
-        if (!validatePassword()) {
-            errors.push("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number!");
-        }
-        if (!validateConfirmPassword()) {
-            errors.push("Passwords do not match!");
-        }
-        if (errors.length > 0) {
-            alert(errors.join("\n"));
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
         } else {
-            try {
-                const response = Api.createUser({
-                    name, username, email, password
-                }).then((data) => {
-                    navigate("/Home");
+            Api.loginUser(email, password)
+            .then(response => response.json())
+                .then(data => {
+                    const userId = data.userId;
+                    navigate(`/Home/${userId}`);
+                    handleLogin(true);
+                })
+                .catch((error) => {
+                    console.log(email + " " + password);
+                    setErrors({ submit: error.message });
                 });
-                // Handle successful response
-            } catch (error) {
-                alert('Error signing up!');
-            }
         }
-    }
-
+    };
     return (
-        <section className="content" key="content">
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Name:
-                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-                </label>
-                <label>
-                    Username:
-                    <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
-                </label>
-                <label>
-                    Email:
-                    <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                </label>
-                <label>
-                    Password:
-                    <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                </label>
-                <label>
-                    Confirm Password:
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(event) => setConfirmPassword(event.target.value)}
-                    />
-                </label>
-                {error && <div className="error">{error}</div>}
-                <button type="submit">Sign up</button>
+        <Box className="login-container" display="flex" flexDirection={"column"} maxWidth={500} justifyContent={"center"} margin="auto" marginTop={10} padding={3} borderRadius={"5px"} boxShadow={"2px 2px 15px"}>
+            <Typography fontWeight='bold' variant="h4" textAlign="center" marginTop={7}>Welcome Back</Typography>
+            <Typography textAlign="center" marginBottom={5}>Please enter your details</Typography>
+            <form className="login-form" onSubmit={handleSubmit}>
+                <Typography align="left" marginTop={2}>Email</Typography>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    margin="dense"
+                    value={email}
+                    placeholder='Enter email address'
+                    onChange={handleEmailChange}
+                    error={Boolean(errors.email)}
+                    helperText={errors.email}
+                />
+                <Typography align="left" marginTop={2} style={{ display: 'inline-block' }}>Password{' '}
+                    <Link to="/Login" className="logo flex" style={{ display: 'inline-block', float: 'right' }}>Forgot password</Link>
+                </Typography>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    margin="dense"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    placeholder='Enter password'
+                    onChange={handlePasswordChange}
+                    error={Boolean(errors.password)}
+                    helperText={errors.password}
+                    InputProps={{
+                        endAdornment: (
+                            <Button
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </Button>
+                        )
+                    }}
+                />
+                {errors.submit && (
+                    <Typography color="error" className="login-error">{errors.submit}</Typography>
+                )}
+                <Button
+                    variant="contained"
+                    color="warning"
+                    type="submit"
+                    sx={{ marginTop: 3 }}
+                    className="login-submit-button"
+                    fullWidth
+                >
+                    Log in
+                </Button>
+                <Typography align="left" marginTop={2} style={{ display: 'inline-block' }}>New to KiaKia?{' '}
+                    <Link to="/Signup" className="logo flex" style={{ display: 'inline-block' }}>Sign up</Link>
+                </Typography>
             </form>
-        </section>
+        </Box>
     );
 }
-
 export default Login;

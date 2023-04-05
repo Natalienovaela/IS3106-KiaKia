@@ -5,6 +5,7 @@
  */
 package session;
 
+import entity.Trip;
 import entity.User;
 import error.InvalidLoginException;
 import error.ResetPasswordException;
@@ -41,5 +42,7 @@ public interface UserSessionBeanLocal {
     public void forgotPassword(String email) throws UserNotFoundException;
 
     public void resetPassword(String token) throws UserNotFoundException, ResetPasswordException;
+
+    public void createUserTemporary(User u, Trip trip);
     
 }

@@ -42,12 +42,12 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
         }
     }
 
-//    @Override
-//    public List<Wishlist> searchWishlistByFolderName(String folderName, Long id) throws WishlistNotFoundException {
-//        Wishlist currentWishlist = getwishlistbyId(id);
-//       
-//        
-//    }
+    /*@Override
+    public List<Wishlist> searchWishlistByFolderName(String folderName, Long id) throws WishlistNotFoundException {
+        Wishlist currentWishlist = getwishlistbyId(id);
+       return List
+        
+    }*/
 
     @Override
     public List<Wishlist> searchWishlistByTripCountry(String countryName) {
@@ -61,6 +61,11 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
 
     @Override
     public void addTripToWishlist(Long tripId, Long wishlistId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Wishlist> searchWishlistByFolderName(String folderName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

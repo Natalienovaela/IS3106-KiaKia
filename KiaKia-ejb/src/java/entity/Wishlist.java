@@ -8,10 +8,15 @@ package entity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -24,9 +29,11 @@ public class Wishlist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishlistId;
-    
+
     private Long userId;
-//    private HashMap<String, List<Trip>> tripFolders;
+
+//    @OneToMany
+//    private Map<String, List<Trip>> tripFolders = new HashMap<>();
 
     public Long getWishlistId() {
         return wishlistId;
@@ -43,15 +50,14 @@ public class Wishlist implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
+//
 //    public HashMap<String, List<Trip>> getTripFolders() {
-//        return tripFolders;
+//        return (HashMap<String, List<Trip>>) tripFolders;
 //    }
 //
 //    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
-//        this.tripFolders = tripFolders;
+//        this.setTripFolders(tripFolders);
 //    }
-//    
 
     @Override
     public int hashCode() {
@@ -77,5 +83,9 @@ public class Wishlist implements Serializable {
     public String toString() {
         return "entity.Wishlist[ id=" + wishlistId + " ]";
     }
-    
+
+//    public void setTripFolders(Map<String, List<Trip>> tripFolders) {
+//        this.tripFolders = tripFolders;
+//    }
+
 }

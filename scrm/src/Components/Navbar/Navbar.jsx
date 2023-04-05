@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
 import './navbar.css'
 import { MdOutlineTravelExplore } from 'react-icons/md'
 import { AccountCircle } from '@mui/icons-material';
@@ -8,6 +8,7 @@ import { TbGridDots } from 'react-icons/tb'
 
 function Navbar({ isLoggedIn, handleLogout }) {
   const [active, setActive] = useState('navBar')
+  const navigate = useNavigate();
 
   //function to toggle bar
   const showNav = () => {
@@ -17,6 +18,11 @@ function Navbar({ isLoggedIn, handleLogout }) {
   //function to close bar
   const closeNav = () => {
     setActive('navBar');
+  }
+
+  const handleLogoutClick = () => {
+    handleLogout(false);
+    navigate('/');
   }
 
   return (
@@ -59,7 +65,7 @@ function Navbar({ isLoggedIn, handleLogout }) {
                   </Link>
                 </li>
 
-                <button onClick={() => handleLogout(false)}>Log out</button>
+                <button onClick={handleLogoutClick}>Log out</button>
               </ul>
             </nav>
 
@@ -81,11 +87,11 @@ function Navbar({ isLoggedIn, handleLogout }) {
                 </li>
 
                 <li className="navItem">
-                  <CustomLink to="/Login" className="navLink">Login</CustomLink>
+                  <CustomLink to="/Login" className="navLink">Log in</CustomLink>
                 </li>
 
                 <li className="navItem">
-                  <CustomLink to="/Signup" className="navLink">Signup</CustomLink>
+                  <CustomLink to="/Signup" className="navLink">Sign up</CustomLink>
                 </li>
               </ul>
             </nav>

@@ -31,7 +31,7 @@ const App = () => {
             <div className="container">
                 <Routes>
                     <Route path="/" element={<PublicLanding />} />
-                    <Route path="/Home" element={<Home />} />
+                    <Route path="/Home/:userId" element={<Home />} />
                     <Route path="/Signup" element={<Signup handleLogin={handleLogin}/>} />
                     <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
                     <Route path="/CreateTrip" element={<CreateTrip />} />

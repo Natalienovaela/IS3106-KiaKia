@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './home.css';
+import { useParams, useNavigate } from 'react-router-dom';
 import HorizontalCard from '../../Components/Card/HorizontalCard/HorizontalCard';
 import image from '../../Assets/img.jpg';
+import Api from '../../Helpers/Api';
 
 const dummyData = [
   {
@@ -19,22 +21,25 @@ const dummyData = [
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
   },
   {
-      img: image,
-      tripTag: 'Winter 2023 - 14 days trip',
-      cardTitle: 'East Coast',
-      places: ["New York", "Bronx", "Washington D.C."],
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
-    },
-    {
-      img: image,
-      tripTag: 'Winter 2023 - 14 days trip',
-      cardTitle: 'East Coast',
-      places: ["New York", "Bronx", "Washington D.C."],
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
-    },
+    img: image,
+    tripTag: 'Winter 2023 - 14 days trip',
+    cardTitle: 'East Coast',
+    places: ["New York", "Bronx", "Washington D.C."],
+    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+  },
+  {
+    img: image,
+    tripTag: 'Winter 2023 - 14 days trip',
+    cardTitle: 'East Coast',
+    places: ["New York", "Bronx", "Washington D.C."],
+    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+  },
 ]
 
 const Home = () => {
+  const { userId } = useParams();
+  const [name, setName] = useState('');
+  const navigate = useNavigate();
   const horizontalCards = dummyData?.map((cardData) => (
     <HorizontalCard
       key={cardData.key}
@@ -44,13 +49,26 @@ const Home = () => {
       places={cardData.places}
       description={cardData.description} />
   ));
+  useEffect(() => {
+    Api.getUser(userId)
+      .then(response => response.json())
+      .then(data => {
+        const name = data.name;
+        setName(name);
+      })
+      .catch(error => {
+        console.log(`Error retrieving user data for user with ID ${userId}: ${error}`);
+      });
+  }, [userId]);
+  
+
   return (
     <>
       <div className="container">
         <div className="pageTitle">
           <h1>Welcome,</h1>
-          <h1>Natasha Rafaela</h1>
-          <hr/>
+          <h1>{name}</h1>
+          <hr />
           <p>What a fresh new day to start planning for your trip, isn't it? </p>
         </div>
 

@@ -26,6 +26,15 @@ public class Note implements Serializable {
     private String content;
     private boolean isShared;
 
+    public Note(String title, String content, boolean isShared) {
+        this.title = title;
+        this.content = content;
+        this.isShared = isShared;
+    }
+
+    public Note() {
+    }
+
     public Long getNoteId() {
         return noteId;
     }
