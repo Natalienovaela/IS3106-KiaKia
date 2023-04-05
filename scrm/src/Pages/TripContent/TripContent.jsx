@@ -3,44 +3,50 @@ import React, { useState, useEffect } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
-import {DatePicker} from 'antd';
+import { DatePicker } from "antd";
 import moment from "moment";
 
-const {RangePicker} = DatePicker;
+import EditIcon from "@mui/icons-material/Edit";
+const { RangePicker } = DatePicker;
 
-
-function TripContent(props) {
+function TripContent() {
   const { id } = useParams();
-
+  const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState(moment("1990-01-01").toDate());
   const [endDate, setEndDate] = useState(moment("1990-01-01").toDate());
-  const [dateRange, setDateRange] = useState(null);
-  const handleDateRangeChange = (value) => {
-    setDateRange(value);
-    setStartDate(moment(value[0]).format('YYYY-MM-DD'));
-    setEndDate(moment(value[1]).endOf('day').format('YYYY-MM-DD'));
+  const [dateRange, setDateRange] = useState([]);
+  const [error, setError] = useState("");
 
-    Api.createItinerary({
-      startDate, 
-      endDate
-    })
+  const handleDateRangeChange = (value) => {
+    const start = moment(value[0]).format("YYYY-MM-DD");
+    const end = moment(value[1]).endOf("day").format("YYYY-MM-DD");
+    if (end > start) {
+      setDateRange(value);
+      setStartDate(start);
+      setEndDate(end);
+
+      Api.createItinerary({
+        startDate,
+        endDate,
+      }).then((data) => {
+        setItinerary(data);
+      });
+    } else {
+      setError("End date must be after start date");
+      return;
+    }
   };
 
-  {
-    useEffect(() => {
-    if (id) {
-      Api.get(id)
-        .then((res) => res.json())
-        .then((customer) => {
-          const { name, startDate, endDate} = customer;
-          setName(name);
-          setGender(gender);
-          setDob(moment(dob, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-        });
-    }
-  }, [id]);
-  }
+  useEffect(() => {
+    Api.getTrip(id)
+      .then((res) => res.json())
+      .then((trip) => {
+        const { name, startDate, endDate } = trip;
+        setName(name);
+        setDateRange([moment(startDate), moment(endDate)]);
+      });
+  });
 
   {
     
@@ -195,9 +201,13 @@ function TripContent(props) {
               id="itinerary"
             >
               <h2>Itinerary</h2>
-                <div className="date-range-picker">
-                  <RangePicker format={dateFormat} onChange={handleDateRangeChange} />
-                </div>
+              <div className="date-range-picker">
+                <h3>
+                  {startDate} to {endDate}
+                </h3>
+                <RangePicker onChange={handleDateRangeChange} />
+                {/*{error && <Error error={error} />}*/}
+              </div>
 
               <p>Here's a rough outline of what your trip might look like:</p>
               <ul>

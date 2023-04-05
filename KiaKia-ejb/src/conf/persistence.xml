@@ -6,6 +6,17 @@
     <class>entity.Note</class>
     <class>entity.Poll</class>
     <class>entity.User</class>
+    <class>entity.CheckList</class>
+    <class>entity.Place</class>
+    <class>entity.PlaceLineItem</class>
+    <class>entity.Trip</class>
+    <class>entity.Wishlist</class>
+    <class>entity.Budget</class>
+    <class>entity.BudgetExpenseCategory</class>
+    <class>entity.DayItinerary</class>
+    <class>entity.Debt</class>
+    <class>entity.Expense</class>
+    <class>entity.TripAssignment</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

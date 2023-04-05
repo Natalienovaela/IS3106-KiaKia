@@ -9,7 +9,7 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
-import enumeration.UserRole;
+import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
@@ -50,9 +50,11 @@ public interface TripSessionBeanLocal {
 
     public Trip retrieveTripByInviteToken(String token) throws TripNotFoundException;
 
-    public void inviteUserToTrip(Long tripId, String email, UserRole role) throws UserNotFoundException;
+    public void inviteUserToTrip(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException;
 
-    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException;
+    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException;
+
+    public Trip getTrip(Long tripId) throws TripNotFoundException;
 
     public Trip retrieveTripByTripId(Long tripId) throws TripNotFoundException;
     

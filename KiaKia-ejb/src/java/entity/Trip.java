@@ -6,8 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,35 +48,38 @@ public class Trip implements Serializable {
     
     private String inviteToken;
     
-    @ManyToMany(mappedBy="adminTrips")
-    private List<User> admins;
-    
-    @ManyToMany(mappedBy="viewerTrips")
-    private List<User> viewers;
-    
-    @ManyToMany(mappedBy="editorTrips")
-    private List<User> editors;
-    
     @ManyToMany(mappedBy="wishlistTrips")
-    private List<User> wishlisted;
+    private List<User> wishlisted = new ArrayList<>();
     
     @OneToMany
-    private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
     
     @OneToMany
-    private List<Document> documents;
+    private List<Document> documents = new ArrayList<>();
     
     @OneToMany
-    private List<CheckList> checkLists;
+    private List<CheckList> checkLists = new ArrayList<>();
     
     @OneToMany
-    private List<Poll> polls;
+    private List<Poll> polls = new ArrayList<>();
     
     @OneToMany
-    private List<PlaceLineItem> bucketList;
+    private List<PlaceLineItem> bucketList = new ArrayList<>();
     
-    /*@OneToMany
-    private List<BudgetListItem> budgetListItems;*/
+    @OneToMany
+    private List<DayItinerary> itinerary = new ArrayList<>();
+    
+    @OneToMany
+    private List<Budget> budgets;
+    
+    @OneToMany
+    private List<Expense> expenses;
+    
+    @OneToMany
+    private List<Debt> debts;
+
+    @OneToMany
+    private List<BudgetExpenseCategory> categories;
     
     //private enum countryEnum;
     
@@ -150,30 +158,6 @@ public class Trip implements Serializable {
         this.isShared = isShared;
     }
 
-    public List<User> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<User> admins) {
-        this.admins = admins;
-    }
-
-    public List<User> getViewers() {
-        return viewers;
-    }
-
-    public void setViewers(List<User> viewers) {
-        this.viewers = viewers;
-    }
-
-    public List<User> getEditors() {
-        return editors;
-    }
-
-    public void setEditors(List<User> editors) {
-        this.editors = editors;
-    }
-
     public List<Note> getNotes() {
         return notes;
     }
@@ -236,6 +220,46 @@ public class Trip implements Serializable {
 
     public void setWishlisted(List<User> wishlisted) {
         this.wishlisted = wishlisted;
+    }
+
+    public List<DayItinerary> getItinerary() {
+        return itinerary;
+    }
+
+    public void setItinerary(List<DayItinerary> itinerary) {
+        this.itinerary = itinerary;
+    }
+    
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public List<Debt> getDebts() {
+        return debts;
+    }
+
+    public void setDebts(List<Debt> debts) {
+        this.debts = debts;
+    }
+
+    public List<BudgetExpenseCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<BudgetExpenseCategory> categories) {
+        this.categories = categories;
     }
     
 }

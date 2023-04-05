@@ -32,7 +32,7 @@ const Note = ({ tripId, note }) => {
   }, [title, content]);
 
   return (
-    <>
+    <div className="note">
       {noteId && (
         <>
           <TextField
@@ -58,7 +58,7 @@ const Note = ({ tripId, note }) => {
           onChange={handleContentChange}
         />
       )}
-    </>
+    </div>
   );
 };
 

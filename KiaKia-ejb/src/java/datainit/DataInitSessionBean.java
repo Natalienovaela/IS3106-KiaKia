@@ -43,17 +43,19 @@ public class DataInitSessionBean {
     private UserSessionBeanLocal userSessionBeanLocal;
 
     @PostConstruct
-    public void PostConstruct() {
-        if (em.find(User.class, 1l) == null) {
-            initialiseUser();
-        }
+    public void PostConstruct() { 
         if(em.find(Trip.class, 1l) == null) {
             initialiseTrip();
+        }
+        if (em.find(User.class, 1l) == null) {
+            initialiseUser();
         }
     }
     
     public void initialiseUser() {
-        userSessionBeanLocal.createUser(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"));
+        Trip trip = em.find(Trip.class, 1l);
+        userSessionBeanLocal.createUserTemporary(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"), trip);
+        
     }
     
     public void initialiseTrip() {
@@ -68,6 +70,7 @@ public class DataInitSessionBean {
 
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
+            em.flush();
             Note note3 = new Note("My Third Note", "blablabla", false);
             noteSessionBeanLocal.createNewNote(note3, trip2.getTripId());
 
