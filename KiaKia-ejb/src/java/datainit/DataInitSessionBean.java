@@ -44,7 +44,7 @@ public class DataInitSessionBean {
     }
     
     public void initialiseUser() {
-        userSessionBeanLocal.createUser(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"));
+        userSessionBeanLocal.createUser(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"));
     }
     
     public void initialiseTrip() {

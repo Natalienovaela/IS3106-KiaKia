@@ -24,25 +24,25 @@ public class TripsResource {
 
     @EJB
     private TripSessionBeanLocal tripSessionBeanLocal;
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Trip> getAllTrips() {
-        return tripSessionBeanLocal.getAllTrips();
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Trip> getAllPersonalTrips() {
-        return tripSessionBeanLocal.getAllPersonalTrips();
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Trip> getAllGroupTrips() {
-        return tripSessionBeanLocal.getAllGroupTrips();
-    }
-    
+//    
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Trip> getAllTrips() {
+//        return tripSessionBeanLocal.getAllTrips();
+//    }
+//    
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Trip> getAllPersonalTrips() {
+//        return tripSessionBeanLocal.getAllPersonalTrips();
+//    }
+//    
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Trip> getAllGroupTrips() {
+//        return tripSessionBeanLocal.getAllGroupTrips();
+//    }
+//    
     
     
 }

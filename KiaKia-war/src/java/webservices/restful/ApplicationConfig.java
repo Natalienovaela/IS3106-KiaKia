@@ -6,8 +6,7 @@
 package webservices.restful;
 
 import java.util.Set;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import javax.ws.rs.core.Application;
 
 /**
  *
@@ -16,16 +15,11 @@ import javafx.stage.Stage;
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
 
+    @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         return resources;
-    }
-
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {

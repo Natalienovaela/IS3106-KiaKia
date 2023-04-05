@@ -28,9 +28,21 @@
         
     }
 
-    .profile {
+    .user {
         padding: 2rem;
         margin-left: 2rem;
+    }
+
+    .profile {
+        padding: 2em;
+        margin-left: 2rem;
+
+        .icon {
+            font-size: 48px;
+            color: var(--PrimaryColor);
+            transform: translateY(4px);
+          }
+          
     }
 
     .navLists {
@@ -123,8 +135,13 @@
                 }
             }
 
+            .user {
+                margin-top: 1rem;
+                margin-left: 0;
+            }
+
             .profile {
-                margin-top: 2rem;
+                margin-top: 1rem;
                 margin-left: 0;
             }
 

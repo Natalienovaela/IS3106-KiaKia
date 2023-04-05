@@ -26,7 +26,7 @@ public class Wishlist implements Serializable {
     private Long wishlistId;
     
     private Long userId;
-    private HashMap<String, List<Trip>> tripFolders;
+//    private HashMap<String, List<Trip>> tripFolders;
 
     public Long getWishlistId() {
         return wishlistId;
@@ -44,14 +44,14 @@ public class Wishlist implements Serializable {
         this.userId = userId;
     }
 
-    public HashMap<String, List<Trip>> getTripFolders() {
-        return tripFolders;
-    }
-
-    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
-        this.tripFolders = tripFolders;
-    }
-    
+//    public HashMap<String, List<Trip>> getTripFolders() {
+//        return tripFolders;
+//    }
+//
+//    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
+//        this.tripFolders = tripFolders;
+//    }
+//    
 
     @Override
     public int hashCode() {

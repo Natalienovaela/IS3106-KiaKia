@@ -1,5 +1,5 @@
 import React from 'react';
-import './home.css';
+import './PublicLanding.css';
 import HorizontalCard from '../../Components/Card/HorizontalCard/HorizontalCard';
 import image from '../../Assets/img.jpg';
 
@@ -34,7 +34,7 @@ const dummyData = [
     },
 ]
 
-const Home = () => {
+const PublicLanding = () => {
   const horizontalCards = dummyData?.map((cardData) => (
     <HorizontalCard
       key={cardData.key}
@@ -48,16 +48,13 @@ const Home = () => {
     <>
       <div className="container">
         <div className="pageTitle">
-          <h1>Welcome,</h1>
-          <h1>Natasha Rafaela</h1>
-          <hr/>
-          <p>What a fresh new day to start planning for your trip, isn't it? </p>
+          <h1>Start planning your trip with us!</h1>
         </div>
 
         <div className="sec">
-          <div className="secTitle">
+          {/* <div className="secTitle">
             <h2>For your latest trip</h2>
-          </div>
+          </div> */}
           <div className="subSec">
             <div className="subSecTitle">
               <h3>Top Places</h3><p>see more...</p>
@@ -85,4 +82,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default PublicLanding;

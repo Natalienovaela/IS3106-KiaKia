@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+//import util.security.CryptographicHelper;
 
 /**
  *
@@ -31,6 +32,7 @@ public class User implements Serializable {
     private String username;
     private String email;
     private String password;
+//    private String salt; 
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
@@ -55,11 +57,15 @@ public class User implements Serializable {
     @ManyToMany
     private List<Place> wishlistPlaces; // pending
 
+    public User() {
+    }
+
     public User(String username, String email, String password, String name) {
         this.username = username;
         this.email = email;
-        this.password = password;
+//        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         this.name = name;
+        this.password = password;
     }
 
     public Long getUserId() {
@@ -116,6 +122,14 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
+//        if(password != null) 
+//        {
+//            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.getSalt()));
+//        }
+//        else
+//        {
+//            this.password = null;
+//        }
         this.password = password;
     }
 
@@ -208,5 +222,13 @@ public class User implements Serializable {
     public void setTokenExpiryDate(Date tokenExpiryDate) {
         this.tokenExpiryDate = tokenExpiryDate;
     }
+
+//    public String getSalt() {
+//        return salt;
+//    }
+//
+//    public void setSalt(String salt) {
+//        this.salt = salt;
+//    }
 
 }
