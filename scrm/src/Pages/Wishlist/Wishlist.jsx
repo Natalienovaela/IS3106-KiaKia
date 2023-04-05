@@ -50,7 +50,7 @@ const Wishlist = () => {
     return (
         <>
         <div className="container">
-        <div className="pageTitle">
+            <div className="pageTitle">
                 <h1>Wishlist</h1>
             </div>
             

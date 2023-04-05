@@ -5,6 +5,7 @@ import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
 import {DatePicker} from 'antd';
 import moment from "moment";
+
 const {RangePicker} = DatePicker;
 
 
@@ -27,7 +28,7 @@ function TripContent(props) {
   };
 
   {
-    /*useEffect(() => {
+    useEffect(() => {
     if (id) {
       Api.get(id)
         .then((res) => res.json())
@@ -38,13 +39,14 @@ function TripContent(props) {
           setDob(moment(dob, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
         });
     }
-  }, [id]);*/
+  }, [id]);
   }
 
   {
-    /*{const reloadData = () => {
+    
+    {const reloadData = () => {
 
-    } */
+    } 
   }
 
   return (
@@ -253,6 +255,6 @@ function TripContent(props) {
       </Grid>
     </>
   );
-}
+}}
 
 export default TripContent;
