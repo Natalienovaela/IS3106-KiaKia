@@ -66,37 +66,37 @@
       margin: 0;
       height: 60px;
     }
-      .tripTag {
-        font-weight: 300;
-        font-size: 14px;
-      }
-      .places {
-        list-style: none;
-        display: inline-flex;
-        flex-direction: row;
-        justify-content:space-evenly;
-        margin: 0;
-        padding-bottom: 1rem;
-        font-size: 16px;
-        line-height: 1;
-      }
+    
+    .tripTag {
+      font-weight: 300;
+      font-size: 14px;
+    }
+    
+    .places {
+      list-style: none;
+      display: inline-flex;
+      flex-direction: row;
+      justify-content:space-evenly;
+      margin: 0;
+      padding-bottom: 1rem;
+      font-size: 16px;
+      line-height: 1;
+    }
       
     .city {
-        display:flex;
-        padding: 0px 15px 0px 0px;
-        margin: 0;
-        font-size: 16px;
-        line-height: 1;
-      }
+      display:flex;
+      padding: 0px 15px 0px 0px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1;
+    }
       
     .city:not(:first-child)::before {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        margin-right: 10px;
-        border-right: 1px solid black;
-      }
- 
- 
+      content: "";
+      display: inline-block;
+      height: 100%;
+      margin-right: 10px;
+      border-right: 1px solid black;
+    }
   }
 }

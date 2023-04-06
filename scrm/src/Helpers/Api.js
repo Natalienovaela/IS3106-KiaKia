@@ -52,9 +52,9 @@ const Api = {
     return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
   },
 
+
   createItinerary(tripId, data) {
-    return (
-      fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`),
+    return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,
       {
         headers: {
           Accept: "application/json",
@@ -63,7 +63,13 @@ const Api = {
         method: "POST",
         body: JSON.stringify(data),
       }
-    );
+    )
+    .then(response => {
+      if(!response.ok) {
+        throw new Error("Error creating itinerary");
+      }
+      return response.json();
+    });
   },
 };
 
