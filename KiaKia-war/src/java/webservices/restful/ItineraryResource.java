@@ -6,9 +6,15 @@
 package webservices.restful;
 
 import entity.DayItinerary;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 import javax.ejb.EJB;
+import javax.json.JsonObject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -33,12 +39,24 @@ public class ItineraryResource {
 
     @EJB
     private ItinerarySessionBeanLocal ItinerarySessionBeanLocal;
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<DayItinerary> createItinerary(@PathParam("tripId") Long tripId, @FormParam("startDate") Date startDate, @FormParam("endDate") Date endDate){
-        return ItinerarySessionBeanLocal.createItineraries(startDate, endDate, tripId);  
+    public List<DayItinerary> createItinerary(@PathParam("tripId") Long tripId, JsonObject request) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+        
+        try {
+        Date startDate = formatter.parse(formatter.format(formatter.parse(request.getString("startDate"))));
+        Date endDate = formatter.parse(formatter.format(formatter.parse(request.getString("endDate"))));
+        
+        return ItinerarySessionBeanLocal.createItineraries(startDate, endDate, tripId);
+        
+        } catch(ParseException ex) {
+            throw new BadRequestException("Invalid date format. Use yyyy-MM-dd");
+        }
+        
     }
-    
+
 }
