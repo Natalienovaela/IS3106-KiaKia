@@ -9,7 +9,9 @@ import {FaRegBookmark, FaBookmark} from 'react-icons/fa'
 
 const dummyData = [
   {
+    img: image,
     places: ["Marina Bay Sands", "Haw Par Villa", "Lau Pa Sat"],
+    tags: ["Singapore", "SEA", "Summer"]
   }
   
 ]
@@ -35,10 +37,10 @@ function BookmarkButton() {
   )
 }
 
-const ItineraryCard = () => {
-  const placeHighlight = dummyData.map((data) =>
-  data.places?.map((place) => <li className="place">{place}</li>)
-);
+const ItineraryCard = (props) => {
+  const placeHighlight = props.places?.map((place) => <li className="place">{place}</li>);
+  
+  const tags = props.tags?.map(((tag) => <Chip label={tag}></Chip> ))
 
  
   return (
@@ -46,14 +48,14 @@ const ItineraryCard = () => {
 
       <div className="itinerary-imageDiv">
         
-        <img src={image} alt="City" className='itinerary-card-image'/>
+        <img src={props.img} alt="City" className='itinerary-card-image'/>
     
             <Profile />
             <BookmarkButton/>
           
         <div className="city-div">
-          <h2>Singapore</h2>
-          <p className='num-of-days'>5 days</p>
+          <h2>{props.cityName}</h2>
+          <p className='num-of-days'>{props.numOfDays} days</p>
         </div>
       </div>
 
@@ -61,11 +63,9 @@ const ItineraryCard = () => {
         <ul className='place-highlight'>
           {placeHighlight}
         </ul>
-        <p className='card-desc'>Must visit restaurants in Singapore</p>
+        <p className='card-desc'>{props.desc}</p>
         <div className="tags">
-            <Chip label="#Singapore"/>
-            <Chip label="#SEA"/>
-            <Chip label="#Summer"/>
+            {tags}
         </div>
       </div>
       
