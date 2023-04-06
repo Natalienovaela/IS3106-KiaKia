@@ -50,7 +50,7 @@ function Trip() {
       <div className="sec">
         <div className="secTitle">
           <h2>Personal</h2>
-          <div>
+          <div className="trip-personal-group">
             {personalData.map((trip) => (
               <div key={trip.id}>
               <h2>{trip.name}</h2>

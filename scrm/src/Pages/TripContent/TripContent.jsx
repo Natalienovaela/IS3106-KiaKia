@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Link, animateScroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
@@ -17,21 +17,19 @@ function TripContent() {
   const { id } = useParams();
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState(moment("1990-01-01").toDate());
-  const [endDate, setEndDate] = useState(moment("1990-01-01").toDate());
+  const [startDate, setStartDate] = useState(moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+  const [endDate, setEndDate] = useState(moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
   const [error, setError] = useState("");
 
   const handleDateRangeChange = (value) => {
-    const start = moment(value[0].toDate()).tz(moment.tz.guess());
+    const start = value[0].toDate();
     console.log(start);
-    const end = moment(value[1].toDate()).tz(moment.tz.guess());
+    const end = value[1].toDate();
     console.log(end);
 
     if (end > start) {
-      setStartDate(start);
-      setEndDate(end);
-
-      console.log(startDate + "  " + endDate);
+      setStartDate(start, () => {console.log(startDate)});
+      setEndDate(end, () => {console.log(endDate)});
 
       Api.createItinerary(1, {
         startDate: start,
@@ -43,13 +41,12 @@ function TripContent() {
         .catch((error) => {
           console.error(error);
         });
-        console.log("here " + startDate + " " + endDate);
     } else {
       setError("End date must be after start date");
       return;
     }
   };
-  const reloadData = () => {
+  const reloadData = useCallback(() => {
     Api.getTrip(1)
       .then((res) => res.json())
       .then((trip) => {
@@ -59,11 +56,11 @@ function TripContent() {
         setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
       });
       console.log("the : " + startDate + " " + endDate);
-  };
+  }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     reloadData();
-  }, [reloadData]);*/
+  }, [reloadData]);
 
   return (
     <Grid container>
