@@ -46,6 +46,15 @@ const Wishlist = () => {
             places={cardData.places}
             description={cardData.description}/>
     ));
+    const itineraryCards = dummyData?.map((cardData) => (
+        <ItineraryCard 
+                key={dummyData.key}
+                img={dummyData.img}
+                tripTag={dummyData.tripTag}
+                cardTitle={dummyData.cardTitle}
+                places={dummyData.places}
+                description={dummyData.description}/>
+    ))
     
     return (
         <>
@@ -53,7 +62,10 @@ const Wishlist = () => {
             <div className="pageTitle">
                 <h1>Wishlist</h1>
             </div>
-            
+            <>
+                {itineraryCards}
+            </>
+
             <div className="sec">
                 <div className="secTitle">
                     <h2>Trips You Love</h2>

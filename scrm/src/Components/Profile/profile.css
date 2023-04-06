@@ -1,0 +1,19 @@
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+.profile .profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: -2px;
+}
+.profile .profile-details .profile-name {
+  color: var(--whiteColor);
+  font-weight: 400;
+}
+.profile .profile-details .date {
+  font-size: 12px;
+  color: var(--greyText);
+}/*# sourceMappingURL=profile.css.map */

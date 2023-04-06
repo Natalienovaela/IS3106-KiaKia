@@ -1,0 +1,128 @@
+.itinerary-card {
+    width: 382px;
+    height: 376px;
+    flex: none;
+    order: 0;
+    position: relative;
+    border: 0.3px solid var(--greyBorder);
+    background-color: var(--bodyColor);
+    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.1));
+    border-radius: 15px;
+    z-index: 10;
+    
+    .itinerary-imageDiv {
+        width: 100%;
+        position: relative;
+        height: 201px;
+        top: 0px;
+        border-radius: 15px;
+        
+        .profile {
+            display: flex;
+            position: absolute;
+            top: 0;
+            padding: 30px;
+            flex-direction: row;
+        }
+        .bookmark-button {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            top: 10px;
+            color: var(--whiteColor);
+            
+            &:hover {
+                
+            }
+        }
+        img {
+            object-fit: cover;
+            height: 100%;
+            border-radius: 15px;
+        }
+        &:after {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background:  linear-gradient(0deg, rgba(0, 0, 0, 0.513) 4.48%, rgba(0, 0, 0, 0) 30.14%);
+            height: 100%;
+            width: 100%;
+            content: '';
+            z-index: 10;
+            border-radius: 15px;
+        }
+
+        
+        .city-div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            left: .5rem;
+            top: 123px;
+            color: white;
+            
+            
+            padding: 2rem;
+            gap: 110px;
+            z-index: 1000;
+
+            h2 {
+                font-weight: 600;
+                font-size: 24px;
+            }
+
+            p {
+                font-weight: 400;
+            }
+
+        }
+    }
+
+    .card-details {
+        z-index: 100;
+        .place-highlight {
+            list-style: none;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content:space-evenly;
+            padding-top: 1rem;
+            margin-left: 1rem;
+            font-size: 16px;
+            line-height: 1;
+            color: var(--textColor);
+          }
+          
+        .place {
+            display:flex;
+            padding: 0px 15px 0px 0px;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1;
+          }
+          
+        .place:not(:first-child)::before {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            margin-right: 10px;
+            border-right: 1px solid black;
+          }
+
+        .card-desc {
+            padding: .7rem 1rem;
+            width: 100%;
+            height: 85px;
+            overflow-y: scroll;
+        }
+
+        .tags {
+            margin: 0px 15px;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+    }
+}
