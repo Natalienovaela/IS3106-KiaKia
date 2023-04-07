@@ -76,11 +76,14 @@ function Signup({ handleLogin }) {
             setErrors(formErrors);
         } else {
             Api.createUser({ name, email, password })
-                .then((response) => {
-                    navigate('/Home');
+                .then(response => response.json())
+                .then(data => {
+                    const userId = data.userId;
+                    navigate(`/Home/${userId}`);
                     handleLogin(true);
                 })
                 .catch((error) => {
+                    console.log(email + " " + password);
                     setErrors({ submit: error.message });
                 });
         }

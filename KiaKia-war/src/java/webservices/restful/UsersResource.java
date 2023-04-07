@@ -38,9 +38,11 @@ public class UsersResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User createUser(User u) {
+    public Response createUser(User u) {
         userSessionBeanLocal.createUser(u);
-        return u;
+        return Response.status(200).entity(
+                u
+        ).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET
