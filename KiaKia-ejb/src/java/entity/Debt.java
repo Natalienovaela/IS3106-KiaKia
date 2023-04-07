@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -26,7 +25,6 @@ public class Debt implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long debtId;
     private BigDecimal amtOwed;
-    private BigDecimal amtPaid;
     
     @ManyToOne
     //@JoinColumn(name = "debtor_id")
@@ -38,9 +36,6 @@ public class Debt implements Serializable {
     
     @ManyToOne
     private Expense expense;
-    
-    @ManyToOne
-    private Trip trip;
 
     public Long getDebtId() {
         return debtId;
@@ -58,14 +53,6 @@ public class Debt implements Serializable {
         this.amtOwed = amtOwed;
     }
 
-    public BigDecimal getAmtPaid() {
-        return amtPaid;
-    }
-
-    public void setAmtPaid(BigDecimal amtPaid) {
-        this.amtPaid = amtPaid;
-    }
-
     public User getDebtor() {
         return debtor;
     }
@@ -81,10 +68,6 @@ public class Debt implements Serializable {
     public void setCreditor(User creditor) {
         this.creditor = creditor;
     }
-    
-    public BigDecimal getTotalOwed() {
-        return amtOwed.subtract(amtPaid);
-    }
 
     public Expense getExpense() {
         return expense;
@@ -92,14 +75,6 @@ public class Debt implements Serializable {
 
     public void setExpense(Expense expense) {
         this.expense = expense;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
     }
     
 }
