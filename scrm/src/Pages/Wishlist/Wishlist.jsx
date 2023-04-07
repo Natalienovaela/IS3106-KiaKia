@@ -3,8 +3,10 @@ import "./wishlist.css";
 import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard";
 import image from "../../Assets/img.jpg";
 import { MdOutlineEdit } from "react-icons/md";
+import Emoji from "a11y-react-emoji";
 import { Button } from "@mui/material";
 
+// dummy data for trips
 const dummyData = [
   {
     img: image,
@@ -39,46 +41,49 @@ const dummyData = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
   },
 ];
-const Wishlist = () => {
-  const horizontalCards = dummyData?.map((cardData) => (
-    <HorizontalCard
-      key={cardData.key}
-      img={cardData.img}
-      tripTag={cardData.tripTag}
-      cardTitle={cardData.cardTitle}
-      places={cardData.places}
-      description={cardData.description}
-    />
-  ));
 
+// dummy data for folders
+const dummyData2 = [
+  {
+    id: 1,
+    folderName: "Summer 2023",
+    trips: dummyData,
+  },
+];
+
+function WishlistFolder(props) {
+  const horizontalCards = props.trips?.map((cardData) => (
+    <HorizontalCard {...cardData} />
+  ));
+  return (
+    <>
+      <div className="subSecTitle">
+        <h3>Summer 2023</h3>
+        <button className="btn-no">
+          <MdOutlineEdit className="icon" />
+        </button>
+      </div>
+      <div className="list">{horizontalCards}</div>
+    </>
+  );
+}
+
+const WishlistFolders = dummyData2?.map((data) => <WishlistFolder {...data} />);
+
+const Wishlist = () => {
   return (
     <>
       <div className="container">
         <div className="pageTitle">
-          <h1>Wishlist</h1>
+          <h1>
+            Wishlist <Emoji symbol="✨" label="sparkle emoji" />
+          </h1>
         </div>
 
         <div className="sec">
           <div className="secTitle">
             <h2>Trips You Love</h2>
-          </div>
-          <div className="subSec">
-            <div className="subSecTitle">
-              <h3>Summer 2023</h3>
-              <button className="btn-no">
-                <MdOutlineEdit className="icon" />
-              </button>
-            </div>
-            <div className="list">{horizontalCards}</div>
-          </div>
-          <div className="subSec">
-            <div className="subSecTitle">
-              <h3>USA</h3>
-              <button className="btn-no">
-                <MdOutlineEdit className="icon" />
-              </button>
-            </div>
-            <div className="list">{horizontalCards}</div>
+            {WishlistFolders}
           </div>
         </div>
       </div>
