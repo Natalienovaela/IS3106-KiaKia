@@ -1,7 +1,10 @@
 import React from "react";
 import "./wishlist.css";
 import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard";
+import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
 import image from "../../Assets/img.jpg";
+import singapore from "../../Assets/singapore.png";
+import tokyo from "../../Assets/tokyo.jpg";
 import { MdOutlineEdit } from "react-icons/md";
 import Emoji from "a11y-react-emoji";
 import { Button } from "@mui/material";
@@ -49,6 +52,46 @@ const dummyData2 = [
     folderName: "Summer 2023",
     trips: dummyData,
   },
+  {
+    id: 2,
+    folderName: "USA",
+    trips: dummyData,
+  },
+  {
+    id: 3,
+    folderName: "Winter Trips",
+    trips: dummyData,
+  },
+];
+
+const placesDummyData = [
+  {
+    city: "Singapore",
+    country: "Singapore",
+    img: singapore,
+  },
+  {
+    city: "Tokyo",
+    country: "Japan",
+    img: tokyo,
+  },
+  {
+    city: "Tokyo",
+    country: "Japan",
+    img: tokyo,
+  },
+  {
+    city: "Tokyo",
+    country: "Japan",
+    img: tokyo,
+  },
+];
+
+const placesFolderDummyData = [
+  {
+    folderName: "Asia",
+    places: placesDummyData,
+  },
 ];
 
 function WishlistFolder(props) {
@@ -58,7 +101,7 @@ function WishlistFolder(props) {
   return (
     <>
       <div className="subSecTitle">
-        <h3>Summer 2023</h3>
+        <h3>{props.folderName}</h3>
         <button className="btn-no">
           <MdOutlineEdit className="icon" />
         </button>
@@ -68,6 +111,26 @@ function WishlistFolder(props) {
   );
 }
 
+function PlacesFolder(props) {
+  const placeCards = props.places?.map((cardData) => (
+    <PlaceCard {...cardData} />
+  ));
+  return (
+    <>
+      <div className="subSecTitle">
+        <h3>{props.folderName}</h3>
+        <button className="btn-no">
+          <MdOutlineEdit className="icon" />
+        </button>
+      </div>
+      <div className="list">{placeCards}</div>
+    </>
+  );
+}
+
+const PlacesFolders = placesFolderDummyData?.map((data) => (
+  <PlacesFolder {...data} className="cards" />
+));
 const WishlistFolders = dummyData2?.map((data) => <WishlistFolder {...data} />);
 
 const Wishlist = () => {
@@ -84,6 +147,11 @@ const Wishlist = () => {
           <div className="secTitle">
             <h2>Trips You Love</h2>
             {WishlistFolders}
+          </div>
+
+          <div className="secTitle">
+            <h2>Places You Love</h2>
+            <div>{PlacesFolders}</div>
           </div>
         </div>
       </div>

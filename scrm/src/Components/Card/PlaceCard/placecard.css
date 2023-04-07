@@ -1,5 +1,5 @@
 .place-card {
-  width: 300px;
+  min-width: 300px;
   height: 180px;
   display: flex;
   border-radius: 15px;
@@ -51,6 +51,7 @@
 }
 .place-card .card-content .card-title {
   font-weight: 500;
+  font-size: 24px;
   color: var(--whiteColor);
 }
 .place-card .card-content .country {
