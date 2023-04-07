@@ -98,7 +98,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
             Trip trip = em.find(Trip.class, tripId);
             return trip;
         } 
-        catch(NoResultException ex) {
+        catch(Exception ex) {
             throw new TripNotFoundException();
         }
     }

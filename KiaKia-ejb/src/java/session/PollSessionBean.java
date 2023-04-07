@@ -83,7 +83,7 @@ public class PollSessionBean implements PollSessionBeanLocal {
         try {
             Poll oldPoll = retrievePollByPollId(u.getPollId());
             oldPoll.setDescription(u.getDescription());
-//            oldPoll.setOptions(u.getOptions());
+            oldPoll.setOptions(u.getOptions());
         } catch (PollNotFoundException ex) {
             throw new PollNotFoundException(ex.getMessage());
         }
@@ -96,8 +96,8 @@ public class PollSessionBean implements PollSessionBeanLocal {
             User u = userSessionBeanLocal.retrieveUserByUserId(userId);
             if(!hasUserPolled(oldPoll, u) && !oldPoll.isIsClosed()) {
                 oldPoll.getPolledBy().add(u);
-//                HashMap<Long, List<Long>> oldVoting = oldPoll.getVoting();
-//                oldVoting.get(votedOption).add(u.getUserId());
+                HashMap<Long, List<Long>> oldVoting = oldPoll.getVoting();
+                oldVoting.get(votedOption).add(u.getUserId());
             } else if (hasUserPolled(oldPoll, u)) {
                 throw new UserHasPolledException("User has already polled");
             } else {

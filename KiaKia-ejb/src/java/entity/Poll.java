@@ -28,8 +28,8 @@ public class Poll implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pollId;
     private String description;
-//    private HashMap<Long, String> options;
-//    private HashMap<Long, List<Long>> voting;
+    private HashMap<Long, String> options;
+    private HashMap<Long, List<Long>> voting;
     private boolean isClosed;
     
     @ManyToOne(optional=false)
@@ -79,14 +79,14 @@ public class Poll implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-//
-//    public HashMap<Long, String> getOptions() {
-//        return options;
-//    }
-//
-//    public void setOptions(HashMap<Long, String> options) {
-//        this.options = options;
-//    }
+
+    public HashMap<Long, String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(HashMap<Long, String> options) {
+        this.options = options;
+    }
 
     public boolean isIsClosed() {
         return isClosed;
@@ -95,14 +95,14 @@ public class Poll implements Serializable {
     public void setIsClosed(boolean isClosed) {
         this.isClosed = isClosed;
     }
-//
-//    public HashMap<Long, List<Long>> getVoting() {
-//        return voting;
-//    }
-//
-//    public void setVoting(HashMap<Long, List<Long>> voting) {
-//        this.voting = voting;
-//    }
+
+    public HashMap<Long, List<Long>> getVoting() {
+        return voting;
+    }
+
+    public void setVoting(HashMap<Long, List<Long>> voting) {
+        this.voting = voting;
+    }
 
     public User getCreator() {
         return creator;

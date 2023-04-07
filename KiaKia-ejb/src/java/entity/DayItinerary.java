@@ -37,7 +37,7 @@ public class DayItinerary implements Serializable {
     private Boolean isShared = Boolean.FALSE;
     
     @OneToMany
-    private List<PlaceLineItem> placeLineItem = new ArrayList<>();
+    private List<PlaceLineItem> placeLineItem;
     
     public DayItinerary() {
         

@@ -24,7 +24,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 //import util.security.CryptographicHelper;
@@ -47,13 +46,13 @@ public class User implements Serializable {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
-    @OneToOne
     private Wishlist wishlist;
     private File photo;
     private String resetPasswordToken;
     @Temporal(TemporalType.DATE)
     private Date tokenExpiryDate;
     
+
     @ManyToMany
     private List<Trip> wishlistTrips = new ArrayList<>(); // pending
 

@@ -32,8 +32,8 @@ public class Wishlist implements Serializable {
 
     private Long userId;
 
-//    @OneToMany
-//    private Map<String, List<Trip>> tripFolders = new HashMap<>();
+    @OneToMany
+    private Map<String, List<Trip>> tripFolders = new HashMap<>();
 
     public Long getWishlistId() {
         return wishlistId;
@@ -50,14 +50,14 @@ public class Wishlist implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-//
-//    public HashMap<String, List<Trip>> getTripFolders() {
-//        return (HashMap<String, List<Trip>>) tripFolders;
-//    }
-//
-//    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
-//        this.setTripFolders(tripFolders);
-//    }
+
+    public HashMap<String, List<Trip>> getTripFolders() {
+        return (HashMap<String, List<Trip>>) tripFolders;
+    }
+
+    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
+        this.setTripFolders(tripFolders);
+    }
 
     @Override
     public int hashCode() {
@@ -84,8 +84,8 @@ public class Wishlist implements Serializable {
         return "entity.Wishlist[ id=" + wishlistId + " ]";
     }
 
-//    public void setTripFolders(Map<String, List<Trip>> tripFolders) {
-//        this.tripFolders = tripFolders;
-//    }
+    public void setTripFolders(Map<String, List<Trip>> tripFolders) {
+        this.tripFolders = tripFolders;
+    }
 
 }

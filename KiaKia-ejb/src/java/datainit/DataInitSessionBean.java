@@ -47,14 +47,14 @@ public class DataInitSessionBean {
         if(em.find(Trip.class, 1l) == null) {
             initialiseTrip();
         }
-        if (em.find(User.class, 1l) == null) {
+        if (em.find(User.class, 1l) == null || em.find(User.class, 7l) == null) {
             initialiseUser();
         }
     }
     
     public void initialiseUser() {
         Trip trip = em.find(Trip.class, 1l);
-//        userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
+        userSessionBeanLocal.createUserTemporary(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"), trip);
         
     }
     

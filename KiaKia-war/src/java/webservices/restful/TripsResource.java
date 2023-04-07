@@ -141,8 +141,9 @@ public class TripsResource {
     }
 
     @GET
+    @Path("/{trip_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrip(@PathParam("tripId") Long tripId) {
+    public Response getTrip(@PathParam("trip_id") Long tripId) {
         try {
             Trip trip = tripSessionBeanLocal.getTrip(tripId);
             return Response.status(200).entity(trip).type(MediaType.APPLICATION_JSON).build();
