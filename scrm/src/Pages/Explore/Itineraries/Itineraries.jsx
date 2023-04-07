@@ -2,6 +2,7 @@ import React from "react";
 import singapore from "../../../Assets/singapore.png";
 import newyork from "../../../Assets/newyork.png";
 import ItineraryCard from "../../../Components/Card/ItineraryCard/ItineraryCard";
+import SearchBar from "../../../Components/SearchBar/SearchBar";
 
 const dummyData = [
   {
@@ -37,6 +38,7 @@ const dummyData = [
     numOfDays: 15,
   },
 ];
+
 const itineraryCards = dummyData?.map((cardData) => (
   <ItineraryCard key={cardData.id} {...cardData} />
 ));
@@ -44,6 +46,7 @@ const itineraryCards = dummyData?.map((cardData) => (
 const Itineraries = () => {
   return (
     <>
+      <SearchBar label="Search city or country" />
       <div className="itinerary-cards">{itineraryCards}</div>
     </>
   );
