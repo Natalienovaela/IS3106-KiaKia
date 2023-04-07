@@ -27,9 +27,18 @@
 .header .navItem {
   padding: 2rem;
 }
-.header .profile {
+.header .user {
   padding: 2rem;
   margin-left: 2rem;
+}
+.header .profile {
+  padding: 2em;
+  margin-left: 2rem;
+}
+.header .profile .icon {
+  font-size: 48px;
+  color: var(--PrimaryColor);
+  transform: translateY(4px);
 }
 .header .navLists {
   width: 100%;
@@ -108,8 +117,12 @@
     font-weight: 600;
     color: var(--whiteColor);
   }
+  .navBar .navLists .user {
+    margin-top: 1rem;
+    margin-left: 0;
+  }
   .navBar .navLists .profile {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-left: 0;
   }
   .navBar .closeNavbar {

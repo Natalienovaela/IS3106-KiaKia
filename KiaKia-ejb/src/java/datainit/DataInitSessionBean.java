@@ -54,7 +54,7 @@ public class DataInitSessionBean {
     
     public void initialiseUser() {
         Trip trip = em.find(Trip.class, 1l);
-        userSessionBeanLocal.createUserTemporary(new User("Natasha Rafaela", "natasha", "natasha@gmail.com", "password"), trip);
+        userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
         
     }
     

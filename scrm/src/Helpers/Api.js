@@ -71,6 +71,36 @@ const Api = {
       return response.json();
     });
   },
+
+  createUser(data) {
+    return fetch(`${SERVER_PREFIX}/users`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+  },
+
+  loginUser(email, password) {
+    const formData = new URLSearchParams();
+    formData.append("email", email);
+    formData.append("password", password);
+
+    return fetch(`${SERVER_PREFIX}/users/login`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+      body: formData,
+    })
+  },
+
+  getUser(userId) {
+    return fetch(`${SERVER_PREFIX}/users/${userId}`);
+  }
 };
 
 export default Api;
