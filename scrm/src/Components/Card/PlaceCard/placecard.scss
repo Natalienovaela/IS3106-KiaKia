@@ -1,0 +1,60 @@
+.place-card {
+    width: 300px;
+    height: 180px;
+    display: flex;
+    border-radius: 15px;
+    position: relative;
+    top: 0;
+    
+    filter: drop-shadow(0px 10px 5px rgba(0, 0, 0, 0.1)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.05));
+    .pc-image-div {
+        width: 100%;
+        position:relative;
+    }
+    img {
+        object-fit: cover;
+        height: 100%;
+        border-radius: 15px;
+        
+    }
+    &:after {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background:  linear-gradient(0deg, rgba(0, 0, 0, 0.858) 4.48%, rgba(0, 0, 0, 0) 30.14%);
+        height: 100%;
+        width: 100%;
+        content: '';
+        z-index: 10;
+        border-radius: 15px;
+    }
+    .bookmark-button {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        color: var(--whiteColor);
+    }
+    
+    .card-content {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 270px;
+        top: 130px;
+        left: 15px;
+        z-index: 1000;
+        
+        .card-title {
+            font-weight: 500;
+            color: var(--whiteColor);
+        }
+        .country {
+            color: var(--greyText);
+        }
+
+        
+    }
+}
