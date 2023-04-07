@@ -3,6 +3,7 @@ import singapore from "../../../Assets/singapore.png";
 import newyork from "../../../Assets/newyork.png";
 import ItineraryCard from "../../../Components/Card/ItineraryCard/ItineraryCard";
 import SearchBar from "../../../Components/SearchBar/SearchBar";
+import japan from "../../../Assets/japan.png";
 
 const dummyData = [
   {
@@ -22,11 +23,11 @@ const dummyData = [
     numOfDays: 15,
   },
   {
-    img: newyork,
-    cityName: "New York",
-    places: ["Broadway", "NYC"],
-    tags: ["New York", "USA", "Summer"],
-    desc: "Mesmerizing busy city New York. Tips and tricks to save money on your trip",
+    img: japan,
+    cityName: "Tokyo",
+    places: ["Shinjuku", "Akihabara", "Senso-ji"],
+    tags: ["Tokyo", "Japan", "Winter"],
+    desc: "The most popular and most visited places in Tokyo",
     numOfDays: 15,
   },
   {
@@ -46,8 +47,12 @@ const itineraryCards = dummyData?.map((cardData) => (
 const Itineraries = () => {
   return (
     <>
+      <p className="page-content">
+        Find itineraries created by fellow travelers
+      </p>
       <SearchBar label="Search city or country" />
-      <div className="itinerary-cards">{itineraryCards}</div>
+
+      <div className="cards">{itineraryCards}</div>
     </>
   );
 };
