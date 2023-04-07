@@ -4,6 +4,7 @@ import newyork from "../../../Assets/newyork.png";
 import ItineraryCard from "../../../Components/Card/ItineraryCard/ItineraryCard";
 import SearchBar from "../../../Components/SearchBar/SearchBar";
 import japan from "../../../Assets/japan.png";
+import Emoji from "a11y-react-emoji";
 
 const dummyData = [
   {
@@ -48,7 +49,7 @@ const Itineraries = () => {
   return (
     <>
       <p className="page-content">
-        Find itineraries created by fellow travelers
+        Find itineraries created by fellow travelers <Emoji symbol="🧳" />
       </p>
       <SearchBar label="Search city or country" />
 

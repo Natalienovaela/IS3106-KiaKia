@@ -10,6 +10,9 @@
   border-radius: 15px;
   z-index: 10;
 }
+.itinerary-card:hover {
+  transform: translateY(-15px);
+}
 .itinerary-card .itinerary-imageDiv {
   width: 100%;
   position: relative;
