@@ -81,6 +81,9 @@ public class Trip implements Serializable {
     @OneToMany
     private List<BudgetExpenseCategory> categories;
     
+    @OneToMany
+    private List<UserExpense> userExpenses;
+    
     //private enum countryEnum;
     
     public Trip() {
@@ -260,6 +263,14 @@ public class Trip implements Serializable {
 
     public void setCategories(List<BudgetExpenseCategory> categories) {
         this.categories = categories;
+    }
+
+    public List<UserExpense> getUserExpenses() {
+        return userExpenses;
+    }
+
+    public void setUserExpenses(List<UserExpense> userExpenses) {
+        this.userExpenses = userExpenses;
     }
     
 }
