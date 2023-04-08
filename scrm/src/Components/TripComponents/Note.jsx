@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 
 //no need?? reloadData passed should be able to update all the trip components (autosave or some sort)
 const Note = ({ tripId, note }) => {
-  const noteId = note.noteId;
+  // const noteId = note.noteId;
   const [title, setTitle] = React.useState(note.title);
   const [content, setContent] = React.useState(note.content);
 

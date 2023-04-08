@@ -9,24 +9,26 @@ import Explore from "./Pages/Explore/Explore";
 import Footer from "./Components/Footer/Footer";
 import TripContent from "./Pages/TripContent/TripContent";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TripNotesTest from './Components/TripComponents/TripNotesTest';
 
 const App = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <div className="container">
                 <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/TripContent" element={<TripContent/>}/> {/*Need to change to /Trip/:id later on */}
-                    <Route path="/Trip" element={<Trip/>}/>
-                    <Route path="/Wishlist" element={<Wishlist/>}/>
-                    <Route path="/Profile" element={<Profile/>}/>
-                    <Route path="/Explore" element={<Explore/>}/>
-                </Routes>   
+                    <Route path="/" element={<Home />} />
+                    <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
+                    <Route path="/Trip" element={<Trip />} />
+                    <Route path="/Wishlist" element={<Wishlist />} />
+                    <Route path="/Profile" element={<Profile />} />
+                    <Route path="/Explore" element={<Explore />} />
+                    <Route path="/TripNotesTest" element={<TripNotesTest />} />
+                </Routes>
             </div>
             {/* Will change this component */}
-            <Footer/>
+            <Footer />
         </>
     )
 }
