@@ -1,5 +1,6 @@
 .place-card {
   min-width: 300px;
+  max-width: 300px;
   height: 180px;
   display: flex;
   border-radius: 15px;

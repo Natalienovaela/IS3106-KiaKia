@@ -9,6 +9,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import Emoji from "a11y-react-emoji";
 import { Button } from "@mui/material";
 
+// note: have to make wishlist inaccessible if not logged in!!
 // dummy data for trips
 const dummyData = [
   {

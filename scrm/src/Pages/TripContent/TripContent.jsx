@@ -4,11 +4,13 @@ import { Link, animateScroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
 import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
-import moment from 'moment-timezone';
-import dayjs from 'dayjs';
-import { ConfigProvider } from 'antd';
+import moment from "moment-timezone";
+import dayjs from "dayjs";
+import japan from "../../Assets/japan2.jpg";
+import { ConfigProvider } from "antd";
+import "./tripcontent.css";
 
-import utc from 'dayjs/plugin/utc';
+import utc from "dayjs/plugin/utc";
 
 import EditIcon from "@mui/icons-material/Edit";
 const { RangePicker } = DatePicker;
@@ -17,8 +19,12 @@ function TripContent() {
   const { id } = useParams();
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState(moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-  const [endDate, setEndDate] = useState(moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+  const [startDate, setStartDate] = useState(
+    moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
+  );
+  const [endDate, setEndDate] = useState(
+    moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
+  );
   const [error, setError] = useState("");
 
   const handleDateRangeChange = (value) => {
@@ -28,8 +34,12 @@ function TripContent() {
     console.log(end);
 
     if (end > start) {
-      setStartDate(start, () => {console.log(startDate)});
-      setEndDate(end, () => {console.log(endDate)});
+      setStartDate(start, () => {
+        console.log(startDate);
+      });
+      setEndDate(end, () => {
+        console.log(endDate);
+      });
 
       Api.createItinerary(1, {
         startDate: start,
@@ -56,7 +66,7 @@ function TripContent() {
         setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
         setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
       });
-      console.log("the : " + startDate + " " + endDate);
+    console.log("the : " + startDate + " " + endDate);
   }, []);
 
   useEffect(() => {
@@ -67,25 +77,37 @@ function TripContent() {
     <Grid container>
       <Grid item xs={12}>
         <section className="trip-header">
-          <h2>Picture here</h2>
-          <p>Here's a rough outline of what your trip might look like:</p>
-          <ul>
-            <li>
-              Day 1: Arrive at your destination and check in to your
-              accommodations
-            </li>
-            <li>Day 2: Explore the local area and try some new foods</li>
-            <li>
-              Day 3: Take a guided tour of the city and learn about its history
-            </li>
-            <li>
-              Day 4: Relax at a nearby beach or go on a hike in the mountains
-            </li>
-          </ul>
+          <div className="banner">
+            <img src={japan} alt="japan" className="banner-img" />
+            <div className="banner-details">
+              <h2>Japan</h2>
+              <div className="banner-details-2">
+                <p className="trip-num-of-days">1 day</p>
+                <p>5 people</p>
+              </div>
+            </div>
+          </div>
+          <div className="trip-rough-outline">
+            <p>Here's a rough outline of what your trip might look like:</p>
+            <ul>
+              <li>
+                Day 1: Arrive at your destination and check in to your
+                accommodations
+              </li>
+              <li>Day 2: Explore the local area and try some new foods</li>
+              <li>
+                Day 3: Take a guided tour of the city and learn about its
+                history
+              </li>
+              <li>
+                Day 4: Relax at a nearby beach or go on a hike in the mountains
+              </li>
+            </ul>
+          </div>
         </section>
       </Grid>
-      <Grid item xs={1.7}>
-        <aside className="trip-sidebar" style={{ position: "sticky", top: 0 }}>
+      <Grid item xs={3}>
+        <aside className="trip-sidebar">
           <ul className="trip-sidebar-list">
             <li className="trip-sidebar-list-item">
               <Link
@@ -197,13 +219,17 @@ function TripContent() {
             id="itinerary"
           >
             <h2>Itinerary</h2>
-            
+
             <div className="date-range-picker">
               <h3>
-                {startDate.toLocaleDateString()} to {endDate.toLocaleDateString()}
+                {startDate.toLocaleDateString()} to{" "}
+                {endDate.toLocaleDateString()}
               </h3>
-              <RangePicker onChange={handleDateRangeChange} value={[dayjs(startDate.toString()), dayjs(endDate.toString())]} />
-              
+              <RangePicker
+                onChange={handleDateRangeChange}
+                value={[dayjs(startDate.toString()), dayjs(endDate.toString())]}
+              />
+
               {/*{error && <Error error={error} />}*/}
             </div>
             <div>
