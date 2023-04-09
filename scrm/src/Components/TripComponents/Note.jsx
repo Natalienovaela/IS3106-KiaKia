@@ -124,7 +124,7 @@ const Note = ({ tripId, note }) => {
   const debouncedSaveNote = React.useCallback(
     debounce((note) => {
       Api.updateNote(tripId, note.noteId, note);
-    }, 1000),
+    }, 2000),
     [tripId]
   );
 
