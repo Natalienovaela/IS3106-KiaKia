@@ -27,6 +27,8 @@ public class Folder implements Serializable {
         
     @ManyToMany
     private List<Trip> trips;
+    
+    private String name;
 
     public Long getFolderId() {
         return folderId;
@@ -67,6 +69,14 @@ public class Folder implements Serializable {
 
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

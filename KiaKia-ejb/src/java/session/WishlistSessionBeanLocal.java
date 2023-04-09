@@ -5,6 +5,7 @@
  */
 package session;
 
+import entity.Folder;
 import entity.Wishlist;
 import error.WishlistNotFoundException;
 import java.util.List;
@@ -24,4 +25,5 @@ public interface WishlistSessionBeanLocal {
     public void addTripToWishlist(Long tripId, Long wishlistId);
 
     public List<Wishlist> searchWishlistByFolderName(String folderName);
+
 }

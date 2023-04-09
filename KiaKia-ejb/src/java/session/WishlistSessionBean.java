@@ -5,10 +5,9 @@
  */
 package session;
 
-import entity.Trip;
+import entity.Folder;
 import entity.Wishlist;
 import error.WishlistNotFoundException;
-import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,7 +33,7 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
     @Override
     public Wishlist getwishlistbyId(Long id) throws WishlistNotFoundException {
         Wishlist w = em.find(Wishlist.class, id);
-        
+
         if (w != null) {
             return w;
         } else {
@@ -48,7 +47,6 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
        return List
         
     }*/
-
     @Override
     public List<Wishlist> searchWishlistByTripCountry(String countryName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -68,6 +66,16 @@ public class WishlistSessionBean implements WishlistSessionBeanLocal {
     public List<Wishlist> searchWishlistByFolderName(String folderName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
+    public Folder addNewFolderToWishList(Long wishlistId, Folder folder) throws WishlistNotFoundException {
+        try {
+            Wishlist wishlist = em.find(Wishlist.class, wishlistId);
+            em.persist(folder);
+            wishlist.getFolders().add(folder);
+            return folder;
+        } catch (Exception ex) {
+            throw new WishlistNotFoundException("Wishlist not found in the database");
+        }
+    }
+
 }
