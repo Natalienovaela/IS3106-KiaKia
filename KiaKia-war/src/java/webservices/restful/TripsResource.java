@@ -131,7 +131,7 @@ public class TripsResource {
     }
     
     @POST
-    @Path("/{trip_id}/checkLists/{checkList_id")
+    @Path("/{trip_id}/checkLists/{checkList_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCheckList(@PathParam("trip_id") Long tripId, CheckList checkList) {
