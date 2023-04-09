@@ -13,6 +13,7 @@
         }
     }
 }
+
 .banner {
     width: 100%;
     min-height: 380px;
@@ -77,5 +78,16 @@
 .trip-main-content {
     display: flex;
     flex-direction: column;
+
     
+    .trip-main-content-item {
+        padding: 2rem 0;
+    }
+    .itinerary-details {
+    
+    }
+}
+.line {
+    border-bottom: 2px solid #ccc;
+    display: block;
 }

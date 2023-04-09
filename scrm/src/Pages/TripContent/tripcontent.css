@@ -65,4 +65,11 @@
 .trip-main-content {
   display: flex;
   flex-direction: column;
+}
+.trip-main-content .trip-main-content-item {
+  padding: 2rem 0;
+}
+.line {
+  border-bottom: 2px solid #ccc;
+  display: block;
 }/*# sourceMappingURL=tripcontent.css.map */
