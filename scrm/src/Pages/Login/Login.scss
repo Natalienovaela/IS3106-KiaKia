@@ -1,0 +1,11 @@
+.login-submit-button {
+    background-color: var(--PrimaryColor);
+}
+
+.action-link {
+    color: var(--PrimaryColor);
+
+    &:hover {
+        color: var(--SecondaryColor);
+    }
+}

@@ -102,3 +102,25 @@ body {
     background: var(--bodyColor);
 }
 
+.login-submit-button {
+    background-color: var(--PrimaryColor);
+}
+
+.action-link {
+    color: var(--PrimaryColor);
+}
+
+.action-link:hover {
+    color: var(--SecondaryColor);
+
+}
+
+.cards-horizontal {
+    display: flex;
+    flex-direction: row;
+
+    gap: 1rem;
+    overflow-x: scroll;
+    height: fit-content;
+    padding: 1rem;
+}
