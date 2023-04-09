@@ -43,7 +43,7 @@ public class PlaceLineItem implements Serializable {
     private Place place;
     
     @OneToMany
-    private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
     
     @ManyToMany
     private List<User> votedUsers = new ArrayList<>();

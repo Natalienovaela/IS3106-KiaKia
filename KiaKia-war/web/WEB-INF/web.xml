@@ -36,4 +36,10 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <local>session.NoteSessionBeanLocal</local>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CheckListSessionBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>session.CheckListSessionBeanLocal</local>
+        <ejb-link>KiaKia-ejb.jar#CheckListSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

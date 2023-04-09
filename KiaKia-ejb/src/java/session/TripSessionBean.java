@@ -52,7 +52,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
 
     }
-    
+
     @Override
     public Trip retrieveTripByTripId(Long tripId) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
@@ -91,44 +91,52 @@ public class TripSessionBean implements TripSessionBeanLocal {
     public List<Trip> getAllTrips() {
         return em.createQuery("SELECT t FROM Trip t").getResultList();
     }
-    
+
     @Override
     public Trip getTrip(Long tripId) throws TripNotFoundException {
-        try{
+        try {
             Trip trip = em.find(Trip.class, tripId);
             return trip;
-        } 
-        catch(Exception ex) {
+        } catch (Exception ex) {
             throw new TripNotFoundException();
         }
     }
-    
+
     @Override
     public List<Trip> getAllPersonalTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
     }
-    
+
     @Override
     public List<Trip> getAllGroupTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS NOT EMPTY OR t.viewers IS NOT EMPTY").getResultList();
     }
-       
+
     @Override
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException {
-        Trip trip = em.find(Trip.class, tripId);
-        CheckList checkList = em.find(CheckList.class, checkListId);
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            try {
+                CheckList checkList = em.find(CheckList.class, checkListId);
 
-        if (trip != null && checkList != null) {
-            trip.getCheckLists().remove(checkList);
-        } else {
-            if (trip == null) {
-                throw new TripNotFoundException("Trip not found in the database");
-            }
-            if (checkList == null) {
+                if (trip != null && checkList != null) {
+                    trip.getCheckLists().remove(checkList);
+                } else {
+                    if (trip == null) {
+                        throw new TripNotFoundException("Trip not found in the database");
+                    }
+                    if (checkList == null) {
+                        throw new CheckListNotFoundException("Checklist not found in the database");
+                    }
+                }
+            } catch (Exception ex) {
                 throw new CheckListNotFoundException("Checklist not found in the database");
             }
+        } catch (Exception ex) {
+            throw new TripNotFoundException("Trip not found in the database");
         }
     }
+    
 
     @Override
     public void addCheckList(Long tripId, CheckList checkList) throws TripNotFoundException {
@@ -177,13 +185,12 @@ public class TripSessionBean implements TripSessionBeanLocal {
 //
 //        }
 //    }
-
     @Override
     public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException {
         try {
             em.persist(trip);
             em.flush();
-            
+
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
                 UserRoleEnum role = userRoles.get(i);

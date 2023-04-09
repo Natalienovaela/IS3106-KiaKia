@@ -6,7 +6,9 @@
 package session;
 
 import entity.CheckList;
+import entity.Trip;
 import error.CheckListNotFoundException;
+import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,10 +28,16 @@ public class CheckListSessionBean implements CheckListSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public void createNewCheckList(CheckList checkList) throws UnknownPersistenceException {
+    public void createNewCheckList(Long tripId, CheckList checkList) throws UnknownPersistenceException, TripNotFoundException {
 
         try {
             em.persist(checkList);
+            try {
+                Trip trip = em.find(Trip.class, tripId);
+                trip.getCheckLists().add(checkList);
+            } catch (Exception ex) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
         } catch (PersistenceException ex) {
 
             throw new UnknownPersistenceException(ex.getMessage());
@@ -38,7 +46,7 @@ public class CheckListSessionBean implements CheckListSessionBeanLocal {
     
     @Override
     public void updateCheckList(CheckList checkList) throws CheckListNotFoundException {
-        CheckList oldCheckList = em.find(CheckList.class, checkList);
+        CheckList oldCheckList = em.find(CheckList.class, checkList.getCheckListId());
         
         if(oldCheckList != null ) {
             oldCheckList.setContent(checkList.getContent());

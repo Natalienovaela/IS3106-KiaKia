@@ -7,6 +7,7 @@ package session;
 
 import entity.CheckList;
 import error.CheckListNotFoundException;
+import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import javax.ejb.Local;
 
@@ -17,7 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface CheckListSessionBeanLocal {
 
-    public void createNewCheckList(CheckList checkList) throws UnknownPersistenceException;
+    public void createNewCheckList(Long tripId, CheckList checkList) throws UnknownPersistenceException, TripNotFoundException;
 
     public void updateCheckList(CheckList checkList) throws CheckListNotFoundException;
     

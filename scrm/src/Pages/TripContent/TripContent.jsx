@@ -60,8 +60,9 @@ function TripContent() {
     Api.getTrip(1)
       .then((res) => res.json())
       .then((trip) => {
-        const { name, startDate, endDate } = trip;
+        const { name, startDate, endDate, itinerary } = trip;
         setName(name);
+        setItinerary(itinerary);
         setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
         setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
       });
