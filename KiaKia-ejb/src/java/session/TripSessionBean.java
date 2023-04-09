@@ -9,8 +9,9 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
+import entity.TripAssignment;
 import entity.User;
-import enumeration.UserRole;
+import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
@@ -58,12 +59,9 @@ public class TripSessionBean implements TripSessionBeanLocal {
         if (trip != null) {
             trip.getNotes().size();
             trip.getPolls().size();
-            trip.getViewers().size();
-            trip.getAdmins().size();
             trip.getBucketList().size();
             trip.getCheckLists().size();
             trip.getDocuments().size();
-            trip.getEditors().size();
             trip.getWishlisted().size();
             return trip;
         } else {
@@ -77,16 +75,13 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
         if (trip != null) {
             //trip.setCountry(newTrip.getCountry());
-            trip.setAdmins(newTrip.getAdmins());
             trip.setCheckLists(newTrip.getCheckLists());
             trip.setDescription(newTrip.getDescription());
             trip.setDocuments(newTrip.getDocuments());
-            trip.setEditors(newTrip.getEditors());
             trip.setEndDate(newTrip.getEndDate());
             trip.setIsShared(newTrip.getIsShared());
             trip.setNotes(newTrip.getNotes());
             trip.setStartDate(newTrip.getStartDate());
-            trip.setViewers(newTrip.getViewers());
         } else {
             throw new TripNotFoundException("Trip not found in the database");
         }
@@ -95,6 +90,17 @@ public class TripSessionBean implements TripSessionBeanLocal {
     @Override
     public List<Trip> getAllTrips() {
         return em.createQuery("SELECT t FROM Trip t").getResultList();
+    }
+    
+    @Override
+    public Trip getTrip(Long tripId) throws TripNotFoundException {
+        try{
+            Trip trip = em.find(Trip.class, tripId);
+            return trip;
+        } 
+        catch(Exception ex) {
+            throw new TripNotFoundException();
+        }
     }
     
     @Override
@@ -173,14 +179,14 @@ public class TripSessionBean implements TripSessionBeanLocal {
 //    }
 
     @Override
-    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRole> userRoles) throws UserNotFoundException {
+    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException {
         try {
             em.persist(trip);
             em.flush();
             
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
-                UserRole role = userRoles.get(i);
+                UserRoleEnum role = userRoles.get(i);
                 inviteUserToTrip(trip.getTripId(), email, role);
             }
         } catch (UserNotFoundException ex) {
@@ -189,7 +195,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
 
     @Override
-    public void inviteUserToTrip(Long tripId, String email, UserRole role) throws UserNotFoundException {
+    public void inviteUserToTrip(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException {
         try {
             Trip trip = em.find(Trip.class, tripId);
             User user = userSessionBeanLocal.retrieveUserByEmail(email);
@@ -226,20 +232,20 @@ public class TripSessionBean implements TripSessionBeanLocal {
             String[] parts = token.split(":");
             String username = parts[0];
             User user = userSessionBeanLocal.retrieveUserByUsername(username);
-            UserRole userRole = UserRole.valueOf(role);
+            UserRoleEnum userRole = UserRoleEnum.valueOf(role);
 
             switch (userRole) {
                 case ADMIN:
-                    trip.getAdmins().add(user);
-                    user.getAdminTrips().add(trip);
+                    /*trip.getAdmins().add(user);
+                    user.getTrips().add(trip);*/
                     break;
                 case EDITOR:
-                    trip.getEditors().add(user);
-                    user.getEditorTrips().add(trip);
+                    /*trip.getEditors().add(user);
+                    user.getTrips().add(trip);*/
                     break;
                 case VIEWER:
-                    trip.getViewers().add(user);
-                    user.getViewerTrips().add(trip);
+                    /*trip.getViewers().add(user);
+                    user.getTrips().add(trip);*/
                     break;
                 default:
                     break;

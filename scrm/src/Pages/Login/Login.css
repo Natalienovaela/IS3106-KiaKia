@@ -1,0 +1,10 @@
+.login-submit-button {
+  background-color: var(--PrimaryColor);
+}
+
+.action-link {
+  color: var(--PrimaryColor);
+}
+.action-link:hover {
+  color: var(--SecondaryColor);
+}/*# sourceMappingURL=Login.css.map */

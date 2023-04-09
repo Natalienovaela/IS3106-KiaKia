@@ -1,1 +1,41 @@
-/*# sourceMappingURL=explore.css.map */
+.cards {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+}
+
+.explore-content {
+  padding: 1rem 1rem;
+}
+
+.page-dec {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: baseline;
+}
+
+.page-content {
+  font-size: 24px;
+  color: var(--textColor);
+  margin-bottom: 3rem;
+}
+
+.tabs {
+  border-radius: 15px;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.5rem 2rem;
+  border: 1px solid var(--PrimaryColor);
+  background-color: var(--whiteColorDeam);
+}
+.tabs .tab-child {
+  background-color: var(--whiteColorDeam);
+  color: var(--textColor);
+}
+.tabs .tab-child.Mui-selected {
+  color: var(--PrimaryColor);
+}/*# sourceMappingURL=explore.css.map */

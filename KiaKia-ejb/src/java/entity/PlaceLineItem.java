@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class PlaceLineItem implements Serializable {
     private List<Note> notes;
     
     @ManyToMany
-    private List<User> votedUsers;
+    private List<User> votedUsers = new ArrayList<>();
     
 
     public Long getPlaceLineItemId() {

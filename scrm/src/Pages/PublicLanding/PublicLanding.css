@@ -1,0 +1,71 @@
+:root {
+  --PrimaryColor: #f87171;
+  --SecondaryColor: #ff8f66;
+  --gradientColor: linear-gradient(to right, #f87171, #ff8f66);
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --textColor: hsl(240, 4%, 35%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --greyText: rgb(190, 190, 190);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: rgb(240, 240, 246);
+  --cardBG: rgb(225, 225, 235);
+  --orangeColor: #FB923C;
+}
+
+.pageTitle {
+  padding: 3rem;
+}
+.pageTitle hr {
+  position: relative;
+  top: 20px;
+  border: none;
+  width: 614px;
+  height: 2px;
+  background: black;
+  margin-bottom: 50px;
+}
+.pageTitle h1 {
+  font-weight: 500;
+  font-size: 45px;
+}
+.pageTitle p {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.sec {
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.secTitle h2 {
+  font-weight: 500;
+  font-size: 36px;
+}
+
+.subSecTitle {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  padding: 1rem 0rem;
+}
+.subSecTitle h3 {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  overflow-x: scroll;
+  width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+}/*# sourceMappingURL=PublicLanding.css.map */

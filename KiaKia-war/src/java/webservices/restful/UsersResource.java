@@ -6,12 +6,15 @@
 package webservices.restful;
 
 import entity.User;
+import error.InvalidLoginException;
 import error.UserNotFoundException;
+import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,15 +38,17 @@ public class UsersResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User createUser(User u) {
+    public Response createUser(User u) {
         userSessionBeanLocal.createUser(u);
-        return u;
+        return Response.status(200).entity(
+                u
+        ).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("id") Long uId) throws UserNotFoundException {
+    public Response getUser(@PathParam("userId") Long uId) throws UserNotFoundException {
         try {
             User u = userSessionBeanLocal.retrieveUserByUserId(uId);
             return Response.status(200).entity(
@@ -56,6 +61,26 @@ public class UsersResource {
 
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@FormParam("email") String email, @FormParam("password") String password) throws InvalidLoginException {
+        try {
+            User user = userSessionBeanLocal.userLogin(email, password);
+            JsonObject response = Json.createObjectBuilder()
+                    .add("userId", user.getUserId())
+                    .add("name", user.getName())
+                    .add("email", user.getEmail())
+                    //                    .add("photo", user.getPhoto())
+                    .build();
+            return Response.status(200).entity(response)
+                    .type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException e) {
+            throw new InvalidLoginException("Email does not exist or invalid password!");
         }
     }
 

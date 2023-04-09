@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,7 +26,7 @@ public class DayItinerary implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dayItineraryId;
     
     @Temporal(TemporalType.DATE)
@@ -31,9 +34,19 @@ public class DayItinerary implements Serializable {
     
     private String description;
     
-    private Boolean isShared;
+    private Boolean isShared = Boolean.FALSE;
     
+    @OneToMany
+    private List<PlaceLineItem> placeLineItem;
     
+    public DayItinerary() {
+        
+    }
+    
+    public DayItinerary(String description, Date date) {
+        this.description = description;
+        this.date = date;
+    }
 
     public Long getDayItineraryId() {
         return dayItineraryId;
@@ -90,6 +103,14 @@ public class DayItinerary implements Serializable {
 
     public void setIsShared(Boolean isShared) {
         this.isShared = isShared;
+    }
+
+    public List<PlaceLineItem> getPlaceLineItem() {
+        return placeLineItem;
+    }
+
+    public void setPlaceLineItem(List<PlaceLineItem> placeLineItem) {
+        this.placeLineItem = placeLineItem;
     }
     
 }
