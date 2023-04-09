@@ -158,7 +158,7 @@ const Note = ({ tripId, note }) => {
               size="small"
               value={title}
               onChange={handleTitleChange}
-              style={{ width: 600 }}
+              style={{ width: " 100%" }}
               InputProps={{
                 style: {
                   fontWeight: 700,
@@ -175,7 +175,7 @@ const Note = ({ tripId, note }) => {
             multiline
             placeholder="Write anything here: how to get around, reminder, tips, etc."
             sx={{
-              width: "50%",
+              width: "100%",
             }}
             InputProps={{
               inputComponent: TextareaAutosize,

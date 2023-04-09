@@ -60,9 +60,13 @@ const TripNotes = ({ tripId }) => {
       {isPending && <div> Loading... </div>} */}
       {notes &&
         notes.map((note) => (
-          <div key={note.noteId}>
-            <Note tripId={tripId} note={note} handleDelete={handleDelete} />
-            <button onClick={() => handleDelete(note.noteId)}>Delete2</button>
+          <div key={note.noteId} className="rowComponent">
+            <div className="noteComponent">
+              <Note tripId={tripId} note={note} handleDelete={handleDelete} />
+            </div>
+            <div className="noteDeleteButton">
+              <button onClick={() => handleDelete(note.noteId)}>Delete</button>
+            </div>
           </div>
         ))}
     </div>
