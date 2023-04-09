@@ -34,14 +34,15 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<PublicLanding />} />
                     <Route path="/Home/:userId" element={<Home />} />
-                    <Route path="/Signup" element={<Signup handleLogin={handleLogin}/>} />
-                    <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
+                    <Route path="/Signup" element={<Signup handleLogin={handleLogin} />} />
+                    <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
                     <Route path="/CreateTrip" element={<CreateTrip />} />
                     <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
                     <Route path="/Wishlist" element={<Wishlist />} />
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Explore" element={<Explore />} />
+                    <Route path="/TripNotes" element={<TripNotes />} />
                 </Routes>
             </div>
             {/* Will change this component */}

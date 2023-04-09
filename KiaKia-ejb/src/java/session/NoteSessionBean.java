@@ -87,6 +87,7 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
 
         if (trip != null && note != null) {
             trip.getNotes().remove(note);
+            em.remove(note);
         } else {
             if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");

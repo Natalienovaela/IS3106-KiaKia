@@ -131,6 +131,7 @@ public class TripsResource {
     public Response deleteNote(@PathParam("trip_id") Long tripId,
             @PathParam("note_id") Long noteId) {
         try {
+            System.out.println("Delete note triggered");
             noteSessionBeanLocal.removeNote(tripId, noteId);
             return Response.status(204).build();
         } catch (TripNotFoundException | NoteNotFoundException ex) {
