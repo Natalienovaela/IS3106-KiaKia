@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import entity.CheckList;
 import entity.Note;
 import entity.Trip;
 import error.NoteNotFoundException;
@@ -24,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.CheckListSessionBeanLocal;
 import session.NoteSessionBeanLocal;
 import session.TripSessionBeanLocal;
 
@@ -40,6 +42,9 @@ public class TripsResource {
 
     @EJB
     private NoteSessionBeanLocal noteSessionBeanLocal;
+    
+    @EJB
+    private CheckListSessionBeanLocal checkListSessionBeanLocal;
     
 
     @GET
@@ -123,7 +128,25 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-
+    
+    @POST
+    @Path("/{trip_id}/checkLists/{checkList_id")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createCheckList(@PathParam("trip_id") Long tripId, CheckList checkList) {
+        try {
+            checkListSessionBeanLocal.createNewCheckList(tripId, checkList);
+            return Response.status(200).entity(tripSessionBeanLocal.retrieveTripByTripId(tripId)).build();
+        }
+        catch(UnknownPersistenceException | TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    
     @DELETE
     @Path("/{trip_id}/notes/{note_id}")
     @Produces(MediaType.APPLICATION_JSON)

@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class Wishlist implements Serializable {
     private Long userId;
 
     @OneToMany
-    private Map<String, List<Trip>> tripFolders = new HashMap<>();
+    private List<Folder> folders = new ArrayList<>();
 
     public Long getWishlistId() {
         return wishlistId;
@@ -49,14 +50,6 @@ public class Wishlist implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public HashMap<String, List<Trip>> getTripFolders() {
-        return (HashMap<String, List<Trip>>) tripFolders;
-    }
-
-    public void setTripFolders(HashMap<String, List<Trip>> tripFolders) {
-        this.setTripFolders(tripFolders);
     }
 
     @Override
@@ -84,8 +77,12 @@ public class Wishlist implements Serializable {
         return "entity.Wishlist[ id=" + wishlistId + " ]";
     }
 
-    public void setTripFolders(Map<String, List<Trip>> tripFolders) {
-        this.tripFolders = tripFolders;
+    public List<Folder> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(List<Folder> folders) {
+        this.folders = folders;
     }
 
 }

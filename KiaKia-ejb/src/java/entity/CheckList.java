@@ -26,8 +26,11 @@ public class CheckList implements Serializable {
     
     private String title;
     private List<String> content;
-    private Boolean isShared;
+    private Boolean isShared = Boolean.FALSE;
 
+    public CheckList() {
+        
+    }
     public Long getCheckListId() {
         return checkListId;
     }
