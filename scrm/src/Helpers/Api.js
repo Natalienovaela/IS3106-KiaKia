@@ -13,13 +13,7 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/trips/group`);
     },
     getAllNotesInTrip(tripId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "GET",
-        });
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
     createNote(tripId, note) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {

@@ -81,13 +81,14 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
     }
     
     @Override
-    public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
+    public boolean removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         Note note = em.find(Note.class, noteId);
 
         if (trip != null && note != null) {
             trip.getNotes().remove(note);
             em.remove(note);
+            return true;
         } else {
             if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
@@ -96,6 +97,7 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
                 throw new NoteNotFoundException("Note not found in the database");
             }
         }
+        return false;
     }
     
     @Override

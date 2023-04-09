@@ -6,7 +6,7 @@ import Api from "../../Helpers/Api";
 
 //no need?? reloadData passed should be able to update all the trip components (autosave or some sort)
 const Note = ({ tripId, note }) => {
-  const noteId = note.noteId;
+  // const noteId = note.noteId;
   const [title, setTitle] = React.useState(note.title);
   const [content, setContent] = React.useState(note.content);
 
@@ -18,9 +18,9 @@ const Note = ({ tripId, note }) => {
     setTitle(event.target.value);
   };
 
-  const handleDelete = () => {
-    Api.deleteNote(tripId, noteId);
-  };
+  // const handleDelete = () => {
+  //   Api.deleteNote(tripId, noteId);
+  // };
 
   // highly likely got error here
   // React.useEffect(() => {
@@ -69,7 +69,9 @@ const Note = ({ tripId, note }) => {
           />
         )}
 
-        {note && <button onClick={handleDelete}>Delete</button>}
+        {/* {note && (
+          <button onClick={(e) => handleDelete(e, note.noteId)}>Delete</button>
+        )} */}
       </Stack>
     </div>
   );

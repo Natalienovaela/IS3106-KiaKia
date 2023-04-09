@@ -25,7 +25,7 @@ public interface NoteSessionBeanLocal {
 
     public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
 
-    public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException;
+    public boolean removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException;
 
     public List<Note> retrieveAllNotesInTrip(Long tripId) throws TripNotFoundException;
     
