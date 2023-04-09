@@ -102,9 +102,12 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
         Trip trip;
         try {
             trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+            System.out.println(trip.getTripId());
         } catch (TripNotFoundException ex) {
+            System.out.println("Exception found");
             throw new TripNotFoundException(ex.getMessage());
         }
+        System.out.println(trip.getNotes());
         return trip.getNotes();
         
     }

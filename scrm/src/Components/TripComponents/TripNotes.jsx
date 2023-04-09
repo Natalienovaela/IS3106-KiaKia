@@ -2,13 +2,21 @@ import useFetch from "../../Hooks/useFetch";
 import Note from "./Note";
 
 const TripNotes = ({ tripId }) => {
+  // THE REAL CODE
+  // const {
+  //   data: notes,
+  //   isPending,
+  //   error,
+  // } = useFetch(
+  //   `http://localhost:8080/KiaKia/webresources/trips/${tripId}/notes`
+  // );
+
+  //test code
   const {
     data: notes,
     isPending,
     error,
-  } = useFetch(
-    `http://localhost:8080/KiaKia/webresources/trips/${tripId}/notes`
-  );
+  } = useFetch(`http://localhost:8080/KiaKia/webresources/trips/1/notes`);
 
   return (
     <div className="trip-notes">

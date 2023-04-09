@@ -24,11 +24,12 @@ const NoteTest = ({ note }) => {
           <>
             <TextField
               variant="standard"
+              fullWidth
               placeholder="Title of your note"
               size="small"
               value={title}
               onChange={handleTitleChange}
-              style={{ width: 100 }}
+              style={{ width: 600 }}
               InputProps={{
                 style: {
                   fontWeight: 700,

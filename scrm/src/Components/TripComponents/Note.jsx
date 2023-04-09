@@ -1,6 +1,7 @@
 import * as React from "react";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import TextField from "@material-ui/core/TextField";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
+import TextField from "@mui/material/TextField";
+import { Stack } from "@mui/material";
 
 //no need?? reloadData passed should be able to update all the trip components (autosave or some sort)
 const Note = ({ tripId, note }) => {
@@ -16,50 +17,96 @@ const Note = ({ tripId, note }) => {
     setTitle(event.target.value);
   };
 
-  const handleDelete = () => {
-    fetch("http://localhost:8000/blogs/" + id, {
-      method: "DELETE",
-    }).then(() => {
-      history.push("/");
-    });
-  };
+  // const handleDelete = () => {
+  //   fetch("http://localhost:8000/blogs/" + id, {
+  //     method: "DELETE",
+  //   }).then(() => {
+  //     history.push("/");
+  //   });
+  // };
 
   // highly likely got error here
-  React.useEffect(() => {
-    // reloadData(); or {reloadData}; ???
-    const note = { noteId, title, content };
-    Api.updateNote(tripId, noteId, note);
-  }, [title, content]);
+  // React.useEffect(() => {
+  //   // reloadData(); or {reloadData}; ???
+  //   const note = { noteId, title, content };
+  //   Api.updateNote(tripId, noteId, note);
+  // }, [title, content]);
 
   return (
-    <div className="note">
-      {noteId && (
-        <>
-          <TextField
-            fullWidth
-            placeholder="Title of your note"
-            value={title}
-            onChange={handleTitleChange}
-          />
-          <button onClick={handleDelete}>Delete</button>
-        </>
-      )}
+    <div className="trip-component">
+      <Stack>
+        {note && (
+          <>
+            <TextField
+              variant="standard"
+              fullWidth
+              placeholder="Title of your note"
+              size="small"
+              value={title}
+              onChange={handleTitleChange}
+              style={{ width: 600 }}
+              InputProps={{
+                style: {
+                  fontWeight: 700,
+                  fontSize: 19,
+                },
+                disableUnderline: true,
+              }}
+            />
+          </>
+        )}
 
-      {noteId && (
-        <TextField
-          fullWidth
-          multiline
-          placeholder="Write anything here: how to get around, reminder, tips, etc."
-          InputProps={{
-            inputComponent: TextareaAutosize,
-            rows: 3,
-          }}
-          value={content}
-          onChange={handleContentChange}
-        />
-      )}
+        {note && (
+          <TextField
+            multiline
+            placeholder="Write anything here: how to get around, reminder, tips, etc."
+            sx={{
+              width: "50%",
+            }}
+            InputProps={{
+              inputComponent: TextareaAutosize,
+              rows: 3,
+            }}
+            value={content}
+            onChange={handleContentChange}
+          />
+        )}
+
+        {/* <button onClick={handleDelete}>Delete</button> */}
+      </Stack>
     </div>
   );
 };
+
+//   return (
+//     <div className="note">
+//       {noteId && (
+//         <>
+//           <TextField
+//             fullWidth
+//             placeholder="Title of your note"
+//             value={title}
+//             onChange={handleTitleChange}
+//           />
+//           <button onClick={handleDelete}>Delete</button>
+//         </>
+//       )}
+
+//       {noteId && (
+//         <TextField
+//           fullWidth
+//           multiline
+//           placeholder="Write anything here: how to get around, reminder, tips, etc."
+//           InputProps={{
+//             inputComponent: TextareaAutosize,
+//             rows: 3,
+//           }}
+//           value={content}
+//           onChange={handleContentChange}
+//         />
+//       )}
+//     </div>
+//   );
+// };
 
 export default Note;

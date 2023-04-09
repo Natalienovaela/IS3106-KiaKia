@@ -22,6 +22,7 @@ const useFetch = (url) => {
       })
       .then((data) => {
         //a javascript object (array) format
+        console.log(data);
         setData(data);
         setIsPending(false);
         setError(null);

@@ -69,6 +69,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllNotesInTrip(@PathParam("trip_id") Long tripId) {
         List<Note> notes;
+        System.out.println("Retrieve all notes in trip triggered");
         try {
             notes = noteSessionBeanLocal.retrieveAllNotesInTrip(tripId);
             return Response.status(200).entity(notes).build();

@@ -10,6 +10,7 @@ import Footer from "./Components/Footer/Footer";
 import TripContent from "./Pages/TripContent/TripContent";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TripNotesTest from './Components/TripComponents/TripNotesTest';
+import TripNotes from './Components/TripComponents/TripNotes';
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Explore" element={<Explore />} />
                     <Route path="/TripNotesTest" element={<TripNotesTest />} />
+                    <Route path="/TripNotes" element={<TripNotes />} />
                 </Routes>
             </div>
             {/* Will change this component */}
