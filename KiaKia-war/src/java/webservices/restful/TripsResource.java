@@ -97,7 +97,7 @@ public class TripsResource {
     @Path("/{trip_id}/notes")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createNote(@PathParam("trip_id") Long tripId, Note n) {
+    public Response createNote(@PathParam("trip_id") Long tripId) {
 
         try {
             System.out.println("createNote triggered");

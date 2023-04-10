@@ -36,7 +36,7 @@ const TripNotes = ({ tripId }) => {
         console.log(data);
       })
       .catch((err) => {
-        throw Error(err.message);
+        console.log(err.message);
       });
   };
 
@@ -47,25 +47,31 @@ const TripNotes = ({ tripId }) => {
     });
   };
 
-  // //test code
-  // const {
-  //   data: notes,
-  //   isPending,
-  //   error,
-  // } = useFetch(`http://localhost:8080/KiaKia-war/webresources/trips/1/notes`);
+  const handleCreateNote = () => {
+    Api.createNote(tripId).then(() => {
+      reloadNotes();
+    });
+  };
 
   return (
     <div className="trip-notes">
       {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
+      <div>
+        <button className="note btn container" onClick={handleCreateNote}>
+          Create Note
+        </button>
+      </div>
       {notes &&
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">
             <div className="noteComponent">
               <Note tripId={tripId} note={note} handleDelete={handleDelete} />
             </div>
-            <div className="noteDeleteButton">
-              <button onClick={() => handleDelete(note.noteId)}>Delete</button>
+            <div>
+              <button className="btn" onClick={() => handleDelete(note.noteId)}>
+                Delete
+              </button>
             </div>
           </div>
         ))}
