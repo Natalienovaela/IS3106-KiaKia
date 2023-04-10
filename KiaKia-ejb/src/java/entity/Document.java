@@ -25,10 +25,9 @@ public class Document implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long documentId;
-    private String name;
-    private String type;
-    @Lob
-    private byte[] data;
+    private String fileName;
+    private String fileType;
+    private String filePath;
     private Date dateUploaded;
     private DocumentCategoryEnum category;
 
@@ -65,28 +64,20 @@ public class Document implements Serializable {
         return "entity.Document[ id=" + documentId + " ]";
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getType() {
-        return type;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public Date getDateUploaded() {
@@ -103,6 +94,14 @@ public class Document implements Serializable {
 
     public void setCategory(DocumentCategoryEnum category) {
         this.category = category;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
     
 }
