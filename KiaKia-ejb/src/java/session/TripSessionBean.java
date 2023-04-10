@@ -6,6 +6,7 @@
 package session;
 
 import entity.CheckList;
+import entity.Folder;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
@@ -13,6 +14,7 @@ import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
+import error.FolderNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
@@ -103,6 +105,28 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
 
     @Override
+    public void moveTrip(Long fromFolderId, Long toFolderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder fromFolder = em.find(Folder.class, fromFolderId);
+            try {
+                Folder toFolder = em.find(Folder.class, toFolderId);
+                try {
+                    Trip trip = em.find(Trip.class, tripId);
+                    fromFolder.getTrips().remove(trip);
+                    toFolder.getTrips().add(trip);
+
+                } catch (Exception ex) {
+                    throw new TripNotFoundException("Trip not found");
+                }
+            } catch (Exception ex) {
+                throw new FolderNotFoundException("Folder does not exist");
+            }
+        } catch (Exception ex) {
+            throw new FolderNotFoundException("Folder does not exist");
+        }
+    }
+
+    @Override
     public List<Trip> getAllPersonalTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
     }
@@ -136,7 +160,6 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new TripNotFoundException("Trip not found in the database");
         }
     }
-    
 
     @Override
     public void addCheckList(Long tripId, CheckList checkList) throws TripNotFoundException {
@@ -263,6 +286,32 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
 
+    }
+
+    @Override
+    public void removeTrip(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder folder = em.find(Folder.class, folderId);
+            try {
+                Trip trip = em.find(Trip.class, tripId);
+
+                if (trip != null && folder != null) {
+                    folder.getTrips().remove(trip);
+                    em.remove(trip);
+                } else {
+                    if (trip == null) {
+                        throw new TripNotFoundException("Trip not found in the database");
+                    }
+                    if (folder == null) {
+                        throw new CheckListNotFoundException("Folder not found in the database");
+                    }
+                }
+            } catch (Exception ex) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+        } catch (Exception ex) {
+            throw new FolderNotFoundException("Folder not found in the database");
+        }
     }
 
 }
