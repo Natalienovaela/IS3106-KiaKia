@@ -5,18 +5,18 @@
  */
 package session;
 
+import entity.Budget;
 import entity.CheckList;
+import entity.DayItinerary;
+import entity.Expense;
 import entity.Folder;
 import entity.Note;
-import entity.Poll;
+import entity.PlaceLineItem;
 import entity.Trip;
-import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
 import error.FolderNotFoundException;
-import error.NoteNotFoundException;
-import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.util.List;
@@ -311,6 +311,66 @@ public class TripSessionBean implements TripSessionBeanLocal {
             }
         } catch (Exception ex) {
             throw new FolderNotFoundException("Folder not found in the database");
+        }
+    }
+    
+    @Override
+    //poll and document cannot be shared
+    public boolean shareWholeTrip(Long tripId) throws TripNotFoundException {
+        try {
+            Trip trip = retrieveTripByTripId(tripId);
+            trip.setIsShared(Boolean.TRUE);
+            for(Note n : trip.getNotes()) {
+                n.setIsShared(true);
+            }
+            for(CheckList c : trip.getCheckLists()) {
+                c.setIsShared(true);
+            }
+            for(Budget b : trip.getBudgets()) {
+                b.setIsShared(true);
+            }
+            for(Expense e : trip.getExpenses()) {
+                e.setIsShared(true);
+            }
+            for(DayItinerary d : trip.getItinerary()) {
+                d.setIsShared(Boolean.TRUE);
+            }
+            for(PlaceLineItem pl : trip.getBucketList()) {
+                pl.setIsShared(Boolean.TRUE);
+            }
+            return true;
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    //for testing
+    public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException {
+        try {
+            Trip trip = retrieveTripByTripId(tripId);
+            trip.setIsShared(Boolean.FALSE);
+            for(Note n : trip.getNotes()) {
+                n.setIsShared(false);
+            }
+            for(CheckList c : trip.getCheckLists()) {
+                c.setIsShared(false);
+            }
+            for(Budget b : trip.getBudgets()) {
+                b.setIsShared(false);
+            }
+            for(Expense e : trip.getExpenses()) {
+                e.setIsShared(false);
+            }
+            for(DayItinerary d : trip.getItinerary()) {
+                d.setIsShared(Boolean.FALSE);
+            }
+            for(PlaceLineItem pl : trip.getBucketList()) {
+                pl.setIsShared(Boolean.FALSE);
+            }
+            return true;
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
         }
     }
 

@@ -62,5 +62,9 @@ public interface TripSessionBeanLocal {
     public void removeTrip(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
 
     public void moveTrip(Long fromFolderId, Long toFolderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
+
+    public boolean shareWholeTrip(Long tripId) throws TripNotFoundException;
+
+    public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException;
     
 }

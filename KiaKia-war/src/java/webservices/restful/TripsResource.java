@@ -184,6 +184,40 @@ public class TripsResource {
         }
     }
     
+    @PUT
+    @Path("/{trip_id}/share")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response shareWholeTrip(@PathParam("trip_id") Long tripId) {
+        try {
+            System.out.println("share whole trip triggered");
+            boolean res = tripSessionBeanLocal.shareWholeTrip(tripId);
+            return Response.status(200).entity(res).type(MediaType.APPLICATION_JSON).build();
+        } catch (TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @PUT
+    @Path("/{trip_id}/unshareWhole")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unshareWholeTrip(@PathParam("trip_id") Long tripId) {
+        try {
+            System.out.println("UNshare whole trip triggered");
+            boolean res = tripSessionBeanLocal.unshareWholeTrip(tripId);
+            return Response.status(200).entity(res).type(MediaType.APPLICATION_JSON).build();
+        } catch (TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
     
 
 }
