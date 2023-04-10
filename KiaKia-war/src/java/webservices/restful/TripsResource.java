@@ -100,8 +100,11 @@ public class TripsResource {
     public Response createNote(@PathParam("trip_id") Long tripId, Note n) {
 
         try {
-            noteSessionBeanLocal.createNewNote(n, tripId);
+            System.out.println("createNote triggered");
+            noteSessionBeanLocal.createNewNote(tripId);
+            System.out.println("createNewNote");
             Trip trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+            System.out.println("retrieveTrip");
             return Response.status(200).entity(trip).build();
         } catch (UnknownPersistenceException | TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()

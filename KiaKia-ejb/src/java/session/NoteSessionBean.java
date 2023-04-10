@@ -33,11 +33,12 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
+    public Long createNewNote(Long tripId) throws UnknownPersistenceException, TripNotFoundException {
         try {
             Trip trip = em.find(Trip.class, tripId);
-
-            if (trip != null && note != null) {
+            System.out.println("trip id" + trip.getTripId());
+            if (trip != null) {
+                Note note = new Note("", "", false);
                 em.persist(note);
                 trip.getNotes().add(note);
                 em.flush();
