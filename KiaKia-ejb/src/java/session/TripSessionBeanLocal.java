@@ -64,6 +64,9 @@ public interface TripSessionBeanLocal {
 
     public void moveTrip(Long fromFolderId, Long toFolderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
 
+    public boolean shareWholeTrip(Long tripId) throws TripNotFoundException;
+
+    public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException;
     public List<Trip> searchTripByCityOrCountry(String city, String country) throws CityOrCountryNotSelected;
 
     public void linkTripWithWishlistFolder(Long tripId, Long folderId) throws TripNotFoundException, FolderNotFoundException;
