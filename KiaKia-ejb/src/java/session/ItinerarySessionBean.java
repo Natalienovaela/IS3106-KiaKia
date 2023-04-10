@@ -69,6 +69,29 @@ public class ItinerarySessionBean implements ItinerarySessionBeanLocal {
         return itineraries;
 
     }
+    
+    public void updateItinerary(Long tripId, List<DayItinerary> itineraries) throws TripNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            
+            for(DayItinerary itinerary: itineraries) {
+                try {
+                    DayItinerary oldItinerary = em.find(DayItinerary.class, itinerary.getDayItineraryId());
+                    oldItinerary.setDate(itinerary.getDate());
+                    oldItinerary.setDescription(itinerary.getDescription());
+                    oldItinerary.setIsShared(itinerary.getIsShared());
+                    oldItinerary.setPlaceLineItem(itinerary.getPlaceLineItem());
+                }
+                catch(Exception ex) {
+                    throw new DayItineraryNotFoundException("Day Itinerary not found");
+                }
+            }
+            trip.setItinerary(itineraries);
+        }
+        catch(Exception ex) {
+            throw new TripNotFoundException("Trip not found");
+        }
+    }
 
     /*
     public DayItinerary addPlaceLineItemToItineraries(Long itineraryId, Long placeLineItemId) throws PlaceLineItemNotFoundException, DayItineraryNotFoundException {

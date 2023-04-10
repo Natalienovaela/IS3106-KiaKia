@@ -32,10 +32,36 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
 
+    //for actual app
+    @Override
+    public Long createNewNote(Long tripId) throws UnknownPersistenceException, TripNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            System.out.println("trip id" + trip.getTripId());
+            if (trip != null) {
+                Note note = new Note("", "", false);
+                em.persist(note);
+                trip.getNotes().add(note);
+                em.flush();
+                return note.getNoteId();
+            } else {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+
+        } catch (PersistenceException ex) {
+
+            throw new UnknownPersistenceException(ex.getMessage());
+
+        }
+    }
+    
+    //for data init
     @Override
     public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
         try {
             Trip trip = em.find(Trip.class, tripId);
+            System.out.println("trip id" + trip.getTripId());
+            System.out.println(note);
 
             if (trip != null && note != null) {
                 em.persist(note);

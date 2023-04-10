@@ -9,6 +9,7 @@ import entity.CheckList;
 import error.CheckListNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -21,5 +22,7 @@ public interface CheckListSessionBeanLocal {
     public void createNewCheckList(Long tripId, CheckList checkList) throws UnknownPersistenceException, TripNotFoundException;
 
     public void updateCheckList(CheckList checkList) throws CheckListNotFoundException;
+
+    public List<CheckList> getAllCheckListInTrip(Long tripId) throws TripNotFoundException;
     
 }

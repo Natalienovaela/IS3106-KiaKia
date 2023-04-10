@@ -23,7 +23,9 @@ public interface NoteSessionBeanLocal {
 
     public Note retrieveNoteByNoteId(Long noteId) throws NoteNotFoundException;
 
-    public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
+    public Long createNewNote(Long tripId) throws UnknownPersistenceException, TripNotFoundException;
+    
+    public Long createNewNote(Note n, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
 
     public boolean removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException;
 

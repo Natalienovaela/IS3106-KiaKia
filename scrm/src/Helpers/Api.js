@@ -15,14 +15,13 @@ const Api = {
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
-    createNote(tripId, note) {
+    createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify(note),
         });
     },
     updateNote(tripId, noteId, note) {
@@ -39,6 +38,24 @@ const Api = {
     deleteNote(tripId, noteId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes/${noteId}`, {
             method: "DELETE",
+        });
+    },
+    shareTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/shareWhole`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+    unshareTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/unshareWhole`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
         });
     },
 
@@ -94,7 +111,7 @@ const Api = {
 
     getUser(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
-    }
+    },
 };
 
 export default Api;

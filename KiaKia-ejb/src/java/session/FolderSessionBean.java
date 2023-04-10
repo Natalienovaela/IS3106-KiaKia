@@ -84,11 +84,12 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
     }
     
     @Override
-    public void createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException {
+    public Folder createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException {
         try {
             Wishlist wishlist = em.find(Wishlist.class, wishlistId);
             em.persist(folder);
             wishlist.getFolders().add(folder);
+            return folder;
         }
         catch(Exception ex) {
             throw new WishlistNotFoundException("Wishlist does not exist");

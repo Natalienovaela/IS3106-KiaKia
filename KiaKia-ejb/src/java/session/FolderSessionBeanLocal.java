@@ -24,7 +24,7 @@ public interface FolderSessionBeanLocal {
 
     public void deleteFolder(Long wishlistId, Long folderId) throws WishlistNotFoundException;
 
-    public void createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException;
+    public Folder createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException;
 
     public void updateFolderName(Folder folder) throws FolderNotFoundException;
     
