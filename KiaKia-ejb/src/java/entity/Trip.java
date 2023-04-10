@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -84,9 +86,11 @@ public class Trip implements Serializable {
     private List<UserExpense> userExpenses;
     
     @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
     private CountryEnum country;
     
     @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
     private CityEnum city;
     
     public Trip() {

@@ -39,9 +39,9 @@ public class ExploreResource {
     @Path("/searchTripByCityOrCountry")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response searchTripByCityOrCountry(String city, String country) {
+    public Response searchTripByCityOrCountry(JsonObject request) {
         try {
-            List<Trip> trip = tripSessionBeanLocal.searchTripByCityOrCountry(city, country);
+            List<Trip> trip = tripSessionBeanLocal.searchTripByCityOrCountry(request.getString("city"), request.getString("country"));
             return Response.status(200).entity(trip).type(MediaType.APPLICATION_JSON).build();
         }
         catch(CityOrCountryNotSelected ex) {
@@ -57,9 +57,9 @@ public class ExploreResource {
     @Path("/searchPlaceByCityOrCountry")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response searchPlaceByCityOrCountry(String city, String country) {
+    public Response searchPlaceByCityOrCountry(JsonObject request) {
         try {
-            List<Place> place = placeSessionBeanLocal.searchPlaceByCityOrCountry(city, country);
+            List<Place> place = placeSessionBeanLocal.searchPlaceByCityOrCountry(request.getString("city"), request.getString("country"));
             return Response.status(200).entity(place).type(MediaType.APPLICATION_JSON).build();
         }
         catch(CityOrCountryNotSelected ex) {

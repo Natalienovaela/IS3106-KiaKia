@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,9 +36,11 @@ public class Place implements Serializable {
     private String description;
     
     @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
     private CountryEnum country;
     
     @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
     private CityEnum city;
 
     
