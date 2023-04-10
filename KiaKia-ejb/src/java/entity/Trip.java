@@ -5,19 +5,18 @@
  */
 package entity;
 
+import enumeration.CityEnum;
+import enumeration.CountryEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -84,7 +83,11 @@ public class Trip implements Serializable {
     @OneToMany
     private List<UserExpense> userExpenses;
     
-    //private enum countryEnum;
+    @ManyToOne(optional = false)
+    private CountryEnum country;
+    
+    @ManyToOne(optional = false)
+    private CityEnum city;
     
     public Trip() {
         
@@ -271,6 +274,22 @@ public class Trip implements Serializable {
 
     public void setUserExpenses(List<UserExpense> userExpenses) {
         this.userExpenses = userExpenses;
+    }
+
+    public CountryEnum getCountry() {
+        return country;
+    }
+
+    public void setCountry(CountryEnum country) {
+        this.country = country;
+    }
+
+    public CityEnum getCity() {
+        return city;
+    }
+
+    public void setCity(CityEnum city) {
+        this.city = city;
     }
     
 }

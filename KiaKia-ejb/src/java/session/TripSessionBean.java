@@ -14,6 +14,7 @@ import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
+import error.CityOrCountryNotSelected;
 import error.FolderNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
@@ -311,6 +312,34 @@ public class TripSessionBean implements TripSessionBeanLocal {
             }
         } catch (Exception ex) {
             throw new FolderNotFoundException("Folder not found in the database");
+        }
+    }
+
+    @Override
+    public void linkTripWithWishlistFolder(Long tripId, Long folderId) throws TripNotFoundException, FolderNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            try {
+                Folder folder = em.find(Folder.class, folderId);
+                folder.getTrips().add(trip);
+            } catch (Exception ex) {
+                throw new FolderNotFoundException("Folder not found in the database");
+            }
+        } catch (Exception ex) {
+            throw new TripNotFoundException("Trip not found in the database");
+        }
+    }
+    
+    @Override
+    public List<Trip> searchTripByCityOrCountry(String city, String country) throws CityOrCountryNotSelected {
+         if(city != null) {
+            return em.createQuery("SELECT t FROM Trip t WHERE t.city = :city").setParameter("city", city).getResultList();
+        }
+        else if(country != null) {
+            return em.createQuery("SELECT t FROM Trip t WHERE t.country = :country").setParameter("country", country).getResultList();
+        }
+        else {
+            throw new CityOrCountryNotSelected("City or Country is not specified");
         }
     }
 
