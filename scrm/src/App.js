@@ -16,9 +16,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userId, setUserId] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = (userId) => {
         setIsLoggedIn(true);
+        setUserId(userId);
     };
 
     const handleLogout = () => {
@@ -27,14 +29,14 @@ const App = () => {
 
     return (
         <>
-            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId}/>
             <div className="container">
                 <Routes>
                     <Route path="/" element={<PublicLanding />} />
                     <Route path="/Home/:userId" element={<Home />} />
                     <Route path="/Signup" element={<Signup handleLogin={handleLogin}/>} />
                     <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
-                    <Route path="/CreateTrip" element={<CreateTrip />} />
+                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId}/>} />
                     <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
                     <Route path="/Wishlist" element={<Wishlist />} />

@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
 import './navbar.css'
 import { MdOutlineTravelExplore } from 'react-icons/md'
 import { AccountCircle } from '@mui/icons-material';
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { TbGridDots } from 'react-icons/tb'
+import Api from '../../Helpers/Api';
 
-function Navbar({ isLoggedIn, handleLogout }) {
-  const [active, setActive] = useState('navBar')
+function Navbar({ isLoggedIn, handleLogout, userId }) {
+  const [active, setActive] = useState('navBar');
   const navigate = useNavigate();
+  const [name, setName] = useState('');
 
   //function to toggle bar
   const showNav = () => {
@@ -24,6 +26,18 @@ function Navbar({ isLoggedIn, handleLogout }) {
     handleLogout(false);
     navigate('/');
   }
+
+  useEffect(() => {
+    Api.getUser(userId)
+      .then(response => response.json())
+      .then(data => {
+        const name = data.name;
+        setName(name);
+      })
+      .catch(error => {
+        console.log(`Error retrieving user data for user with ID ${userId}: ${error}`);
+      });
+  }, [userId]);
 
   return (
     <section className='navBarSection'>
@@ -52,11 +66,11 @@ function Navbar({ isLoggedIn, handleLogout }) {
                 </li>
 
                 <button className="btn">
-                  <CustomLink to="/CreateTrip">Plan A Trip</CustomLink>
+                  <CustomLink to={`/CreateTrip/${userId}`}>Plan A Trip</CustomLink>
                 </button>
 
                 <span className="user">
-                  Hello, Natasha!
+                  Hello, {name}!
                 </span>
 
                 <li className="profile">
