@@ -2,7 +2,7 @@ import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
 import Note from "./Note";
 
-const TripNotes = ({ tripId }) => {
+const ShareButton = ({ tripId }) => {
   // const {
   //   data: notes,
   //   isPending,
@@ -11,7 +11,7 @@ const TripNotes = ({ tripId }) => {
   //   `http://localhost:8080/KiaKia-war/webresources/trips/${tripId}/notes`
   // );
 
-  const [notes, setNotes] = useState([]);
+  const [isShared, setIsShared] = useState(false);
 
   useEffect(() => {
     reloadNotes();
