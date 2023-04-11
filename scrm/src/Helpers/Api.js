@@ -184,7 +184,7 @@ const Api = {
                 body: JSON.stringify(data),
             }
         )
-    }
+    },
     //explore
     searchTripByCityOrCountry(data) {
         return fetch(`${SERVER_PREFIX}/explore/searchTripByCityOrCountry`,
