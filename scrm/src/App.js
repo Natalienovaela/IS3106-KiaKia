@@ -14,6 +14,7 @@ import Login from "./Pages/Login/Login";
 import CreateTrip from "./Pages/CreateTrip/CreateTrip";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TripNotes from './Components/TripComponents/TripNotes';
+import Poll from './Components/TripComponents/Poll';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,6 +43,7 @@ const App = () => {
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Explore" element={<Explore />} />
                     <Route path="/TripNotes" element={<TripNotes />} />
+                    <Route path="/Poll" element={<Poll />} />
                 </Routes>
             </div>
             {/* Will change this component */}

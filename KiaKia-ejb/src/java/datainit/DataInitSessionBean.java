@@ -6,12 +6,14 @@
 package datainit;
 
 import entity.Note;
+import entity.Poll;
 import entity.Trip;
 import entity.User;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -22,6 +24,7 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import session.NoteSessionBeanLocal;
+import session.PollSessionBeanLocal;
 import session.UserSessionBeanLocal;
 
 /**
@@ -32,6 +35,9 @@ import session.UserSessionBeanLocal;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "PollSessionBeanLocal")
+    private PollSessionBeanLocal pollSessionBeanLocal;
 
     @EJB(name = "NoteSessionBeanLocal")
     private NoteSessionBeanLocal noteSessionBeanLocal;
@@ -81,7 +87,19 @@ public class DataInitSessionBean {
             noteSessionBeanLocal.createNewNote(note8, trip.getTripId());
             Note note9 = new Note("My 9th Note", "bla", false);
             noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
-            
+            HashMap<Long, String> options = new HashMap<>();
+            options.put(1L, "Marina Bay Sands");
+            options.put(2L, "Gardens By The Bay");
+            options.put(3L, "Sentosa");
+            User creator = em.find(User.class, 1l);
+            Poll poll1 = new Poll("Where you wanna go the most in Singapore?", options, creator);
+            pollSessionBeanLocal.createNewPoll(poll1, trip.getTripId());
+            HashMap<Long, String> options2 = new HashMap<>();
+            options2.put(1L, "Chicken Rice");
+            options2.put(2L, "Laksa");
+            options2.put(3L, "Prata");
+            Poll poll2 = new Poll("What you wanna eat the most in Singapore?", options2, creator);
+            pollSessionBeanLocal.createNewPoll(poll2, trip.getTripId());
 
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
