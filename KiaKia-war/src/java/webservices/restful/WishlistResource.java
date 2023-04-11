@@ -48,6 +48,7 @@ public class WishlistResource {
     }
 
     @POST
+    @Path("{wishlist_id}/folders")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewFolder(@PathParam("wishlist_id") Long wishlistId, Folder folder) {
@@ -66,7 +67,7 @@ public class WishlistResource {
     }
     
     @GET
-    @Path("{wishlist_id}/allFolder")
+    @Path("{wishlist_id}/folders")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllFolder(@PathParam("wishlist_id") Long wishlistId) {
         try {
@@ -83,7 +84,7 @@ public class WishlistResource {
     }
     
     @PUT
-    @Path("/folders")
+    @Path("{wishlist_id}/folders/{folder_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFolderName(Folder folder) {

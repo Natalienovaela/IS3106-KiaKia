@@ -92,7 +92,7 @@ public class ItineraryResource {
     
     
     @POST
-    @Path("/{itinerary_id}/places/place_id")
+    @Path("/{itinerary_id}/places/{place_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPlaceLineItem(@PathParam("itinerary_id") Long itineraryId, @PathParam("place_id") Long placeId) {
         try {
@@ -108,7 +108,7 @@ public class ItineraryResource {
     }
     
     @DELETE
-    @Path("{itinerary_id}/placeLineItems/placeLineItem_id")
+    @Path("{itinerary_id}/placeLineItems/{placeLineItem_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response removePlaceLineItem(@PathParam("itinerary_id") Long itineraryId, @PathParam("plaeLineItem_id") Long placeLineItemId) {
         try {

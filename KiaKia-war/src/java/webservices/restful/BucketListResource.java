@@ -33,6 +33,7 @@ public class BucketListResource {
     private PlaceLineItemSessionBeanLocal placeLineItemSessionBeanLocal;
     
     @POST
+    @Path("/explore/{place_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBucketListItem(@PathParam("trip_id") Long tripId, @PathParam("place_id") Long placeId) {
         try {
@@ -48,7 +49,7 @@ public class BucketListResource {
     }
     
     @DELETE
-    @Path("{bucketListItem_id")
+    @Path("/{bucketListItem_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeBucketListItem(@PathParam("trip_id") Long tripId, @PathParam("bucketListItem_id") Long placeLineItemId) {
         try {
