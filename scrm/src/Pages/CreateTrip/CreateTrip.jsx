@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, IconButton } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CreateTrip.css';
 import Api from '../../Helpers/Api';
 import { DatePicker } from "antd";
 import moment from 'moment-timezone';
 import dayjs from 'dayjs';
+import InviteTripmates from './InviteTripmates/InviteTripmates';
 const { RangePicker } = DatePicker;
 
 function CreateTrip({ userId }) {
+  const [open, setOpen] = useState(false);
   const [country, setCountry] = useState('');
+  const [name, setName] = useState('');
   const [startDate, setStartDate] = useState(moment("2023-05-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
   const [endDate, setEndDate] = useState(moment("2023-05-05", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
   const [emails, setEmails] = useState([]);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const handleInviteOpen = () => {
+    setOpen(true);
+  };
+
+  const handleInviteClose = () => {
+    setOpen(false);
+  };
 
   const handleEmailChange = (event) => {
     const emailValue = event.target.value;
@@ -25,32 +36,20 @@ function CreateTrip({ userId }) {
   const handleCountryChange = (event) => {
     const countryValue = event.target.value;
     setCountry(countryValue);
+    setName(countryValue);
     setErrors((prevErrors) => ({
-        ...prevErrors,
-        country: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(countryValue) ? "Email must be a valid email address!" : undefined
+      ...prevErrors,
+      country: countryValue.trim().length === 0 ? "Country cannot be empty!" : undefined,
     }));
 };
 
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
-    console.log(start);
     const end = value[1].toDate();
-    console.log(end);
 
     if (end > start) {
       setStartDate(start, () => { console.log(startDate) });
       setEndDate(end, () => { console.log(endDate) });
-
-      // Api.createItinerary(1, {
-      //   startDate: start,
-      //   endDate: end,
-      // })
-      //   .then((data) => {
-      //     setItinerary(data);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
     } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -63,20 +62,20 @@ function CreateTrip({ userId }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formErrors = {};
+    if (country.trim().length === 0) {
+      formErrors.country = "Country cannot be empty!";
+    }
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
-      // Api.loginUser(email, password)
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     const userId = data.userId;
-      //     navigate(`/Home/${userId}`);
-      //     handleLogin(true);
-      //   })
-      //   .catch((error) => {
-      //     console.log(email + " " + password);
-      //     setErrors({ submit: error.message });
-      //   });
+      Api.createTrip({ name, startDate, endDate}, userId)
+        .then(response => response.json())
+        .then(data => {
+          navigate(`/TripContent`);
+        })
+        .catch((error) => {
+          setErrors({ submit: error.message });
+        });
     }
   };
   return (
@@ -96,7 +95,7 @@ function CreateTrip({ userId }) {
         />
         <Typography align="left" marginTop={2}>Dates</Typography>
         <RangePicker style={{ marginTop: '5px', background: 'transparent', width: "100%", height: "55px" }} onChange={handleDateRangeChange} value={[dayjs(startDate.toString()), dayjs(endDate.toString())]} />
-        <Button sx={{ marginTop: 3 }} startIcon={<Add />}>
+        <Button sx={{ marginTop: 3 }} onClick={() => setOpen(true)} startIcon={<Add />}>
           Invite tripmates
         </Button>
         {errors.submit && (
@@ -104,7 +103,6 @@ function CreateTrip({ userId }) {
         )}
         <Button
           variant="contained"
-          color="warning"
           type="submit"
           sx={{ marginTop: 3 }}
           className="createtrip-submit-button"
@@ -112,8 +110,9 @@ function CreateTrip({ userId }) {
         >
           Create Trip
         </Button>
+        <InviteTripmates open={open} onClose={handleInviteClose} />
       </form>
     </Box>
-  );
+  )
 }
 export default CreateTrip;

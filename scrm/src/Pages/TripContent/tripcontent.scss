@@ -1,0 +1,93 @@
+.trip-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    .trip-rough-outline {
+        padding: 2rem;
+        margin-bottom: 2rem;
+        p {
+            font-size: 20px;
+            font-weight: 500;
+        }
+    }
+}
+
+.banner {
+    width: 100%;
+    min-height: 380px;
+    max-height: 380px;
+    position: relative;
+    display: flex;
+    
+
+    .banner-img {        
+        position: absolute;
+        height: 100%;
+    }
+    .banner-details {
+        position: absolute;
+        z-index: 1000;
+        color: white;
+        bottom: 3rem;
+        left: 2rem;
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 500;
+        }
+
+        .banner-details-2 {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            .trip-num-of-days {
+                &:after {
+                    padding-left: 1rem;
+                    content:'|';
+                }
+            }
+        }
+
+        
+    }
+}
+
+.trip-sidebar {
+    position: sticky;
+    top: 2rem;
+    border-radius: 15px;
+    
+    padding: 1rem 2rem;
+    margin: 2rem;
+    width: 200px;
+    display: flex;
+    
+
+    .trip-sidebar-list {
+        font-size: 20px;
+        font-weight: 500;
+        
+        .trip-sidebar-list-item {
+            padding: .5rem 0;
+        }
+    }
+}
+
+.trip-main-content {
+    display: flex;
+    flex-direction: column;
+
+    
+    .trip-main-content-item {
+        padding: 2rem 0;
+    }
+    .itinerary-details {
+    
+    }
+}
+.line {
+    border-bottom: 2px solid #ccc;
+    display: block;
+}

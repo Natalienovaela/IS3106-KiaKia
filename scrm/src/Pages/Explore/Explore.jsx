@@ -5,9 +5,9 @@ import singapore from "../../Assets/singapore.png";
 import newyork from "../../Assets/newyork.png";
 import image1 from "../../Assets/img.jpg";
 import { Button, ButtonGroup, Tabs, Tab } from "@mui/material";
-import TabPanel from "../../Components/TabPanel/TabPanel";
 import Itineraries from "./Itineraries/Itineraries";
 import Places from "./Places/Places";
+import Emoji from "a11y-react-emoji";
 
 const dummyData = [
   {
@@ -43,6 +43,7 @@ const dummyData = [
     numOfDays: 15,
   },
 ];
+
 const Explore = () => {
   const itineraryCards = dummyData?.map((cardData) => (
     <ItineraryCard key={cardData.id} {...cardData} />
@@ -58,16 +59,25 @@ const Explore = () => {
     <>
       <div className="container">
         <div className="pageTitle">
-          <h1>Explore</h1>
+          <h1>
+            Explore <Emoji symbol="🌏" label="earth emoji" />
+          </h1>
         </div>
 
         <div className="sec">
-          <Tabs value={selectedTab} onChange={handleChange}>
-            <Tab label="Places" />
-            <Tab label="Itineraries" />
+          <Tabs
+            value={selectedTab}
+            onChange={handleChange}
+            className="tabs"
+            TabIndicatorProps={{ sx: { backgroundColor: "#ff8f66" } }}
+          >
+            <Tab label="Places" className="tab-child" />
+            <Tab label="Itineraries" className="tab-child" />
           </Tabs>
-          {selectedTab === 1 && <Itineraries />}
-          {selectedTab === 0 && <Places />}
+          <div className="explore-content">
+            {selectedTab === 1 && <Itineraries />}
+            {selectedTab === 0 && <Places />}
+          </div>
         </div>
       </div>
     </>

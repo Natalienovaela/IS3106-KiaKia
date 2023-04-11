@@ -17,6 +17,14 @@
     padding: 3rem;
 }
 
+.cards {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 2rem;
+    overflow-x: scroll;
+    padding-top: 3rem;
+}
 .sec {
     padding: 0 3rem;
     display: flex;

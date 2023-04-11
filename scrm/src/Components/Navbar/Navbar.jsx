@@ -29,7 +29,7 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
 
   useEffect(() => {
     Api.getUser(userId)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(data => {
         const name = data.name;
         setName(name);
@@ -43,11 +43,19 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
     <section className='navBarSection'>
       <header className="header flex">
 
+      {isLoggedIn ? (
         <div className="logoDiv">
+          <Link to={`/Home/${userId}`} className="logo flex">
+            <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
+          </Link>
+        </div>
+        ) : (
+          <div className="logoDiv">
           <Link to="/" className="logo flex">
             <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
           </Link>
         </div>
+          )}
 
         {isLoggedIn ? (
           <div className={active}>

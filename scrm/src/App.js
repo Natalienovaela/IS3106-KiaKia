@@ -13,6 +13,8 @@ import Signup from "./Pages/Signup/Signup";
 import Login from "./Pages/Login/Login";
 import CreateTrip from "./Pages/CreateTrip/CreateTrip";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TripNotesTest from './Components/TripComponents/TripNotesTest';
+import TripNotes from './Components/TripComponents/TripNotes';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,7 +30,7 @@ const App = () => {
     };
 
     return (
-        <>
+        <>     
             <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId}/>
             <div className="container">
                 <Routes>
@@ -42,6 +44,7 @@ const App = () => {
                     <Route path="/Wishlist" element={<Wishlist />} />
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Explore" element={<Explore />} />
+                    <Route path="/TripNotes" element={<TripNotes />} />
                 </Routes>
             </div>
             {/* Will change this component */}

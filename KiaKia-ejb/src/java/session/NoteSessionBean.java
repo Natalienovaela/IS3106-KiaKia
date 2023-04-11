@@ -32,10 +32,36 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
 
+    //for actual app
+    @Override
+    public Long createNewNote(Long tripId) throws UnknownPersistenceException, TripNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            System.out.println("trip id" + trip.getTripId());
+            if (trip != null) {
+                Note note = new Note("", "", false);
+                em.persist(note);
+                trip.getNotes().add(note);
+                em.flush();
+                return note.getNoteId();
+            } else {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+
+        } catch (PersistenceException ex) {
+
+            throw new UnknownPersistenceException(ex.getMessage());
+
+        }
+    }
+    
+    //for data init
     @Override
     public Long createNewNote(Note note, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
         try {
             Trip trip = em.find(Trip.class, tripId);
+            System.out.println("trip id" + trip.getTripId());
+            System.out.println(note);
 
             if (trip != null && note != null) {
                 em.persist(note);
@@ -81,12 +107,14 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
     }
     
     @Override
-    public void removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
+    public boolean removeNote(Long tripId, Long noteId) throws TripNotFoundException, NoteNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         Note note = em.find(Note.class, noteId);
 
         if (trip != null && note != null) {
             trip.getNotes().remove(note);
+            em.remove(note);
+            return true;
         } else {
             if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
@@ -95,6 +123,7 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
                 throw new NoteNotFoundException("Note not found in the database");
             }
         }
+        return false;
     }
     
     @Override
@@ -102,9 +131,12 @@ public class NoteSessionBean implements NoteSessionBeanLocal {
         Trip trip;
         try {
             trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+            System.out.println(trip.getTripId());
         } catch (TripNotFoundException ex) {
+            System.out.println("Exception found");
             throw new TripNotFoundException(ex.getMessage());
         }
+        System.out.println(trip.getNotes());
         return trip.getNotes();
         
     }

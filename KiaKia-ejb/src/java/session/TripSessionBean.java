@@ -5,20 +5,25 @@
  */
 package session;
 
+import entity.Budget;
 import entity.CheckList;
+import entity.DayItinerary;
+import entity.Expense;
+import entity.Folder;
 import entity.Note;
-import entity.Poll;
+import entity.PlaceLineItem;
 import entity.Trip;
 import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
-import error.NoteNotFoundException;
-import error.PollNotFoundException;
+import error.FolderNotFoundException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -46,13 +51,21 @@ public class TripSessionBean implements TripSessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public void addNewTrip(Trip trip) {
-        if (trip != null) {
-            em.persist(trip);
+    public void addNewTrip(Trip trip, Long userId) throws UserNotFoundException {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            if (trip != null) {
+                em.persist(trip);
+                em.flush();
+            }
+            TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+            em.persist(tripAssignment);
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
         }
 
     }
-    
+
     @Override
     public Trip retrieveTripByTripId(Long tripId) throws TripNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
@@ -91,42 +104,71 @@ public class TripSessionBean implements TripSessionBeanLocal {
     public List<Trip> getAllTrips() {
         return em.createQuery("SELECT t FROM Trip t").getResultList();
     }
-    
+
     @Override
     public Trip getTrip(Long tripId) throws TripNotFoundException {
-        try{
+        try {
             Trip trip = em.find(Trip.class, tripId);
             return trip;
-        } 
-        catch(Exception ex) {
+        } catch (Exception ex) {
             throw new TripNotFoundException();
         }
     }
-    
+
+    @Override
+    public void moveTrip(Long fromFolderId, Long toFolderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder fromFolder = em.find(Folder.class, fromFolderId);
+            try {
+                Folder toFolder = em.find(Folder.class, toFolderId);
+                try {
+                    Trip trip = em.find(Trip.class, tripId);
+                    fromFolder.getTrips().remove(trip);
+                    toFolder.getTrips().add(trip);
+
+                } catch (Exception ex) {
+                    throw new TripNotFoundException("Trip not found");
+                }
+            } catch (Exception ex) {
+                throw new FolderNotFoundException("Folder does not exist");
+            }
+        } catch (Exception ex) {
+            throw new FolderNotFoundException("Folder does not exist");
+        }
+    }
+
     @Override
     public List<Trip> getAllPersonalTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
     }
-    
+
     @Override
     public List<Trip> getAllGroupTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS NOT EMPTY OR t.viewers IS NOT EMPTY").getResultList();
     }
-       
+
     @Override
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException {
-        Trip trip = em.find(Trip.class, tripId);
-        CheckList checkList = em.find(CheckList.class, checkListId);
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            try {
+                CheckList checkList = em.find(CheckList.class, checkListId);
 
-        if (trip != null && checkList != null) {
-            trip.getCheckLists().remove(checkList);
-        } else {
-            if (trip == null) {
-                throw new TripNotFoundException("Trip not found in the database");
-            }
-            if (checkList == null) {
+                if (trip != null && checkList != null) {
+                    trip.getCheckLists().remove(checkList);
+                } else {
+                    if (trip == null) {
+                        throw new TripNotFoundException("Trip not found in the database");
+                    }
+                    if (checkList == null) {
+                        throw new CheckListNotFoundException("Checklist not found in the database");
+                    }
+                }
+            } catch (Exception ex) {
                 throw new CheckListNotFoundException("Checklist not found in the database");
             }
+        } catch (Exception ex) {
+            throw new TripNotFoundException("Trip not found in the database");
         }
     }
 
@@ -177,13 +219,12 @@ public class TripSessionBean implements TripSessionBeanLocal {
 //
 //        }
 //    }
-
     @Override
     public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException {
         try {
             em.persist(trip);
             em.flush();
-            
+
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
                 UserRoleEnum role = userRoles.get(i);
@@ -236,8 +277,8 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
             switch (userRole) {
                 case ADMIN:
-                    /*trip.getAdmins().add(user);
-                    user.getTrips().add(trip);*/
+                    TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                    em.persist(tripAssignment);
                     break;
                 case EDITOR:
                     /*trip.getEditors().add(user);
@@ -256,6 +297,92 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
 
+    }
+
+    @Override
+    public void removeTrip(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder folder = em.find(Folder.class, folderId);
+            try {
+                Trip trip = em.find(Trip.class, tripId);
+
+                if (trip != null && folder != null) {
+                    folder.getTrips().remove(trip);
+                    em.remove(trip);
+                } else {
+                    if (trip == null) {
+                        throw new TripNotFoundException("Trip not found in the database");
+                    }
+                    if (folder == null) {
+                        throw new CheckListNotFoundException("Folder not found in the database");
+                    }
+                }
+            } catch (Exception ex) {
+                throw new TripNotFoundException("Trip not found in the database");
+            }
+        } catch (Exception ex) {
+            throw new FolderNotFoundException("Folder not found in the database");
+        }
+    }
+
+    @Override
+    //poll and document cannot be shared
+    public boolean shareWholeTrip(Long tripId) throws TripNotFoundException {
+        try {
+            Trip trip = retrieveTripByTripId(tripId);
+            trip.setIsShared(Boolean.TRUE);
+            for (Note n : trip.getNotes()) {
+                n.setIsShared(true);
+            }
+            for (CheckList c : trip.getCheckLists()) {
+                c.setIsShared(true);
+            }
+            for (Budget b : trip.getBudgets()) {
+                b.setIsShared(true);
+            }
+            for (Expense e : trip.getExpenses()) {
+                e.setIsShared(true);
+            }
+            for (DayItinerary d : trip.getItinerary()) {
+                d.setIsShared(Boolean.TRUE);
+            }
+            for (PlaceLineItem pl : trip.getBucketList()) {
+                pl.setIsShared(Boolean.TRUE);
+            }
+            return true;
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        }
+    }
+
+    @Override
+    //for testing
+    public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException {
+        try {
+            Trip trip = retrieveTripByTripId(tripId);
+            trip.setIsShared(Boolean.FALSE);
+            for (Note n : trip.getNotes()) {
+                n.setIsShared(false);
+            }
+            for (CheckList c : trip.getCheckLists()) {
+                c.setIsShared(false);
+            }
+            for (Budget b : trip.getBudgets()) {
+                b.setIsShared(false);
+            }
+            for (Expense e : trip.getExpenses()) {
+                e.setIsShared(false);
+            }
+            for (DayItinerary d : trip.getItinerary()) {
+                d.setIsShared(Boolean.FALSE);
+            }
+            for (PlaceLineItem pl : trip.getBucketList()) {
+                pl.setIsShared(Boolean.FALSE);
+            }
+            return true;
+        } catch (TripNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
+        }
     }
 
 }

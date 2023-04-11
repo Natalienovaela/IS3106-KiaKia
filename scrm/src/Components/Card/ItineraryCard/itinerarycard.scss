@@ -10,6 +10,9 @@
     border-radius: 15px;
     z-index: 10;
     
+    &:hover {
+       transform: translateY(-15px);
+    }
     .itinerary-imageDiv {
         width: 100%;
         position: relative;
@@ -21,8 +24,9 @@
             display: flex;
             position: absolute;
             top: 0;
-            padding: 30px;
+            padding: 20px 20px;
             flex-direction: row;
+            
         }
         .bookmark-button {
             position: absolute;
@@ -55,13 +59,13 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            
+            width: 100%;
             align-items: center;
             position: absolute;
-            left: .5rem;
-            top: 123px;
+            
+            top: 120px;
             color: white;
-            
-            
             padding: 2rem;
             gap: 110px;
             z-index: 1000;
@@ -69,6 +73,7 @@
             h2 {
                 font-weight: 600;
                 font-size: 24px;
+                
             }
 
             p {

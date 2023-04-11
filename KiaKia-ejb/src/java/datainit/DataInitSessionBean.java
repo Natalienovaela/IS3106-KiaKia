@@ -63,16 +63,31 @@ public class DataInitSessionBean {
             Trip trip = new Trip("First Trip", new GregorianCalendar(2024, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2024, Calendar.FEBRUARY, 15).getTime());
             em.persist(trip);
             em.flush();
-            Note note1 = new Note("My First Note", "bla", false);
+            Note note1 = new Note("My 1st Note", "bla", false);
             noteSessionBeanLocal.createNewNote(note1, trip.getTripId());
-            Note note2 = new Note("My Second Note", "blabla", false);
+            Note note2 = new Note("My 2nd Note", "blabla", false);
             noteSessionBeanLocal.createNewNote(note2, trip.getTripId());
+            Note note3 = new Note("My 3rd Note", "bla", false);
+            noteSessionBeanLocal.createNewNote(note3, trip.getTripId());
+            Note note4 = new Note("My 4th Note", "blabla", false);
+            noteSessionBeanLocal.createNewNote(note4, trip.getTripId());
+            Note note5 = new Note("My 5th Note", "bla", false);
+            noteSessionBeanLocal.createNewNote(note5, trip.getTripId());
+            Note note6 = new Note("My 6th Note", "blabla", false);
+            noteSessionBeanLocal.createNewNote(note6, trip.getTripId());
+            Note note7 = new Note("My 7th Note", "bla", false);
+            noteSessionBeanLocal.createNewNote(note7, trip.getTripId());
+            Note note8 = new Note("My 8th Note", "blabla", false);
+            noteSessionBeanLocal.createNewNote(note8, trip.getTripId());
+            Note note9 = new Note("My 9th Note", "bla", false);
+            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
+            
 
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
             em.flush();
-            Note note3 = new Note("My Third Note", "blablabla", false);
-            noteSessionBeanLocal.createNewNote(note3, trip2.getTripId());
+            Note note10 = new Note("My 10 Note", "blablabla", false);
+            noteSessionBeanLocal.createNewNote(note10, trip2.getTripId());
 
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);

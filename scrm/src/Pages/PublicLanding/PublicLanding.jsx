@@ -4,6 +4,12 @@ import HorizontalCard from '../../Components/Card/HorizontalCard/HorizontalCard'
 import video2 from '../../Assets/video2.mp4';
 import {FiSearch} from 'react-icons/fi';
 import image from '../../Assets/img.jpg';
+import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
+import singapore from "../../Assets/singapore.png";
+import tokyo from "../../Assets/tokyo.jpg";
+import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
+import newyork from "../../Assets/newyork.png";
+import japan from "../../Assets/japan.png";
 
 const dummyData = [
   {
@@ -34,18 +40,69 @@ const dummyData = [
     places: ["New York", "Bronx", "Washington D.C."],
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
   },
-]
+];
+
+const placesDummyData = [
+  {
+    city: "Singapore",
+    country: "Singapore",
+    img: singapore,
+  },
+  {
+    city: "Tokyo",
+    country: "Japan",
+    img: tokyo,
+  },
+];
+
+const itineraryDummyData = [
+  {
+    img: singapore,
+    cityName: "Singapore",
+    places: ["Marina Bay Sands", "Haw Par Villa", "Lau Pa Sat"],
+    tags: ["Singapore", "SEA", "Summer"],
+    desc: "Must visit restaurants in Singapore",
+    numOfDays: 5,
+  },
+  {
+    img: newyork,
+    cityName: "New York",
+    places: ["Broadway", "NYC"],
+    tags: ["New York", "USA", "Summer"],
+    desc: "Mesmerizing busy city New York. Tips and tricks to save money on your trip",
+    numOfDays: 15,
+  },
+  {
+    img: japan,
+    cityName: "Tokyo",
+    places: ["Shinjuku", "Akihabara", "Senso-ji"],
+    tags: ["Tokyo", "Japan", "Winter"],
+    desc: "The most popular and most visited places in Tokyo",
+    numOfDays: 15,
+  },
+  {
+    img: newyork,
+    cityName: "New York",
+    places: ["Broadway", "NYC"],
+    tags: ["New York", "USA", "Summer"],
+    desc: "Mesmerizing busy city New York. Tips and tricks to save money on your trip",
+    numOfDays: 15,
+  },
+];
 
 const PublicLanding = () => {
   const horizontalCards = dummyData?.map((cardData) => (
-    <HorizontalCard
-      key={cardData.key}
-      img={cardData.img}
-      tripTag={cardData.tripTag}
-      cardTitle={cardData.cardTitle}
-      places={cardData.places}
-      description={cardData.description} />
+    <HorizontalCard {...cardData} />
   ));
+
+  const placeCards = placesDummyData?.map((data) => (
+    <PlaceCard key={data.id} {...data} />
+  ));
+
+  const itineraryCards = itineraryDummyData?.map((data) => (
+    <ItineraryCard key={data.id} {...data} />
+  ));
+
   return (
     <>
       <section className='top'>
@@ -82,17 +139,13 @@ const PublicLanding = () => {
             <div className="subSecTitle">
               <h3>Top Places</h3><p>see more...</p>
             </div>
-            <div className="list">
-              {horizontalCards}
-            </div>
+            <div className="cards-horizontal">{placeCards}</div>
           </div>
           <div className="subSec">
             <div className="subSecTitle">
               <h3>Top Itineraries</h3>
             </div>
-            <div className="list">
-              {horizontalCards}
-            </div>
+            <div className="cards-horizontal">{itineraryCards}</div>
           </div>
 
         </div>

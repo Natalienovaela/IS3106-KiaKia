@@ -89,6 +89,25 @@ li {
     background: var(--SecondaryColor);
 }
 
+.trip-component {
+    width: 400px;
+    flex: 1;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.component-title {
+    font-size: 150%;
+    font-weight: 400;
+}
+
+.rowComponent {
+    display: flex;
+    align-items: center;
+  }
+  
 img, video {
     width: 100%;
     height: auto;
@@ -102,3 +121,25 @@ body {
     background: var(--bodyColor);
 }
 
+.login-submit-button {
+    background-color: var(--PrimaryColor);
+}
+
+.action-link {
+    color: var(--PrimaryColor);
+}
+
+.action-link:hover {
+    color: var(--SecondaryColor);
+
+}
+
+.cards-horizontal {
+    display: flex;
+    flex-direction: row;
+
+    gap: 1rem;
+    overflow-x: scroll;
+    height: fit-content;
+    padding: 1rem;
+}

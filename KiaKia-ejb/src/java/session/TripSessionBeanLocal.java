@@ -11,6 +11,7 @@ import entity.Poll;
 import entity.Trip;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
+import error.FolderNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
@@ -24,7 +25,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface TripSessionBeanLocal {
-    public void addNewTrip(Trip trip);
+    public void addNewTrip(Trip trip, Long userId) throws UserNotFoundException;
     
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException;
     
@@ -57,5 +58,13 @@ public interface TripSessionBeanLocal {
     public Trip getTrip(Long tripId) throws TripNotFoundException;
 
     public Trip retrieveTripByTripId(Long tripId) throws TripNotFoundException;
+
+    public void removeTrip(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
+
+    public void moveTrip(Long fromFolderId, Long toFolderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
+
+    public boolean shareWholeTrip(Long tripId) throws TripNotFoundException;
+
+    public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException;
     
 }
