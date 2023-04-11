@@ -13,7 +13,10 @@ import error.CityOrCountryNotSelected;
 import error.NoteNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -150,7 +153,7 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-
+    
     @DELETE
     @Path("/{trip_id}/notes/{note_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -256,9 +259,9 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
-
+    
     @PUT
-    @Path("/{trip_id}/shareWhole")
+    @Path("/{trip_id}/share")
     @Produces(MediaType.APPLICATION_JSON)
     public Response shareWholeTrip(@PathParam("trip_id") Long tripId) {
         try {
@@ -273,7 +276,7 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
-
+    
     @PUT
     @Path("/{trip_id}/unshareWhole")
     @Produces(MediaType.APPLICATION_JSON)
@@ -291,6 +294,20 @@ public class TripsResource {
         }
     }
     
-    
+    @POST
+    @Path("/{user_id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createTrip(Trip t, @PathParam("user_id") Long userId) {
+        try {
+            tripSessionBeanLocal.addNewTrip(t, userId);
+            return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
 
 }
