@@ -23,12 +23,15 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(webservices.restful.BucketListResource.class);
         resources.add(webservices.restful.CORSFilter.class);
+        resources.add(webservices.restful.ExploreResource.class);
         resources.add(webservices.restful.FileResource.class);
         resources.add(webservices.restful.ItineraryResource.class);
         resources.add(webservices.restful.KiaKiaResource.class);
         resources.add(webservices.restful.TripsResource.class);
         resources.add(webservices.restful.UsersResource.class);
+        resources.add(webservices.restful.WishlistResource.class);
     }
     
 }

@@ -20,10 +20,12 @@ public interface FolderSessionBeanLocal {
 
     public List<Folder> retrieveAllFolder(Long wishlistId) throws WishlistNotFoundException;
 
-    public void updateFolderName(Long WishlistId, Folder folder) throws FolderNotFoundException;
-
     public List<Folder> retrieveFolderWithCertainName(Long wishlistId, String search);
 
     public void deleteFolder(Long wishlistId, Long folderId) throws WishlistNotFoundException;
+
+    public Folder createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException;
+
+    public void updateFolderName(Folder folder) throws FolderNotFoundException;
     
 }

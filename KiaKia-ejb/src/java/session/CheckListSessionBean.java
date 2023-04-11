@@ -10,6 +10,7 @@ import entity.Trip;
 import error.CheckListNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,6 +55,21 @@ public class CheckListSessionBean implements CheckListSessionBeanLocal {
             oldCheckList.setTitle(checkList.getTitle());
         } else {
             throw new CheckListNotFoundException("Checklist not found in the database");
+        }
+    }
+    
+    @Override
+    public List<CheckList> getAllCheckListInTrip(Long tripId) throws TripNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            if(trip != null) {
+                return trip.getCheckLists();
+            } else {
+                throw new TripNotFoundException("Trip not found");
+            }
+        }
+        catch(Exception ex) {
+            throw new TripNotFoundException("Trip not found");
         }
     }
 }

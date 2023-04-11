@@ -11,6 +11,7 @@ import entity.Poll;
 import entity.Trip;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
+import error.CityOrCountryNotSelected;
 import error.FolderNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
@@ -66,5 +67,8 @@ public interface TripSessionBeanLocal {
     public boolean shareWholeTrip(Long tripId) throws TripNotFoundException;
 
     public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException;
+    public List<Trip> searchTripByCityOrCountry(String city, String country) throws CityOrCountryNotSelected;
+
+    public void linkTripWithWishlistFolder(Long tripId, Long folderId) throws TripNotFoundException, FolderNotFoundException;
     
 }

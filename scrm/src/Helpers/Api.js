@@ -40,6 +40,24 @@ const Api = {
             method: "DELETE",
         });
     },
+    shareTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/shareWhole`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+    unshareTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/unshareWhole`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
 
     getTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}`);

@@ -115,7 +115,7 @@ const Home = () => {
   useEffect(() => {
     Api.getUser(userId)
       .then((response) => response.json())
-      .then(data => {
+      .then((data) => {
         const name = data.name;
         setName(name);
       })

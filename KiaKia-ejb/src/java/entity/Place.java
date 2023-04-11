@@ -5,13 +5,18 @@
  */
 package entity;
 
+import enumeration.CityEnum;
+import enumeration.CountryEnum;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -29,8 +34,14 @@ public class Place implements Serializable {
     private List<File> images;
     private String address;
     private String description;
-    //private enum countryEnum;
-    private String city;
+    
+    @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
+    private CountryEnum country;
+    
+    @ManyToOne(optional = false)
+    @Enumerated(EnumType.STRING)
+    private CityEnum city;
 
     
     public Long getPlaceId() {
@@ -98,12 +109,20 @@ public class Place implements Serializable {
         this.description = description;
     }
 
-    public String getCity() {
-        return city;
+    public CountryEnum getCountry() {
+        return country;
     }
 
-    public void setCity(String city) {
+    public void setCountry(CountryEnum country) {
+        this.country = country;
+    }
+
+    public void setCity(CityEnum city) {
         this.city = city;
+    }
+    
+    public CityEnum getCity() {
+        return city;
     }
     
 }
