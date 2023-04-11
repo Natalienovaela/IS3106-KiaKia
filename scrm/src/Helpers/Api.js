@@ -173,6 +173,18 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
 
+    createTrip(data, user_id) {
+        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+    }
     //explore
     searchTripByCityOrCountry(data) {
         return fetch(`${SERVER_PREFIX}/explore/searchTripByCityOrCountry`,

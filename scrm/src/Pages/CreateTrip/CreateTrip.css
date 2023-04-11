@@ -1,1 +1,18 @@
-/*# sourceMappingURL=CreateTrip.css.map */
+:root {
+  --PrimaryColor: #f87171;
+  --SecondaryColor: #ff8f66;
+  --gradientColor: linear-gradient(to right, #f87171, #ff8f66);
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --textColor: hsl(240, 4%, 35%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --greyText: rgb(190, 190, 190);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: rgb(240, 240, 246);
+  --cardBG: rgb(225, 225, 235);
+  --orangeColor: #FB923C;
+}
+
+.createtrip-submit-button {
+  background-color: var(--PrimaryColor) !important;
+}/*# sourceMappingURL=CreateTrip.css.map */

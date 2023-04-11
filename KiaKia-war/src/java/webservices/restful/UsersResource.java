@@ -80,7 +80,10 @@ public class UsersResource {
             return Response.status(200).entity(response)
                     .type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException e) {
-            throw new InvalidLoginException("Email does not exist or invalid password!");
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", e.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
         }
     }
 
