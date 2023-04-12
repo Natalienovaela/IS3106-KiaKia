@@ -186,29 +186,17 @@ const Api = {
         )
     },
     //explore
-    searchTripByCityOrCountry(data) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCityOrCountry`,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "GET",
-                body: JSON.stringify(data),
-            }
-        );     
+    searchTripByCity(city) {
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);     
     },
-    searchPlaceByCityOrCountry(data) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCityOrCountry`,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "GET",
-                body: JSON.stringify(data),
-            }
-        );     
+    searchTripByCountry(country) {
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);     
+    },
+    searchPlaceByCity(city) {
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);     
+    },
+    searchPlaceByCountry(country) {
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);     
     },
 
     //bucketList
@@ -226,6 +214,41 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/bucketLists/${bucketListItemId}`, {
             method: "DELETE",
         })
+    },
+
+    //folder
+    createNewFolder(wishlistId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        })
+    },
+
+    retrieveAllFolder(wishlistId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`)
+    },
+
+    retrieveFolderWithCertainName(wishlistId, search) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/${search}`)
+    },
+
+    updateFolderName(wishlistId, folderId, folder) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(folder),
+        })
+    }, 
+    deletfolder(wishlistId, folderId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+            method: "DELETE", 
+        });
     }
 
 };
