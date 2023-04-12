@@ -29,6 +29,14 @@ public class Folder implements Serializable {
     private List<Trip> trips;
     
     private String name;
+    
+    public Folder() {
+        this.name = "Untitled";
+    }
+    
+    public Folder(String name) {
+        this.name = name;
+    }
 
     public Long getFolderId() {
         return folderId;
