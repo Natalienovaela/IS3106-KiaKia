@@ -7,6 +7,7 @@ package session;
 
 import entity.Folder;
 import error.FolderNotFoundException;
+import error.TripNotFoundException;
 import error.WishlistNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -27,5 +28,9 @@ public interface FolderSessionBeanLocal {
     public Folder createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException;
 
     public void updateFolderName(Folder folder) throws FolderNotFoundException;
+
+    public void addTripToFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
+
+    public void removeTripFromFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
     
 }

@@ -6,8 +6,10 @@
 package session;
 
 import entity.Folder;
+import entity.Trip;
 import entity.Wishlist;
 import error.FolderNotFoundException;
+import error.TripNotFoundException;
 import error.WishlistNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -93,6 +95,41 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
         }
         catch(Exception ex) {
             throw new WishlistNotFoundException("Wishlist does not exist");
+        }
+    }
+    
+    @Override
+    public void addTripToFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder folder = em.find(Folder.class, folderId);
+            try {
+                Trip trip = em.find(Trip.class, tripId);
+                folder.getTrips().add(trip);
+            }
+            catch (Exception ex) {
+                throw new TripNotFoundException("Trip not found");
+            }
+        }
+        catch( Exception ex) {
+            throw new FolderNotFoundException("Folder not found");
+        }
+    }
+    
+    @Override
+    public void removeTripFromFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
+        try {
+            Folder folder = em.find(Folder.class, folderId);
+            try {
+                Trip trip = em.find(Trip.class, tripId);
+                folder.getTrips().remove(trip);
+                em.remove(trip);
+            }
+            catch (Exception ex) {
+                throw new TripNotFoundException("Trip not found");
+            }
+        }
+        catch( Exception ex) {
+            throw new FolderNotFoundException("Folder not found");
         }
     }
     
