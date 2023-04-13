@@ -20,20 +20,6 @@
   top: 0px;
   border-radius: 15px;
 }
-.itinerary-card .itinerary-imageDiv .profile {
-  display: flex;
-  position: absolute;
-  top: 0;
-  padding: 20px 20px;
-  flex-direction: row;
-}
-.itinerary-card .itinerary-imageDiv .bookmark-button {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  top: 10px;
-  color: var(--whiteColor);
-}
 .itinerary-card .itinerary-imageDiv img {
   -o-object-fit: cover;
      object-fit: cover;
@@ -111,4 +97,20 @@
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+.img-overlay {
+  display: flex;
+  top: 0;
+  position: absolute;
+  flex-direction: row;
+  gap: 4rem;
+  padding: 1rem;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.img-overlay .profile {
+  display: flex;
+  flex-direction: row;
 }/*# sourceMappingURL=itinerarycard.css.map */
