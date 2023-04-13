@@ -124,6 +124,34 @@ const Api = {
                 body: JSON.stringify(data),
             }
         )
+    },
+
+    emailExists(email) {
+        return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
+    },
+    createAndInviteUserToTrip(data, userId, userEmails, userRoles) {
+        return fetch(`${SERVER_PREFIX}/trips/query?userId=${userId}&userEmails=${userEmails}&userRoles=${userRoles}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+        .then(response => {
+            console.log("createAndInviteUserToTrip Response:", response); // Add logging statement
+            return response.json();
+        })
+        .then(data => {
+            console.log("createAndInviteUserToTrip Data:", data); // Add logging statement
+            // Do something with the response data
+        })
+        .catch(error => {
+            console.log("createAndInviteUserToTrip Error:", error); // Add logging statement
+            // Handle the error
+        });
     }
 };
 

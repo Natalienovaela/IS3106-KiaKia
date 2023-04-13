@@ -28,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -301,6 +302,21 @@ public class TripsResource {
     public Response createTrip(Trip t, @PathParam("user_id") Long userId) {
         try {
             tripSessionBeanLocal.addNewTrip(t, userId);
+            return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") List<String> userEmails, @QueryParam("userRoles") List<String> userRoles) {
+        try {
+            tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmails, userRoles);
             return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()

@@ -9,6 +9,10 @@ import entity.User;
 import error.InvalidLoginException;
 import error.UserNotFoundException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -20,6 +24,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.UserSessionBeanLocal;
@@ -55,6 +60,26 @@ public class UsersResource {
                     u
             ).type(MediaType.APPLICATION_JSON).build();
         } catch (NoResultException e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    @GET
+    @Path("/query")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response emailExists(@QueryParam("email") String email) {
+        try {
+            boolean exists = userSessionBeanLocal.emailExists(email);
+            Map<String, Boolean> responseMap = new HashMap<>();
+            responseMap.put("exists", exists);
+            return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+
+        } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", "Not found")
                     .build();

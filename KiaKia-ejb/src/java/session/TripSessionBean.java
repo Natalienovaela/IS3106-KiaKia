@@ -221,15 +221,72 @@ public class TripSessionBean implements TripSessionBeanLocal {
 //        }
 //    }
     @Override
-    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException {
+    public void createAndInviteUserToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException {
         try {
-            em.persist(trip);
-            em.flush();
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            if (trip != null) {
+                em.persist(trip);
+                em.flush();
+            }
+            TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+            em.persist(tripAssignment);
 
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
-                UserRoleEnum role = userRoles.get(i);
-                inviteUserToTrip(trip.getTripId(), email, role);
+                UserRoleEnum userRole = UserRoleEnum.valueOf(userRoles.get(i));
+
+                switch (userRole) {
+                    case ADMIN:
+                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        break;
+                    case EDITOR:
+                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        break;
+                    case VIEWER:
+                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    public void createAndInviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException {
+        try {
+            User admin = userSessionBeanLocal.retrieveUserByUserId(userId);
+            if (trip != null) {
+                em.persist(trip);
+                em.flush();
+            }
+            TripAssignment tripAssignment = new TripAssignment(admin, trip, UserRoleEnum.ADMIN);
+            em.persist(tripAssignment);
+
+            for (int i = 0; i < userEmails.size(); i++) {
+                String email = userEmails.get(i);
+                
+                UserRoleEnum userRole = UserRoleEnum.valueOf(userRoles.get(i));
+                User user = userSessionBeanLocal.retrieveUserByEmail(email);
+
+                switch (userRole) {
+                case ADMIN:
+                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                    em.persist(tripAssignment);
+                    break;
+                case EDITOR:
+                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
+                    em.persist(tripAssignment);
+                    break;
+                case VIEWER:
+                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
+                    em.persist(tripAssignment);
+                    break;
+                default:
+                    break;
+            }
             }
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
@@ -282,12 +339,12 @@ public class TripSessionBean implements TripSessionBeanLocal {
                     em.persist(tripAssignment);
                     break;
                 case EDITOR:
-                    /*trip.getEditors().add(user);
-                    user.getTrips().add(trip);*/
+                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
+                    em.persist(tripAssignment);
                     break;
                 case VIEWER:
-                    /*trip.getViewers().add(user);
-                    user.getTrips().add(trip);*/
+                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
+                    em.persist(tripAssignment);
                     break;
                 default:
                     break;
@@ -325,29 +382,29 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new FolderNotFoundException("Folder not found in the database");
         }
     }
-    
+
     @Override
     //poll and document cannot be shared
     public boolean shareWholeTrip(Long tripId) throws TripNotFoundException {
         try {
             Trip trip = retrieveTripByTripId(tripId);
             trip.setIsShared(Boolean.TRUE);
-            for(Note n : trip.getNotes()) {
+            for (Note n : trip.getNotes()) {
                 n.setIsShared(true);
             }
-            for(CheckList c : trip.getCheckLists()) {
+            for (CheckList c : trip.getCheckLists()) {
                 c.setIsShared(true);
             }
-            for(Budget b : trip.getBudgets()) {
+            for (Budget b : trip.getBudgets()) {
                 b.setIsShared(true);
             }
-            for(Expense e : trip.getExpenses()) {
+            for (Expense e : trip.getExpenses()) {
                 e.setIsShared(true);
             }
-            for(DayItinerary d : trip.getItinerary()) {
+            for (DayItinerary d : trip.getItinerary()) {
                 d.setIsShared(Boolean.TRUE);
             }
-            for(PlaceLineItem pl : trip.getBucketList()) {
+            for (PlaceLineItem pl : trip.getBucketList()) {
                 pl.setIsShared(Boolean.TRUE);
             }
             return true;
@@ -355,29 +412,29 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new TripNotFoundException(ex.getMessage());
         }
     }
-    
+
     @Override
     //for testing
     public boolean unshareWholeTrip(Long tripId) throws TripNotFoundException {
         try {
             Trip trip = retrieveTripByTripId(tripId);
             trip.setIsShared(Boolean.FALSE);
-            for(Note n : trip.getNotes()) {
+            for (Note n : trip.getNotes()) {
                 n.setIsShared(false);
             }
-            for(CheckList c : trip.getCheckLists()) {
+            for (CheckList c : trip.getCheckLists()) {
                 c.setIsShared(false);
             }
-            for(Budget b : trip.getBudgets()) {
+            for (Budget b : trip.getBudgets()) {
                 b.setIsShared(false);
             }
-            for(Expense e : trip.getExpenses()) {
+            for (Expense e : trip.getExpenses()) {
                 e.setIsShared(false);
             }
-            for(DayItinerary d : trip.getItinerary()) {
+            for (DayItinerary d : trip.getItinerary()) {
                 d.setIsShared(Boolean.FALSE);
             }
-            for(PlaceLineItem pl : trip.getBucketList()) {
+            for (PlaceLineItem pl : trip.getBucketList()) {
                 pl.setIsShared(Boolean.FALSE);
             }
             return true;
@@ -400,16 +457,14 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new TripNotFoundException("Trip not found in the database");
         }
     }
-    
+
     @Override
     public List<Trip> searchTripByCityOrCountry(String city, String country) throws CityOrCountryNotSelected {
-         if(city != null) {
+        if (city != null) {
             return em.createQuery("SELECT t FROM Trip t WHERE t.city = :city").setParameter("city", city).getResultList();
-        }
-        else if(country != null) {
+        } else if (country != null) {
             return em.createQuery("SELECT t FROM Trip t WHERE t.country = :country").setParameter("country", country).getResultList();
-        }
-        else {
+        } else {
             throw new CityOrCountryNotSelected("City or Country is not specified");
         }
     }
