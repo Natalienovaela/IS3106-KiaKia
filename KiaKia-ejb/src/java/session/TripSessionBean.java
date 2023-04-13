@@ -84,7 +84,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
             trip.getBucketList().size();
             trip.getCheckLists().size();
             trip.getDocuments().size();
-            trip.getWishlisted().size();
+            //trip.getWishlisted().size();
             return trip;
         } else {
             throw new TripNotFoundException("Trip not found in the database");

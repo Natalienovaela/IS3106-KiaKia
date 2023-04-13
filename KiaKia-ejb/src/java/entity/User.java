@@ -46,11 +46,11 @@ public class User implements Serializable {
     private Date tokenExpiryDate;
     
 
-    @ManyToMany
-    private List<Trip> wishlistTrips = new ArrayList<>(); // pending
+    //@ManyToMany
+    //private List<Trip> wishlistTrips = new ArrayList<>(); // pending
 
-    @ManyToMany
-    private List<Place> wishlistPlaces = new ArrayList<>(); // pending
+    //@ManyToMany
+    //private List<Place> wishlistPlaces = new ArrayList<>(); // pending
 
     public User() {
     }
@@ -167,6 +167,7 @@ public class User implements Serializable {
         this.wishlist = wishlist;
     }
 
+    /*
     public List<Trip> getWishlistTrips() {
         return wishlistTrips;
     }
@@ -182,7 +183,7 @@ public class User implements Serializable {
     public void setWishlistPlaces(List<Place> wishlistPlaces) {
         this.wishlistPlaces = wishlistPlaces;
     }
-
+*/
     public String getResetPasswordToken() {
         return resetPasswordToken;
     }
