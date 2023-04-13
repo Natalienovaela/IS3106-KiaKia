@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./itinerarycard.css";
 import image from "../../../Assets/img.jpg";
 import Chip from "@mui/material/Chip";
 import Profile from "../../Profile/Profile";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
-import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import { Bookmark, BookmarkBorder } from "@mui/icons-material";
+import Button from "@mui/material/Button";
 
 const dummyData = [
   {
@@ -15,32 +16,16 @@ const dummyData = [
   },
 ];
 
-function BookmarkButton() {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  return (
-    <IconButton
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="bookmark-button"
-    >
-      {isHovered ? <FaRegBookmark /> : <FaBookmark />}
-    </IconButton>
-  );
-}
-
 const ItineraryCard = (props) => {
   const placeHighlight = props.places?.map((place) => (
     <li className="place">{place}</li>
   ));
+  const [click, setclick] = useState(false);
+
+  const handleClick = () => {
+    setclick(!click);
+    console.log("clicked");
+  };
 
   const tags = props.tags?.map((tag) => <Chip label={tag}></Chip>);
 
@@ -48,9 +33,18 @@ const ItineraryCard = (props) => {
     <div className="itinerary-card">
       <div className="itinerary-imageDiv">
         <img src={props.img} alt="City" className="itinerary-card-image" />
+        <div className="img-overlay">
+          <Profile />
 
-        <Profile />
-        <BookmarkButton />
+          <IconButton
+            onClick={handleClick}
+            size="large"
+            sx={{ color: "white" }}
+          >
+            {click ? <Bookmark /> : <BookmarkBorder />}
+          </IconButton>
+        </div>
+
         <div className="city-div">
           <h2>{props.cityName}</h2>
           <p className="num-of-days">{props.numOfDays} days</p>

@@ -72,4 +72,8 @@
 .line {
   border-bottom: 2px solid #ccc;
   display: block;
+}
+
+.MuiLink-root {
+  color: black;
 }/*# sourceMappingURL=tripcontent.css.map */
