@@ -7,6 +7,7 @@ package session;
 
 import entity.Budget;
 import entity.BudgetExpenseCategory;
+import error.BudgetNotFoundException;
 import error.TripNotFoundException;
 import error.UnableToSetBudgetException;
 import java.math.BigDecimal;
@@ -23,11 +24,11 @@ public interface BudgetSessionBeanLocal
     
     public void setBudget(Long tripId, Budget newB, BudgetExpenseCategory category) throws UnableToSetBudgetException, TripNotFoundException;
     
-    public void updateBudget(Budget budget) throws UnableToSetBudgetException;
+    public void updateBudget(Budget budget) throws BudgetNotFoundException;
     
-    public void deleteBudget(Long budgetId, Long tripId) throws UnableToSetBudgetException, TripNotFoundException;
+    public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException;
     
-    public BigDecimal getBudgetByCategory(Long tripId, BudgetExpenseCategory category) throws UnableToSetBudgetException, TripNotFoundException;
+    public BigDecimal getBudgetByCategory(Long tripId, BudgetExpenseCategory category) throws BudgetNotFoundException, TripNotFoundException;
     
     public List<BudgetExpenseCategory> getAvailableBudgetCategory(Long tripId) throws TripNotFoundException;
     

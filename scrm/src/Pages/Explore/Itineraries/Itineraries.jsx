@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import singapore from "../../../Assets/singapore.png";
 import newyork from "../../../Assets/newyork.png";
 import ItineraryCard from "../../../Components/Card/ItineraryCard/ItineraryCard";
 import SearchBar from "../../../Components/SearchBar/SearchBar";
 import japan from "../../../Assets/japan.png";
 import Emoji from "a11y-react-emoji";
+import Api from "../../../Helpers/Api";
 
 const dummyData = [
   {
@@ -46,12 +47,30 @@ const itineraryCards = dummyData?.map((cardData) => (
 ));
 
 const Itineraries = () => {
+  const [places, setPlaces] = useState([]);
+  const [trips, setTrips] = useState([]);
+  useEffect(() => {
+    Api.getCityList()
+      .then((response) => response.json())
+      .then((data) => {
+        setPlaces(data);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving city list");
+      });
+  }, []);
+
+  // get all trips
+  useEffect(() => {
+    Api.searchTripByCity(city);
+  });
+
   return (
     <>
       <p className="page-content">
         Find itineraries created by fellow travelers <Emoji symbol="🧳" />
       </p>
-      <SearchBar label="Search city or country" />
+      <SearchBar label="Search city or country" options={places} />
 
       <div className="cards">{itineraryCards}</div>
     </>

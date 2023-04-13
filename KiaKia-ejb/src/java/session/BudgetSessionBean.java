@@ -8,6 +8,7 @@ package session;
 import entity.Budget;
 import entity.BudgetExpenseCategory;
 import entity.Trip;
+import error.BudgetNotFoundException;
 import error.TripNotFoundException;
 import error.UnableToSetBudgetException;
 import java.math.BigDecimal;
@@ -57,13 +58,13 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public void updateBudget(Budget budget) throws UnableToSetBudgetException
+    public void updateBudget(Budget budget) throws BudgetNotFoundException
     {
         Budget oldB = em.find(Budget.class, budget.getBudgetId());
         
         if (oldB == null)
         {
-            throw new UnableToSetBudgetException("Budget not found.");
+            throw new BudgetNotFoundException("Budget not found.");
         }
         
         oldB.setBudgetAmt(budget.getBudgetAmt());
@@ -72,7 +73,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public void deleteBudget(Long budgetId, Long tripId) throws UnableToSetBudgetException, TripNotFoundException
+    public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException
     {
         if (tripId == null || budgetId == null) 
         {
@@ -88,7 +89,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         Budget budget = em.find(Budget.class, budgetId);
         if (budget == null)
         {
-            throw new UnableToSetBudgetException("Budget not found.");
+            throw new BudgetNotFoundException("Budget not found.");
         }
         
         trip.getBudgets().remove(budget);
@@ -97,7 +98,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public BigDecimal getBudgetByCategory(Long tripId, BudgetExpenseCategory category) throws UnableToSetBudgetException, TripNotFoundException
+    public BigDecimal getBudgetByCategory(Long tripId, BudgetExpenseCategory category) throws BudgetNotFoundException, TripNotFoundException
     {   
         if (tripId == null) 
         {
@@ -122,7 +123,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         } 
         else 
         {
-            throw new UnableToSetBudgetException("Budget not found.");
+            throw new BudgetNotFoundException("Budget not found.");
         }
     }
 

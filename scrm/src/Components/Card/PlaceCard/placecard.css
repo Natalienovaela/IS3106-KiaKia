@@ -14,6 +14,7 @@
 .place-card .pc-image-div {
   width: 100%;
   position: relative;
+  font-size: 30px;
 }
 .place-card img {
   -o-object-fit: cover;
@@ -38,6 +39,7 @@
   right: 10px;
   top: 10px;
   color: var(--whiteColor);
+  z-index: 10000;
 }
 .place-card .card-content {
   position: absolute;
@@ -57,4 +59,8 @@
 }
 .place-card .card-content .country {
   color: var(--greyText);
+}
+
+.MuiIcon-fontSizeLarge {
+  font-size: 30px;
 }/*# sourceMappingURL=placecard.css.map */
