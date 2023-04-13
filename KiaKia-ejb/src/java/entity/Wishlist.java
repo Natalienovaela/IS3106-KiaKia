@@ -5,7 +5,6 @@
  */
 package entity;
 
-import static entity.User_.userId;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
