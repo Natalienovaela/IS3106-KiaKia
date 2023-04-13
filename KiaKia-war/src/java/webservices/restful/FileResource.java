@@ -10,11 +10,15 @@
 //import java.io.IOException;
 //import java.io.InputStream;
 //import java.io.OutputStream;
+//import javax.ejb.EJB;
 //import javax.ws.rs.Consumes;
 //import javax.ws.rs.POST;
 //import javax.ws.rs.Path;
 //import javax.ws.rs.core.MediaType;
 //import javax.ws.rs.core.Response;
+//import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
+//import session.TripSessionBeanLocal;
 //
 ///**
 // *
@@ -23,6 +27,9 @@
 //@Path("/trips/{tripId}/files")
 //public class FileResource {
 //
+//    @EJB
+//    private TripSessionBeanLocal tripSessionBeanLocal;
+//    
 //    private static final String UPLOAD_DIR = "uploads";
 //
 //    @POST
@@ -30,10 +37,9 @@
 //    @Consumes(MediaType.MULTIPART_FORM_DATA)
 //    public Response uploadFile(@FormDataParam("file") InputStream fileInputStream,
 //            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-//
 //        String fileName = contentDispositionHeader.getFileName();
-//        String uploadFilePath = getUploadFilePath(fileName);
-//
+////        String uploadFilePath = getUploadFilePath(fileName);
+//        String uploadFilePath =  "C:/Users/user/OneDrive/Documents/Y2S2/IS3106/project/IS3106-KiaKia/uploads/ + fileName";
 //        saveFile(fileInputStream, uploadFilePath);
 //
 //        return Response.status(200).entity("File uploaded to : " + uploadFilePath).build();
@@ -64,4 +70,4 @@
 //    }
 //}
 //
-//}
+//
