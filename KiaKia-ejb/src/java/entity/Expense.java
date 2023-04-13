@@ -62,6 +62,9 @@ public class Expense implements Serializable {
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<Debt> debts = new ArrayList<>();
 
+    public Expense() {
+    }
+
     public Long getExpenseId() {
         return expenseId;
     }
