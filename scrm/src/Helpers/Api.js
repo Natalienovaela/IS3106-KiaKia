@@ -245,9 +245,28 @@ const Api = {
             body: JSON.stringify(folder),
         })
     }, 
-    deletefolder(wishlistId, folderId) {
+    deleteFolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
             method: "DELETE", 
+        });
+    },
+
+    addTripToFolder(folderId, tripId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/add`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+    removeTripFromFolder(folderId, tripId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/remove`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
         });
     },
 
