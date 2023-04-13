@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar";
 import Wishlist from "./Pages/Wishlist/Wishlist";
@@ -18,9 +20,11 @@ import Poll from './Components/TripComponents/Poll';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userId, setUserId] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = (userId) => {
         setIsLoggedIn(true);
+        setUserId(userId);
     };
 
     const handleLogout = () => {
@@ -28,15 +32,15 @@ const App = () => {
     };
 
     return (
-        <>
-            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+        <>  <DndProvider backend={HTML5Backend}>
+            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId}/>
             <div className="container">
                 <Routes>
                     <Route path="/" element={<PublicLanding />} />
                     <Route path="/Home/:userId" element={<Home />} />
-                    <Route path="/Signup" element={<Signup handleLogin={handleLogin} />} />
-                    <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
-                    <Route path="/CreateTrip" element={<CreateTrip />} />
+                    <Route path="/Signup" element={<Signup handleLogin={handleLogin}/>} />
+                    <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
+                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId}/>} />
                     <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
                     <Route path="/Wishlist" element={<Wishlist />} />
@@ -48,6 +52,7 @@ const App = () => {
             </div>
             {/* Will change this component */}
             <Footer />
+            </DndProvider>   
         </>
     )
 }

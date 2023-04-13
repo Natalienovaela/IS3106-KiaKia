@@ -56,7 +56,7 @@ function Login({ handleLogin }) {
         .then((data) => {
           const userId = data.userId;
           navigate(`/Home/${userId}`);
-          handleLogin(true);
+          handleLogin(userId);
         })
         .catch((error) => {
           console.log(email + " " + password);

@@ -92,9 +92,9 @@ public class ItineraryResource {
     
     
     @POST
-    @Path("/{itinerary_id}/places/place_id")
+    @Path("/{itinerary_id}/places/{place_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPlaceLineItem(@PathParam("itinerary_id") Long itineraryId, @PathParam("place_id") Long placeId) {
+    public Response createPlaceLineItem(@PathParam("trip_id") Long tripId, @PathParam("itinerary_id") Long itineraryId, @PathParam("place_id") Long placeId) {
         try {
             PlaceLineItem placeLineItem = placeLineItemSessionBeanLocal.createPlaceLineItem(itineraryId, placeId);     
             return Response.status(200).entity(placeLineItem).build();
@@ -108,9 +108,9 @@ public class ItineraryResource {
     }
     
     @DELETE
-    @Path("{itinerary_id}/placeLineItems/placeLineItem_id")
+    @Path("{itinerary_id}/placeLineItems/{placeLineItem_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removePlaceLineItem(@PathParam("itinerary_id") Long itineraryId, @PathParam("plaeLineItem_id") Long placeLineItemId) {
+    public Response removePlaceLineItem(@PathParam("tripId") Long tripId, @PathParam("itinerary_id") Long itineraryId, @PathParam("plaeLineItem_id") Long placeLineItemId) {
         try {
             placeLineItemSessionBeanLocal.removePlaceLineItem(itineraryId, placeLineItemId);
             return Response.status(204).build();

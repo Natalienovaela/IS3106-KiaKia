@@ -16,6 +16,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.PlaceSessionBeanLocal;
@@ -36,12 +37,12 @@ public class ExploreResource {
     private PlaceSessionBeanLocal placeSessionBeanLocal;
 
     @GET
-    @Path("/searchTripByCityOrCountry")
+    @Path("/searchTripByCountry/{country}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response searchTripByCityOrCountry(JsonObject request) {
+    public Response searchTripByCountry(@PathParam("country")String country) {
         try {
-            List<Trip> trip = tripSessionBeanLocal.searchTripByCityOrCountry(request.getString("city"), request.getString("country"));
+            List<Trip> trip = tripSessionBeanLocal.searchTripByCityOrCountry(null, country);
             return Response.status(200).entity(trip).type(MediaType.APPLICATION_JSON).build();
         }
         catch(CityOrCountryNotSelected ex) {
@@ -54,12 +55,48 @@ public class ExploreResource {
     }
     
     @GET
-    @Path("/searchPlaceByCityOrCountry")
+    @Path("/searchTripByCity/{city}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response searchPlaceByCityOrCountry(JsonObject request) {
+    public Response searchTripByCity(@PathParam("city") String city) {
         try {
-            List<Place> place = placeSessionBeanLocal.searchPlaceByCityOrCountry(request.getString("city"), request.getString("country"));
+            List<Trip> trip = tripSessionBeanLocal.searchTripByCityOrCountry(city, null);
+            return Response.status(200).entity(trip).type(MediaType.APPLICATION_JSON).build();
+        }
+        catch(CityOrCountryNotSelected ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @GET
+    @Path("/searchPlaceByCountry/{country}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response searchPlaceByCountry(@PathParam("country") String country) {
+        try {
+            List<Place> place = placeSessionBeanLocal.searchPlaceByCityOrCountry(null, country);
+            return Response.status(200).entity(place).type(MediaType.APPLICATION_JSON).build();
+        }
+        catch(CityOrCountryNotSelected ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @GET
+    @Path("/searchPlaceByCity/{city}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response searchPlaceByCity(@PathParam("city") String city) {
+        try {
+            List<Place> place = placeSessionBeanLocal.searchPlaceByCityOrCountry(city, null);
             return Response.status(200).entity(place).type(MediaType.APPLICATION_JSON).build();
         }
         catch(CityOrCountryNotSelected ex) {

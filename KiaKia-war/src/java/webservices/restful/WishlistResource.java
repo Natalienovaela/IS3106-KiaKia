@@ -30,7 +30,7 @@ import session.WishlistSessionBeanLocal;
  *
  * @author Natalienovaela
  */
-@Path("Wishlist")
+@Path("wishlist")
 public class WishlistResource {
 
     @EJB
@@ -40,18 +40,20 @@ public class WishlistResource {
     private FolderSessionBeanLocal folderSessionBeanLocal;
 
     @GET
-    @Path("{wishlist_id}")
+    @Path("{wishlist_id}/{search}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveFolderWithCertainName(@PathParam("wishlist_id") Long wishlistId, String search) {
+    public Response retrieveFolderWithCertainName(@PathParam("wishlist_id") Long wishlistId, @PathParam("search") String search) {
         List<Folder> folder = folderSessionBeanLocal.retrieveFolderWithCertainName(wishlistId, search);
         return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
     }
 
     @POST
+    @Path("{wishlist_id}/folders")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewFolder(@PathParam("wishlist_id") Long wishlistId, Folder folder) {
+    public Response createNewFolder(@PathParam("wishlist_id") Long wishlistId) {
         try {
+            Folder folder = new Folder();
             folderSessionBeanLocal.createNewFolder(wishlistId, folder);
             return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
             
@@ -66,7 +68,7 @@ public class WishlistResource {
     }
     
     @GET
-    @Path("{wishlist_id}/allFolder")
+    @Path("{wishlist_id}/folders")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllFolder(@PathParam("wishlist_id") Long wishlistId) {
         try {
@@ -83,7 +85,7 @@ public class WishlistResource {
     }
     
     @PUT
-    @Path("/folders")
+    @Path("{wishlist_id}/folders/{folder_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFolderName(Folder folder) {

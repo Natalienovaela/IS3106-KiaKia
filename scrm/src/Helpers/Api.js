@@ -1,8 +1,12 @@
 const SERVER_PREFIX = "http://localhost:8080/KiaKia-war/webresources";
 
 const Api = {
+    //trips
+    getTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
+    },
     getAllTrips() {
-        return fetch(`${SERVER_PREFIX}/trips`);
+        return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
     },
 
     getAllPersonalTrips() {
@@ -15,6 +19,7 @@ const Api = {
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
+    //notes
     createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
             headers: {
@@ -40,6 +45,35 @@ const Api = {
             method: "DELETE",
         });
     },
+    //checkLists
+    createCheckList(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        });
+    },
+    updateCheckList(tripId, checkListId, checkList) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists/${checkListId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(checkList),
+        });
+    },
+    retrieveAllCheckListInTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists`);
+    },
+    deleteCheckList(tripId, checkListId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists/${checkListId}`, {
+            method: "DELETE",
+        });
+    },
+    //share
     shareTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/shareWhole`, {
             headers: {
@@ -58,12 +92,8 @@ const Api = {
             method: "PUT",
         });
     },
-
-    getTrip(tripId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
-    },
-
-
+    
+    //itinerary
     createItinerary(tripId, data) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,
             {
@@ -82,7 +112,37 @@ const Api = {
                 return response.json();
             });
     },
+    updateItinerary(tripId, itinerary) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,{
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(itinerary),
+        })
+    },
 
+    //placeLineItem
+    createPlaceLineItem(tripId, itineraryId, placeId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/places/${placeId}`), {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        }
+    },
+
+    removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}`, {
+            method: "DELETE",
+        })
+    },
+
+
+
+    //user
     createUser(data) {
         return fetch(`${SERVER_PREFIX}/users`, {
             headers: {
@@ -112,6 +172,85 @@ const Api = {
     getUser(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
+
+    createTrip(data, user_id) {
+        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+    },
+    //explore
+    searchTripByCity(city) {
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);     
+    },
+    searchTripByCountry(country) {
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);     
+    },
+    searchPlaceByCity(city) {
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);     
+    },
+    searchPlaceByCountry(country) {
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);     
+    },
+
+    //bucketList
+    createBucketListItem(tripId, placeId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/bucketLists/explore/${placeId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        });
+    },
+
+    removeBucketListItem(tripId, bucketListItemId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/bucketLists/${bucketListItemId}`, {
+            method: "DELETE",
+        })
+    },
+
+    //folder
+    createNewFolder(wishlistId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        })
+    },
+
+    retrieveAllFolder(wishlistId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`)
+    },
+
+    retrieveFolderWithCertainName(wishlistId, search) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/${search}`)
+    },
+
+    updateFolderName(wishlistId, folderId, folder) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(folder),
+        })
+    }, 
+    deletfolder(wishlistId, folderId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+            method: "DELETE", 
+        });
+    }
+
 };
 
 export default Api;

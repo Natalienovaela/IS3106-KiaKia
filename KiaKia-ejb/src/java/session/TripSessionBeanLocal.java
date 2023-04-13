@@ -26,7 +26,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface TripSessionBeanLocal {
-    public void addNewTrip(Trip trip);
+    public void addNewTrip(Trip trip, Long userId) throws UserNotFoundException;
     
     public void removeCheckList(Long tripId, Long checkListId) throws TripNotFoundException, CheckListNotFoundException;
     

@@ -13,6 +13,7 @@ import entity.Folder;
 import entity.Note;
 import entity.PlaceLineItem;
 import entity.Trip;
+import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
@@ -22,6 +23,8 @@ import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -49,9 +52,17 @@ public class TripSessionBean implements TripSessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public void addNewTrip(Trip trip) {
-        if (trip != null) {
-            em.persist(trip);
+    public void addNewTrip(Trip trip, Long userId) throws UserNotFoundException {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            if (trip != null) {
+                em.persist(trip);
+                em.flush();
+            }
+            TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+            em.persist(tripAssignment);
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
         }
 
     }
@@ -267,8 +278,8 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
             switch (userRole) {
                 case ADMIN:
-                    /*trip.getAdmins().add(user);
-                    user.getTrips().add(trip);*/
+                    TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                    em.persist(tripAssignment);
                     break;
                 case EDITOR:
                     /*trip.getEditors().add(user);
