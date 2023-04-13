@@ -245,10 +245,19 @@ const Api = {
             body: JSON.stringify(folder),
         })
     }, 
-    deletfolder(wishlistId, folderId) {
+    deletefolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
             method: "DELETE", 
         });
+    },
+
+    //cityorcountry
+    getCityList() {
+        return fetch(`${SERVER_PREFIX}/cityOrCountry/city`);
+    },
+
+    getCountryList() {
+        return fetch(`${SERVER_PREFIX}/cityOrCountry/country`);
     }
 
 };
