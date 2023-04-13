@@ -7,17 +7,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,7 +27,10 @@ public class Wishlist implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishlistId;
 
-    private Long userId;
+    @OneToOne(optional=false)
+    private User user;
+    @OneToMany
+    private List<Place> places = new ArrayList<>();
 
     @OneToMany
     private List<Folder> folders = new ArrayList<>();
@@ -44,13 +43,7 @@ public class Wishlist implements Serializable {
         this.wishlistId = wishlistId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -85,4 +78,21 @@ public class Wishlist implements Serializable {
         this.folders = folders;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Place> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<Place> places) {
+        this.places = places;
+    }
+
+    
 }

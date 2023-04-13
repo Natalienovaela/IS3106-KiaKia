@@ -216,7 +216,7 @@ const Api = {
         })
     },
 
-    //folder
+    // wishlist folder
     createNewFolder(wishlistId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
             headers: {

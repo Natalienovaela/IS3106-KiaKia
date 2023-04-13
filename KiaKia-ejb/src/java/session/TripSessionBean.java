@@ -6,6 +6,7 @@
 package session;
 
 import entity.Budget;
+import entity.BudgetExpenseCategory;
 import entity.CheckList;
 import entity.DayItinerary;
 import entity.Expense;
@@ -21,10 +22,9 @@ import error.CityOrCountryNotSelected;
 import error.FolderNotFoundException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -64,7 +64,15 @@ public class TripSessionBean implements TripSessionBeanLocal {
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
-
+        
+        String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
+        List<BudgetExpenseCategory> categories = new ArrayList<>();
+        for (String name: categoryNames)
+        {
+            categories.add(new BudgetExpenseCategory(name));
+        }
+        
+        trip.setCategories(categories);
     }
 
     @Override

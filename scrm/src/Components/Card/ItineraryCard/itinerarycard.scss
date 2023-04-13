@@ -20,22 +20,8 @@
         top: 0px;
         border-radius: 15px;
         
-        .profile {
-            display: flex;
-            position: absolute;
-            top: 0;
-            padding: 20px 20px;
-            flex-direction: row;
-            
-        }
-        .bookmark-button {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            top: 10px;
-            color: var(--whiteColor);
-            
-        }
+        
+        
         img {
             object-fit: cover;
             height: 100%;
@@ -126,5 +112,23 @@
             flex-direction: row;
             gap: 15px;
         }
+    }
+}
+
+.img-overlay {
+    display: flex;
+    z-index: 10000;
+    top: 0;
+    position: absolute;
+    flex-direction: row;
+    gap: 4rem;
+    padding: 1rem;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .profile {
+        display: flex;
+        flex-direction: row;
     }
 }

@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.Entity;
@@ -28,16 +29,34 @@ public class Poll implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pollId;
     private String description;
-    private HashMap<Long, String> options;
-    private HashMap<Long, List<Long>> voting;
-    private boolean isClosed;
+    private HashMap<Long, String> options; //keep track of the options
+    private HashMap<Long, List<Long>> voting; //keep track of users who polled that option
+    private boolean isClosed; 
     
     @ManyToOne(optional=false)
     @JoinColumn(nullable=false)
-    private User creator;
+    private User creator; 
     
     @ManyToMany
-    private List<User> polledBy;
+    private List<User> polledBy; //keep track of users who have polled
+
+    public Poll(String description, HashMap<Long, String> options, User creator) {
+        this.description = description;
+        this.options = options;
+        this.isClosed = false;
+        this.voting = new HashMap<Long, List<Long>>();
+        this.creator = creator;
+        this.polledBy = new ArrayList<User>();
+        for(Long l : options.keySet()) {
+            voting.put(l, new ArrayList<Long>());
+        }
+    }
+
+    public Poll() {
+        this.options = new HashMap<Long, String>();
+        this.voting = new HashMap<Long, List<Long>>();
+        this.polledBy = new ArrayList<User>();
+    }
 
     public Long getPollId() {
         return pollId;

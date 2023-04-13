@@ -5,9 +5,15 @@
 // */
 //package session;
 //
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.io.OutputStream;
 //import javax.ejb.Stateless;
 //import javax.persistence.EntityManager;
 //import javax.persistence.PersistenceContext;
+//import javax.ws.rs.WebApplicationException;
+//import javax.ws.rs.core.StreamingOutput;
 //
 ///**
 // *
