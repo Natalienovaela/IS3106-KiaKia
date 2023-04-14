@@ -33,6 +33,14 @@ public class BudgetExpenseCategory implements Serializable {
     @OneToMany
     private List<Expense> expenses;
 
+    public BudgetExpenseCategory() {
+    }
+
+    
+    public BudgetExpenseCategory(String name) {
+        this.name = name;
+    }
+    
     public Long getCategoryId() {
         return categoryId;
     }

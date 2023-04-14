@@ -49,8 +49,8 @@ public class Trip implements Serializable {
     
     private String inviteToken;
     
-    @ManyToMany(mappedBy="wishlistTrips")
-    private List<User> wishlisted = new ArrayList<>();
+    //@ManyToMany(mappedBy="wishlistTrips")
+    //private List<User> wishlisted = new ArrayList<>();
     
     @OneToMany
     private List<Note> notes = new ArrayList<>();
@@ -62,7 +62,7 @@ public class Trip implements Serializable {
     private List<CheckList> checkLists = new ArrayList<>();
     
     @OneToMany
-    private ArrayList<Poll> polls = new ArrayList<>();
+    private List<Poll> polls = new ArrayList<>();
     
     @OneToMany
     private List<PlaceLineItem> bucketList = new ArrayList<>();
@@ -192,11 +192,11 @@ public class Trip implements Serializable {
         this.checkLists = checkLists;
     }
 
-    public ArrayList<Poll> getPolls() {
+    public List<Poll> getPolls() {
         return polls;
     }
 
-    public void setPolls(ArrayList<Poll> polls) {
+    public void setPolls(List<Poll> polls) {
         this.polls = polls;
     }
 
@@ -224,13 +224,13 @@ public class Trip implements Serializable {
         this.inviteToken = inviteToken;
     }
 
-    public List<User> getWishlisted() {
-        return wishlisted;
-    }
+    //public List<User> getWishlisted() {
+     //   return wishlisted;
+    //}
 
-    public void setWishlisted(List<User> wishlisted) {
-        this.wishlisted = wishlisted;
-    }
+    //public void setWishlisted(List<User> wishlisted) {
+    //    this.wishlisted = wishlisted;
+   // }
 
     public List<DayItinerary> getItinerary() {
         return itinerary;

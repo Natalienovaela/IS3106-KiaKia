@@ -92,7 +92,7 @@ const Api = {
             method: "PUT",
         });
     },
-
+    
     //itinerary
     createItinerary(tripId, data) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,
@@ -113,7 +113,7 @@ const Api = {
             });
     },
     updateItinerary(tripId, itinerary) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`, {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,{
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -187,16 +187,16 @@ const Api = {
     },
     //explore
     searchTripByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);     
     },
     searchTripByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);     
     },
     searchPlaceByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);     
     },
     searchPlaceByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);     
     },
 
     //bucketList
@@ -216,7 +216,7 @@ const Api = {
         })
     },
 
-    //folder
+    // wishlist folder
     createNewFolder(wishlistId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
             headers: {
@@ -244,34 +244,39 @@ const Api = {
             method: "PUT",
             body: JSON.stringify(folder),
         })
-    },
-    deletfolder(wishlistId, folderId) {
+    }, 
+    deleteFolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
-            method: "DELETE",
-        })
+            method: "DELETE", 
+        });
     },
 
-    emailExists(email) {
-        return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
+    addTripToFolder(folderId, tripId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/add`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
     },
-    async createAndInviteUserToTrip(data, userId, userEmails, userRoles) {
-        try {
-            const response = await fetch(`${SERVER_PREFIX}/trips/query?userId=${userId}&userEmails=${userEmails}&userRoles=${userRoles}`,
-                {
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    method: "POST",
-                    body: JSON.stringify(data),
-                }
-            );
-            console.log("createAndInviteUserToTrip Response:", response); // Add logging statement
-            const data_2 = await response.json();
-            console.log("createAndInviteUserToTrip Data:", data_2); // Add logging statement
-        } catch (error) {
-            console.log("createAndInviteUserToTrip Error:", error); // Add logging statement
-        }
+    removeTripFromFolder(folderId, tripId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/remove`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
+    //cityorcountry
+    getCityList() {
+        return fetch(`${SERVER_PREFIX}/cityOrCountry/city`);
+    },
+
+    getCountryList() {
+        return fetch(`${SERVER_PREFIX}/cityOrCountry/country`);
     }
 
 };

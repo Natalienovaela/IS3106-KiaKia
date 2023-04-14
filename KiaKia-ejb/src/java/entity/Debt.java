@@ -37,6 +37,9 @@ public class Debt implements Serializable {
     @ManyToOne
     private Expense expense;
 
+    public Debt() {
+    }
+
     public Long getDebtId() {
         return debtId;
     }

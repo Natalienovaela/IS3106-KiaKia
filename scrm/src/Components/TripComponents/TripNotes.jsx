@@ -51,6 +51,7 @@ const TripNotes = ({ tripId }) => {
 
   return (
     <div className="trip-notes">
+      <h3>Notes</h3>
       {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
       <div>

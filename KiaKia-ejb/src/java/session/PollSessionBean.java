@@ -37,34 +37,29 @@ public class PollSessionBean implements PollSessionBeanLocal {
 
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
-    
-    
 
     @Override
-    public Long createNewPoll(Poll poll, Long tripId, Long userId) throws UnknownPersistenceException, UserNotFoundException, TripNotFoundException {
+    public Long createNewPoll(Poll poll, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
 
         try {
             Trip trip = em.find(Trip.class, tripId);
-            User user = em.find(User.class, userId);
+//            User user = em.find(User.class, userId);
 
-            if (trip != null && poll != null && user != null) {
+            if (trip != null && poll != null) {
                 em.persist(poll);
-                
-                User creator = userSessionBeanLocal.retrieveUserByUserId(userId);
-                poll.setCreator(creator);
-                
+
+//                User creator = userSessionBeanLocal.retrieveUserByUserId(userId);
+//                poll.setCreator(creator);
                 trip.getPolls().add(poll);
-                
+
                 em.flush(); //only need to flush bcs we are returning the id
                 return poll.getPollId();
             } else {
-                throw new TripNotFoundException("Trip id " + tripId +  " does not exist");
+                throw new TripNotFoundException("Trip id " + tripId + " does not exist");
             }
         } catch (PersistenceException ex) {
             throw new UnknownPersistenceException(ex.getMessage());
-        } catch (UserNotFoundException ex) {
-            throw new UserNotFoundException(ex.getMessage());
-        } 
+        }
     }
 
     @Override
@@ -77,7 +72,7 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new PollNotFoundException("Poll ID " + pollId + " does not exist!");
         }
     }
-    
+
     @Override
     public void updatePoll(Poll u) throws PollNotFoundException {
         try {
@@ -88,13 +83,13 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new PollNotFoundException(ex.getMessage());
         }
     }
-    
+
     @Override
     public void pollOption(Poll p, Long votedOption, Long userId) throws PollNotFoundException, UserNotFoundException, UserHasPolledException, PollClosedException {
         try {
             Poll oldPoll = retrievePollByPollId(p.getPollId());
             User u = userSessionBeanLocal.retrieveUserByUserId(userId);
-            if(!hasUserPolled(oldPoll, u) && !oldPoll.isIsClosed()) {
+            if (!hasUserPolled(oldPoll, u) && !oldPoll.isIsClosed()) {
                 oldPoll.getPolledBy().add(u);
 //                HashMap<Long, List<Long>> oldVoting = oldPoll.getVoting();
 //                oldVoting.get(votedOption).add(u.getUserId());
@@ -107,7 +102,7 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new PollNotFoundException(e.getMessage());
         }
     }
-    
+
     @Override
     public boolean hasUserPolled(Poll p, User u) {
         return p.getPolledBy().contains(u);
@@ -117,13 +112,14 @@ public class PollSessionBean implements PollSessionBeanLocal {
         em.persist(object);
     }
 
-        @Override
-    public void removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
+    @Override
+    public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
         Poll poll = em.find(Poll.class, pollId);
 
         if (trip != null && poll != null) {
             trip.getPolls().remove(poll);
+            return true;
         } else {
             if (trip == null) {
                 throw new TripNotFoundException("Trip not found in the database");
@@ -132,6 +128,21 @@ public class PollSessionBean implements PollSessionBeanLocal {
                 throw new PollNotFoundException("Poll not found in the database");
             }
         }
+        return true;
     }
-    
+
+    @Override
+    public List<Poll> retrieveAllPollsInTrip(Long tripId) throws TripNotFoundException {
+        Trip trip;
+        try {
+            trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+            System.out.println(trip.getTripId());
+        } catch (TripNotFoundException ex) {
+            System.out.println("Exception found");
+            throw new TripNotFoundException(ex.getMessage());
+        }
+        return trip.getPolls();
+
+    }
+
 }

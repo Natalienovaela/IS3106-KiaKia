@@ -14,6 +14,7 @@
     .pc-image-div {
         width: 100%;
         position:relative;
+        font-size: 30px;
     }
     img {
         object-fit: cover;
@@ -38,7 +39,9 @@
         right: 10px;
         top: 10px;
         color: var(--whiteColor);
+        z-index: 10000;
     }
+   
     
     .card-content {
         position: absolute;
@@ -62,4 +65,8 @@
 
         
     }
+}
+
+.MuiIcon-fontSizeLarge {
+    font-size: 30px;
 }

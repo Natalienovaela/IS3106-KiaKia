@@ -7,9 +7,11 @@ package webservices.restful;
 
 import entity.CheckList;
 import entity.Note;
+import entity.Poll;
 import entity.Trip;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
+import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserNotFoundException;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.Response;
 import session.CheckListSessionBeanLocal;
 import session.NoteSessionBeanLocal;
 import session.PlaceSessionBeanLocal;
+import session.PollSessionBeanLocal;
 import session.TripSessionBeanLocal;
 
 /**
@@ -47,6 +50,9 @@ public class TripsResource {
 
     @EJB
     private NoteSessionBeanLocal noteSessionBeanLocal;
+
+    @EJB
+    private PollSessionBeanLocal pollSessionBeanLocal;
 
     @EJB
     private CheckListSessionBeanLocal checkListSessionBeanLocal;
@@ -292,6 +298,43 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
+
+    //to retrieve all polls in trip
+    @GET
+    @Path("/{trip_id}/polls")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
+        List<Poll> polls;
+        System.out.println("Retrieve all notes in trip triggered");
+        try {
+            polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
+            return Response.status(200).entity(polls).build();
+        } catch (TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+//    @DELETE
+//    @Path("/{trip_id}/polls/{poll_id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response deletePoll(@PathParam("trip_id") Long tripId,
+//            @PathParam("poll_id") Long pollId) {
+//        try {
+//            System.out.println("Delete poll triggered");
+//            Boolean res = pollSessionBeanLocal.removePoll(tripId, pollId);
+//            return Response.status(204).entity(res).build();
+//        } catch (TripNotFoundException | PollNotFoundException ex) {
+//            JsonObject exception = Json.createObjectBuilder()
+//                    .add("error", ex.getMessage())
+//                    .build();
+//            return Response.status(404).entity(exception).build();
+//        }
+//    }
 
     @POST
     @Path("/{user_id}")

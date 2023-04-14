@@ -6,7 +6,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -37,7 +36,7 @@ public class DayItinerary implements Serializable {
     private Boolean isShared = Boolean.FALSE;
     
     @OneToMany
-    private ArrayList<PlaceLineItem> placeLineItem;
+    private List<PlaceLineItem> placeLineItem;
     
     public DayItinerary() {
         
@@ -105,11 +104,11 @@ public class DayItinerary implements Serializable {
         this.isShared = isShared;
     }
 
-    public ArrayList<PlaceLineItem> getPlaceLineItem() {
+    public List<PlaceLineItem> getPlaceLineItem() {
         return placeLineItem;
     }
 
-    public void setPlaceLineItem(ArrayList<PlaceLineItem> placeLineItem) {
+    public void setPlaceLineItem(List<PlaceLineItem> placeLineItem) {
         this.placeLineItem = placeLineItem;
     }
     

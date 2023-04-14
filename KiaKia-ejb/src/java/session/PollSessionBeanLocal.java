@@ -13,6 +13,7 @@ import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserHasPolledException;
 import error.UserNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -30,8 +31,10 @@ public interface PollSessionBeanLocal {
 
     public boolean hasUserPolled(Poll p, User u);
 
-    public Long createNewPoll(Poll poll, Long tripId, Long userId) throws UnknownPersistenceException, UserNotFoundException, TripNotFoundException;
+    public Long createNewPoll(Poll poll, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
 
-    public void removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException;
+    public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException;
+
+    public List<Poll> retrieveAllPollsInTrip(Long tripId) throws TripNotFoundException;
     
 }

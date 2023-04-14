@@ -5,25 +5,17 @@
  */
 package entity;
 
-import enumeration.UserRoleEnum;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 //import util.security.CryptographicHelper;
@@ -46,6 +38,7 @@ public class User implements Serializable {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
+    @OneToOne(optional=false)
     private Wishlist wishlist;
     private File photo;
     private String resetPasswordToken;
@@ -53,11 +46,11 @@ public class User implements Serializable {
     private Date tokenExpiryDate;
     
 
-    @ManyToMany
-    private List<Trip> wishlistTrips = new ArrayList<>(); // pending
+    //@ManyToMany
+    //private List<Trip> wishlistTrips = new ArrayList<>(); // pending
 
-    @ManyToMany
-    private List<Place> wishlistPlaces = new ArrayList<>(); // pending
+    //@ManyToMany
+    //private List<Place> wishlistPlaces = new ArrayList<>(); // pending
 
     public User() {
     }
@@ -174,6 +167,7 @@ public class User implements Serializable {
         this.wishlist = wishlist;
     }
 
+    /*
     public List<Trip> getWishlistTrips() {
         return wishlistTrips;
     }
@@ -189,7 +183,7 @@ public class User implements Serializable {
     public void setWishlistPlaces(List<Place> wishlistPlaces) {
         this.wishlistPlaces = wishlistPlaces;
     }
-
+*/
     public String getResetPasswordToken() {
         return resetPasswordToken;
     }

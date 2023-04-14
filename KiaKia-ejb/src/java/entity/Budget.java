@@ -30,6 +30,9 @@ public class Budget implements Serializable {
     @OneToOne
     private BudgetExpenseCategory category;
 
+    public Budget() {
+    }
+
     public Long getBudgetId() {
         return budgetId;
     }

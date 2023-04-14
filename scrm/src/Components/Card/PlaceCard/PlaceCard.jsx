@@ -2,34 +2,28 @@ import React, { useState } from "react";
 import "./placecard.css";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import IconButton from "@mui/material/IconButton";
+import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 
-function BookmarkButton() {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  return (
-    <IconButton
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="bookmark-button"
-    >
-      {isHovered ? <FaRegBookmark /> : <FaBookmark />}
-    </IconButton>
-  );
-}
 const PlaceCard = (props) => {
+  const [click, setclick] = useState(false);
+
+  const handleClick = () => {
+    setclick(!click);
+    console.log("clicked");
+  };
+
   return (
     <div className="place-card">
       <div className="pc-image-div">
         <img src={props.img} alt="Card" />
-        <BookmarkButton />
+        <IconButton
+          onClick={handleClick}
+          fontSize="large"
+          sx={{ color: "white" }}
+          className="bookmark-button"
+        >
+          {click ? <Bookmark /> : <BookmarkBorder />}
+        </IconButton>
       </div>
 
       <div className="card-content">
