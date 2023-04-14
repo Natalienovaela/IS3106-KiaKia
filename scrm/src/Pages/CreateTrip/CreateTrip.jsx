@@ -131,9 +131,6 @@ function CreateTrip({ userId }) {
             paddingBottom={0.5}
           >
             <Chip label={email} avatar={<Avatar>M</Avatar>} size="small" />
-            <Typography variant="body1" marginLeft={1} marginRight={1}>
-              &mdash;
-            </Typography>
             <Chip label={roles[index]} color="primary" size="small" />
             {/* Display role using Chip component */}
             <IconButton onClick={() => handleRemoveEmail(index)} size="small">

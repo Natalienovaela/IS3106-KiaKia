@@ -46,7 +46,7 @@ public class PlaceLineItem implements Serializable {
     private List<Note> notes = new ArrayList<>();
     
     @ManyToMany
-    private List<User> votedUsers = new ArrayList<>();
+    private ArrayList<User> votedUsers = new ArrayList<>();
     
 
     public Long getPlaceLineItemId() {
@@ -122,11 +122,11 @@ public class PlaceLineItem implements Serializable {
         this.notes = notes;
     }
 
-    public List<User> getVotedUsers() {
+    public ArrayList<User> getVotedUsers() {
         return votedUsers;
     }
 
-    public void setVotedUsers(List<User> votedUsers) {
+    public void setVotedUsers(ArrayList<User> votedUsers) {
         this.votedUsers = votedUsers;
     }
     

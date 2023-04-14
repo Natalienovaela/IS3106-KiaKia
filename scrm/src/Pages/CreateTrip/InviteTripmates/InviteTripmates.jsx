@@ -77,7 +77,7 @@ function InviteTripmates({ open, onClose, onInvite }) {
           />
         </Box>
         <Box mt={3}>
-        <InputLabel id="role-select">Role</InputLabel>
+        <InputLabel id="role-select">Invite them as</InputLabel>
           <Select
             labelid="role-select"
             placeholder="Select role"
@@ -87,9 +87,9 @@ function InviteTripmates({ open, onClose, onInvite }) {
             variant="outlined"
             margin="dense"
           >
-            <MenuItem value="Admin">Admin</MenuItem>
-            <MenuItem value="Editor">Editor</MenuItem>
-            <MenuItem value="Viewer">Viewer</MenuItem>
+            <MenuItem value="ADMIN">Admin</MenuItem>
+            <MenuItem value="EDITOR">Editor</MenuItem>
+            <MenuItem value="VIEWER">Viewer</MenuItem>
           </Select>
         </Box>
       </DialogContent>
@@ -102,7 +102,7 @@ function InviteTripmates({ open, onClose, onInvite }) {
             {errors.submit}
           </Typography>
         )}
-        <Button onClick={handleInvite} color="primary">
+        <Button onClick={handleInvite} className="invite">
           Invite
         </Button>
       </DialogActions>

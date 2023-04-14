@@ -41,6 +41,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     @Override
     public void createUser(User u) {
         em.persist(u);
+        em.flush();
     }
     
     @Override

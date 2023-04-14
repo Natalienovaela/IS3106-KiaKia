@@ -62,7 +62,7 @@ public class Trip implements Serializable {
     private List<CheckList> checkLists = new ArrayList<>();
     
     @OneToMany
-    private List<Poll> polls = new ArrayList<>();
+    private ArrayList<Poll> polls = new ArrayList<>();
     
     @OneToMany
     private List<PlaceLineItem> bucketList = new ArrayList<>();
@@ -192,11 +192,11 @@ public class Trip implements Serializable {
         this.checkLists = checkLists;
     }
 
-    public List<Poll> getPolls() {
+    public ArrayList<Poll> getPolls() {
         return polls;
     }
 
-    public void setPolls(List<Poll> polls) {
+    public void setPolls(ArrayList<Poll> polls) {
         this.polls = polls;
     }
 

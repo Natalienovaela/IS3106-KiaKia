@@ -9,11 +9,13 @@ import dayjs from "dayjs";
 import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
+import "../../Components/TripComponents/Itinerary";
 
 import utc from "dayjs/plugin/utc";
 
 import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
+import Itinerary from "../../Components/TripComponents/Itinerary";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
@@ -229,6 +231,8 @@ function TripContent() {
                 title="Itinerary"
                 id="itinerary"
               >
+                <Itinerary />
+                {/*  itinerary component here }
                 <h2>Itinerary</h2>
 
                 <div className="date-range-picker">
@@ -244,7 +248,7 @@ function TripContent() {
                     ]}
                   />
 
-                  {/*{error && <Error error={error} />}*/}
+                  {/*{error && <Error error={error} />}} 
                 </div>
                 <div>
                   {itinerary
@@ -282,6 +286,7 @@ function TripContent() {
                   <li>Visit a museum or historical site</li>
                   <li>Relax on a nearby beach or lake</li>
                 </ul>
+                    */}
               </section>
               <span className="line"></span>
               <section

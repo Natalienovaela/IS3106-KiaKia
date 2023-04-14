@@ -10,8 +10,11 @@ import entity.Trip;
 import entity.User;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -22,6 +25,7 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import session.NoteSessionBeanLocal;
+import session.TripSessionBeanLocal;
 import session.UserSessionBeanLocal;
 
 /**
@@ -41,6 +45,9 @@ public class DataInitSessionBean {
     
     @EJB
     private UserSessionBeanLocal userSessionBeanLocal;
+    
+    @EJB
+    private TripSessionBeanLocal tripSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() { 
@@ -50,12 +57,30 @@ public class DataInitSessionBean {
         if (em.find(User.class, 1l) == null) {
             initialiseUser();
         }
+        initialiseInvitation();
+    }
+    
+    public void initialiseInvitation() {
+//        try {
+//            Trip trip = em.find(Trip.class, 1l);
+//            User user = em.find(User.class, 1l);
+//            
+//            List<String> userEmails = new ArrayList<String>();
+//            userEmails.add("nat@gmail.com");
+//            List<String> userRoles = new ArrayList<String>();
+//            userRoles.add("EDITOR");
+//            
+//            tripSessionBeanLocal.createAndInviteUsersToTrip(trip, user.getUserId(), userEmails, userRoles);
+//        } catch (UserNotFoundException ex) {
+//            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
     }
     
     public void initialiseUser() {
         Trip trip = em.find(Trip.class, 1l);
         userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
-        
+        userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
     }
     
     public void initialiseTrip() {

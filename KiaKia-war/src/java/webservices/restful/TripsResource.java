@@ -9,14 +9,11 @@ import entity.CheckList;
 import entity.Note;
 import entity.Trip;
 import error.CheckListNotFoundException;
-import error.CityOrCountryNotSelected;
 import error.NoteNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserNotFoundException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -63,7 +60,8 @@ public class TripsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTrips() {
         List<Trip> trip = tripSessionBeanLocal.getAllTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip){};
+        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
+        };
         return Response.status(200).entity(entity).build();
     }
 
@@ -80,7 +78,8 @@ public class TripsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPersonalTrips() {
         List<Trip> trip = tripSessionBeanLocal.getAllPersonalTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip){};
+        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
+        };
         return Response.status(200).entity(entity).build();
     }
 
@@ -90,7 +89,8 @@ public class TripsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllGroupTrips() {
         List<Trip> trip = tripSessionBeanLocal.getAllGroupTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip){};
+        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
+        };
         return Response.status(200).entity(entity).build();
     }
 
@@ -154,7 +154,7 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @DELETE
     @Path("/{trip_id}/notes/{note_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -203,24 +203,24 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @GET
     @Path("/{trip_id}/checkLists")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllCheckListsInTrip(@PathParam("trip_id") Long tripId) {
         try {
             List<CheckList> checkLists = checkListSessionBeanLocal.getAllCheckListInTrip(tripId);
-            GenericEntity<List<CheckList>> entity = new GenericEntity<List<CheckList>>(checkLists){};
+            GenericEntity<List<CheckList>> entity = new GenericEntity<List<CheckList>>(checkLists) {
+            };
             return Response.status(200).entity(entity).build();
-        }
-        catch(TripNotFoundException ex) {
+        } catch (TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @DELETE
     @Path("/{trip_id}/checkLists/{checkList_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -229,14 +229,12 @@ public class TripsResource {
         try {
             tripSessionBeanLocal.removeCheckList(tripId, checkListId);
             return Response.status(204).build();
-        }
-        catch(CheckListNotFoundException ex) {
+        } catch (CheckListNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception).build();
-        }
-        catch(TripNotFoundException ex) {
+        } catch (TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
@@ -260,7 +258,7 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @PUT
     @Path("/{trip_id}/share")
     @Produces(MediaType.APPLICATION_JSON)
@@ -277,7 +275,7 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @PUT
     @Path("/{trip_id}/unshareWhole")
     @Produces(MediaType.APPLICATION_JSON)
@@ -294,7 +292,7 @@ public class TripsResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @POST
     @Path("/{user_id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -310,15 +308,25 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") List<String> userEmails, @QueryParam("userRoles") List<String> userRoles) {
         try {
+            System.out.println("Received request to create and invite users to trip.");
+            System.out.println("Trip: " + t);
+            System.out.println("UserId: " + userId);
+            System.out.println("UserEmails: " + userEmails);
+            System.out.println("UserRoles: " + userRoles);
+
             tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmails, userRoles);
+
+            System.out.println("Trip created and users invited successfully.");
+            System.out.println("Adding trip to response: " + t);
             return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
+            System.err.println("Failed to create and invite users to trip: " + ex.getMessage());
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();

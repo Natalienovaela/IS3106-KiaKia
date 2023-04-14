@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class Poll implements Serializable {
     private Long pollId;
     private String description;
     private HashMap<Long, String> options;
-    private HashMap<Long, List<Long>> voting;
+    private HashMap<Long, ArrayList<Long>> voting;
     private boolean isClosed;
     
     @ManyToOne(optional=false)
@@ -96,11 +97,11 @@ public class Poll implements Serializable {
         this.isClosed = isClosed;
     }
 
-    public HashMap<Long, List<Long>> getVoting() {
+    public HashMap<Long, ArrayList<Long>> getVoting() {
         return voting;
     }
 
-    public void setVoting(HashMap<Long, List<Long>> voting) {
+    public void setVoting(HashMap<Long, ArrayList<Long>> voting) {
         this.voting = voting;
     }
 

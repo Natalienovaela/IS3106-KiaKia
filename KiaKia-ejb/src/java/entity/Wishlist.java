@@ -34,7 +34,7 @@ public class Wishlist implements Serializable {
     private Long userId;
 
     @OneToMany
-    private List<Folder> folders = new ArrayList<>();
+    private ArrayList<Folder> folders = new ArrayList<>();
 
     public Long getWishlistId() {
         return wishlistId;
@@ -77,11 +77,11 @@ public class Wishlist implements Serializable {
         return "entity.Wishlist[ id=" + wishlistId + " ]";
     }
 
-    public List<Folder> getFolders() {
+    public ArrayList<Folder> getFolders() {
         return folders;
     }
 
-    public void setFolders(List<Folder> folders) {
+    public void setFolders(ArrayList<Folder> folders) {
         this.folders = folders;
     }
 

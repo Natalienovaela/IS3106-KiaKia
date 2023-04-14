@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import './navbar.css'
 import { MdOutlineTravelExplore } from 'react-icons/md'
 import { AccountCircle } from '@mui/icons-material';
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { TbGridDots } from 'react-icons/tb'
+import PropTypes from 'prop-types';
 import Api from '../../Helpers/Api';
 
 function Navbar({ isLoggedIn, handleLogout, userId }) {
   const [active, setActive] = useState('navBar');
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   //function to toggle bar
   const showNav = () => {
@@ -43,19 +55,19 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
     <section className='navBarSection'>
       <header className="header flex">
 
-      {isLoggedIn ? (
-        <div className="logoDiv">
-          <Link to={`/Home/${userId}`} className="logo flex">
-            <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
-          </Link>
-        </div>
+        {isLoggedIn ? (
+          <div className="logoDiv">
+            <Link to={`/Home/${userId}`} className="logo flex">
+              <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
+            </Link>
+          </div>
         ) : (
           <div className="logoDiv">
-          <Link to="/" className="logo flex">
-            <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
-          </Link>
-        </div>
-          )}
+            <Link to="/" className="logo flex">
+              <h1> <MdOutlineTravelExplore className="icon" /> KiaKia</h1>
+            </Link>
+          </div>
+        )}
 
         {isLoggedIn ? (
           <div className={active}>
@@ -82,12 +94,28 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
                 </span>
 
                 <li className="profile">
-                  <Link to="/Profile" className="logo flex">
-                    <AccountCircle className="icon" fontSize="large" />
-                  </Link>
+                  <IconButton
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                  >
+                    <AccountCircle className="icon" fontSize="medium" />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    <MenuItem component={CustomLink} to={`/Profile`}>Profile</MenuItem>
+                    <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
+                  </Menu>
                 </li>
-
-                <button onClick={handleLogoutClick}>Log out</button>
               </ul>
             </nav>
 
@@ -133,6 +161,10 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
     </section>
   )
 }
+
+Navbar.propTypes = {
+  handleClick: PropTypes.func
+};
 
 
 export default Navbar;

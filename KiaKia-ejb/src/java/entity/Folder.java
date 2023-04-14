@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,9 +27,17 @@ public class Folder implements Serializable {
     private Long folderId;
         
     @ManyToMany
-    private List<Trip> trips;
+    private ArrayList<Trip> trips;
     
     private String name;
+    
+    public Folder() {
+        this.name = "Untitled";
+    }
+    
+    public Folder(String name) {
+        this.name = name;
+    }
 
     public Long getFolderId() {
         return folderId;
@@ -63,11 +72,11 @@ public class Folder implements Serializable {
         return "entity.Folder[ id=" + folderId + " ]";
     }
 
-    public List<Trip> getTrips() {
+    public ArrayList<Trip> getTrips() {
         return trips;
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips(ArrayList<Trip> trips) {
         this.trips = trips;
     }
 

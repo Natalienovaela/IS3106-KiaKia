@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar";
 import Wishlist from "./Pages/Wishlist/Wishlist";
@@ -29,7 +31,7 @@ const App = () => {
     };
 
     return (
-        <>     
+        <>  <DndProvider backend={HTML5Backend}>
             <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId}/>
             <div className="container">
                 <Routes>
@@ -48,6 +50,7 @@ const App = () => {
             </div>
             {/* Will change this component */}
             <Footer />
+            </DndProvider>   
         </>
     )
 }
