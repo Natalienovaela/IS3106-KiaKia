@@ -11,8 +11,12 @@
     --bodyColor: rgb(240, 240, 246);
     --cardBG: rgb(225, 225, 235);
     --orangeColor: #FB923C;
-   }
+}
 
 .profile-button {
-    background-color: var(--PrimaryColor)  !important;
+    background-color: var(--PrimaryColor) !important;
+}
+
+.profile-icon {
+    color: var(--PrimaryColor);
 }

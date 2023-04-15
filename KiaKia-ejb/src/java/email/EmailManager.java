@@ -49,8 +49,8 @@ public class EmailManager
         
         emailBody += "Dear " + user.getName() + "," + "\n\n";
         emailBody += "You have been invited to join a trip as a/an " + userRole + ". Click the link below to accept the invite:\n\n";
-        // String inviteUrl = "https://example.com/accept-invite?token=" + trip.getInviteToken() + "?role=" + userRole;
-        //emailBody += inviteUrl;
+//         String inviteUrl = "https://example.com/accept-invite?token=" + trip.getInviteToken() + "&role=" + userRole;
+//        emailBody += inviteUrl;
         emailBody += "Cheers, \n\n";
         emailBody += "KiaKia team";  
             

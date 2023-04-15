@@ -27,8 +27,8 @@ public class Wishlist implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishlistId;
 
-    @OneToOne(optional=false)
-    private User user;
+//    @OneToOne(optional=false)
+//    private User user;
     @OneToMany
     private List<Place> places = new ArrayList<>();
 
@@ -78,13 +78,13 @@ public class Wishlist implements Serializable {
         this.folders = folders;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public List<Place> getPlaces() {
         return places;

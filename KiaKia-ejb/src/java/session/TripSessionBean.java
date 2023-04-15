@@ -25,6 +25,8 @@ import error.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -266,18 +268,20 @@ public class TripSessionBean implements TripSessionBeanLocal {
     public void createAndInviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException {
         try {
             User admin = userSessionBeanLocal.retrieveUserByUserId(userId);
-//            if (trip != null) {
-//                em.persist(trip);
-//                em.flush();
-//                System.out.println("add trip");
-//            }
+            if (trip != null) {
+                em.persist(trip);
+                em.flush();
+                System.out.println("add trip");
+            }
             TripAssignment tripAssignment = new TripAssignment(admin, trip, UserRoleEnum.ADMIN);
             em.persist(tripAssignment);
             System.out.println("add assignment");
 
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
-
+                System.out.println(email);
+                
+                System.out.println(userRoles.get(i));
                 UserRoleEnum userRole = UserRoleEnum.valueOf(userRoles.get(i));
                 User user = userSessionBeanLocal.retrieveUserByEmail(email);
 
@@ -313,11 +317,20 @@ public class TripSessionBean implements TripSessionBeanLocal {
             trip.setInviteToken(token);
             String userRole = role.toString();
 
-            try {
-                emailSessionBeanLocal.emailInvitationToUserAsync(user, trip, userRole, email);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+             try {
+            Future<Boolean> asyncResult = emailSessionBeanLocal.emailInvitationToUserAsync(user, trip, userRole, email);
+            // Store the Future<Boolean> in a variable for future use
+            // You can use this variable to check the result of the asynchronous computation later on
+            // For example, you can call asyncResult.get() to get the result and check if the email was sent successfully
+            Boolean emailSent = asyncResult.get();
+            if (emailSent) {
+                System.out.println("Email sent successfully!");
+            } else {
+                System.out.println("Failed to send email.");
             }
+        } catch (InterruptedException | ExecutionException ex) {
+            ex.printStackTrace();
+        }
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
@@ -346,16 +359,16 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
             switch (userRole) {
                 case ADMIN:
-                    TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
-                    em.persist(tripAssignment);
+                    TripAssignment tripAssignment1 = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                    em.persist(tripAssignment1);
                     break;
                 case EDITOR:
-                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
-                    em.persist(tripAssignment);
+                    TripAssignment tripAssignment2 = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
+                    em.persist(tripAssignment2);
                     break;
                 case VIEWER:
-                    tripAssignment = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
-                    em.persist(tripAssignment);
+                    TripAssignment tripAssignment3 = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
+                    em.persist(tripAssignment3);
                     break;
                 default:
                     break;

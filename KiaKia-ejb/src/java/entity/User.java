@@ -38,8 +38,8 @@ public class User implements Serializable {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
-    @OneToOne(optional=false)
-    private Wishlist wishlist;
+//    @OneToOne(optional=false)
+//    private Wishlist wishlist;
     private File photo;
     private String resetPasswordToken;
     @Temporal(TemporalType.DATE)
@@ -159,13 +159,13 @@ public class User implements Serializable {
         this.photo = photo;
     }
 
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
-    }
+//    public Wishlist getWishlist() {
+//        return wishlist;
+//    }
+//
+//    public void setWishlist(Wishlist wishlist) {
+//        this.wishlist = wishlist;
+//    }
 
     /*
     public List<Trip> getWishlistTrips() {

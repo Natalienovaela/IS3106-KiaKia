@@ -15,6 +15,8 @@ import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -335,7 +337,6 @@ public class TripsResource {
 //            return Response.status(404).entity(exception).build();
 //        }
 //    }
-
     @POST
     @Path("/{user_id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -355,15 +356,24 @@ public class TripsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") List<String> userEmails, @QueryParam("userRoles") List<String> userRoles) {
+    public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") String userEmails, @QueryParam("userRoles") String userRoles) {
         try {
             System.out.println("Received request to create and invite users to trip.");
             System.out.println("Trip: " + t);
             System.out.println("UserId: " + userId);
             System.out.println("UserEmails: " + userEmails);
             System.out.println("UserRoles: " + userRoles);
+            List<String> userEmailsList = new ArrayList<>();
+            List<String> userRolesList = new ArrayList<>();
+            if (!userEmails.isEmpty()) {
+                String[] userEmailsArray = userEmails.split(",");
+                userEmailsList = Arrays.asList(userEmailsArray);
+                System.out.println(userEmailsList.size());
+                String[] userRolesArray = userRoles.split(",");
+                userRolesList = Arrays.asList(userRolesArray);
+            }
 
-            tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmails, userRoles);
+            tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmailsList, userRolesList);
 
             System.out.println("Trip created and users invited successfully.");
             System.out.println("Adding trip to response: " + t);

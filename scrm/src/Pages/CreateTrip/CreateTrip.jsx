@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Chip, Avatar, Button, TextField, Typography, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Chip, Avatar, Button, TextField, Typography, IconButton, Autocomplete } from '@mui/material';
 import { Add, RemoveCircleOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import './CreateTrip.css';
@@ -12,6 +12,8 @@ const { RangePicker } = DatePicker;
 
 function CreateTrip({ userId }) {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('');
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState(moment("2023-05-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
@@ -20,6 +22,17 @@ function CreateTrip({ userId }) {
   const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    Api.getCountryList()
+      .then((response) => response.json())
+      .then((data) => {
+        setCountries(data);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving country list");
+      });
+  }, []);
 
   const handleInviteClose = () => {
     setOpen(false);
@@ -44,13 +57,16 @@ function CreateTrip({ userId }) {
     setRoles(updatedRoles);
   };
 
-  const handleCountryChange = (event) => {
-    const countryValue = event.target.value;
+  const handleCountryChange = (event, countryValue) => {
     setCountry(countryValue);
-    setName(countryValue);
+    const formattedValue =
+      countryValue && countryValue.length > 0
+        ? countryValue.charAt(0).toUpperCase() + countryValue.slice(1).toLowerCase()
+        : null;
+    setName(formattedValue);
     setErrors((prevErrors) => ({
       ...prevErrors,
-      country: countryValue.trim().length === 0 ? "Country cannot be empty!" : undefined,
+      country: countryValue.trim().length === 0 ? "Please select a country" : undefined,
     }));
   };
 
@@ -73,16 +89,20 @@ function CreateTrip({ userId }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formErrors = {};
+    const serializedRoles = roles.join(',');
+    const serializedEmails = emails.join(',');
     if (country.trim().length === 0) {
       formErrors.country = "Country cannot be empty!";
     }
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
-      Api.createAndInviteUserToTrip({ name, startDate, endDate }, userId, emails, roles)
+      Api.createAndInviteUserToTrip({ name, startDate, endDate, country }, userId, serializedEmails, serializedRoles)
         .then(response => response.json())
         .then(data => {
-          navigate(`/Home`);
+          const tripId = data.tripId;
+          console.log(tripId);
+          navigate(`/TripContent`);
         })
         .catch((error) => {
           setErrors({ submit: error.message });
@@ -102,7 +122,7 @@ function CreateTrip({ userId }) {
       <Typography fontWeight='bold' variant="h4" textAlign="center" marginTop={7}>Create New Trip</Typography>
       <form className="createtrip-form" onSubmit={handleSubmit}>
         <Typography align="left" marginTop={5}>Where to?</Typography>
-        <TextField
+        {/* <TextField
           fullWidth
           variant="outlined"
           margin="dense"
@@ -111,7 +131,24 @@ function CreateTrip({ userId }) {
           onChange={handleCountryChange}
           error={Boolean(errors.country)}
           helperText={errors.country}
-        />
+        /> */}
+        <Autocomplete
+        value={country}
+        onChange={handleCountryChange}
+        inputValue={value}
+        onInputChange={(event, newInputValue) => {
+          setValue(newInputValue);
+        }}
+        id="controllable-states-demo"
+        options={countries}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField {...params} placeholder="e.g. Japan, Singapore" 
+          error={Boolean(errors.country)}
+          helperText={errors.country}
+          />
+        )}
+      />
         <Typography align="left" marginTop={2}>Dates</Typography>
         <RangePicker style={{ marginTop: '5px', background: 'transparent', width: "100%", height: "55px" }} onChange={handleDateRangeChange} value={[dayjs(startDate.toString()), dayjs(endDate.toString())]} />
         <Button sx={{ marginTop: 1 }} onClick={() => setOpen(true)} startIcon={<Add />}>

@@ -56,7 +56,6 @@ function Login({ handleLogin }) {
         .then((data) => {
           const userId = data.userId;
           if (!userId) {
-            // Handle error case, e.g. show an error message
             setErrors({ submit: "Failed to login. Please try again." });
           } else {
             navigate(`/Home/${userId}`);

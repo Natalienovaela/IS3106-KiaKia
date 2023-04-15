@@ -21,6 +21,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -109,6 +110,26 @@ public class UsersResource {
                     .add("error", e.getMessage())
                     .build();
             return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @PUT
+    @Path("/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editUser(@PathParam("userId") Long userId, User u) {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            user.setName(u.getName());
+            user.setEmail(u.getEmail());
+            userSessionBeanLocal.updateUser(user);
+            return Response.status(200).entity(user).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
 

@@ -1,67 +1,43 @@
-import React, { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
-import "./profile.css";
-import Avatar from '@mui/material/Avatar'
-import profile1 from '../../Assets/jonathan.png'
+import React, { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { AccountCircle, Edit } from '@mui/icons-material';
+import EditProfile from './EditProfile/EditProfile'
 import Api from "../../Helpers/Api";
 
-function Profile() {
+function Profile({ userId, handleRefresh }) {
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
-  const handleNameChange = (event) => {
-    const nameValue = event.target.value;
-    setName(nameValue);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      name: nameValue.trim().length === 0 ? "Name cannot be empty!" : undefined,
-    }));
+  useEffect(() => {
+    Api.getUser(userId)
+      .then((response) => response.json())
+      .then((data) => {
+        const name = data.name;
+        setName(name);
+        const email = data.email;
+        setEmail(email);
+      })
+      .catch((error) => {
+        console.log(
+          `Error retrieving user data for user with ID ${userId}: ${error}`
+        );
+      });
+  }, [userId]);
+
+  const handleEditClose = () => {
+    setOpen(false);
   };
 
-  const handleEmailChange = (event) => {
-    const emailValue = event.target.value;
-    setEmail(emailValue);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
-        ? "Email must be a valid email address!"
-        : undefined,
-    }));
+  const handleEdit = (email, name) => {
+    setEmail(email);
+    setName(name);
+    handleRefresh();
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formErrors = {};
-    if (name.trim().length === 0) {
-      formErrors.name = "Name cannot be empty!";
-    }
-    if (!/^[^\s@]+@[^\s@]+.[^\s@]+$/.test(email)) {
-      formErrors.email = "Email must be a valid email address!";
-    }
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-    } else {
-      Api.createUser({ name, email})
-        .then((response) => response.json())
-        .then((data) => {
-          const userId = data.userId;
-          if (!userId) {
-            setErrors({ submit: "Failed to sign up. Please try again." });
-          } else {
-            navigate(`/Home/${userId}`);
-          }
-        })
-        .catch((error) => {
-          setErrors({ submit: error.message });
-        });
-    }
-  };
   return (
     <Box
-      className="signup-container"
+      className="profile-container"
       display="flex"
       flexDirection={"column"}
       maxWidth={500}
@@ -70,7 +46,6 @@ function Profile() {
       marginTop={10}
       padding={3}
       borderRadius={"5px"}
-      boxShadow={"2px 2px 15px #ccc"}
     >
       <Typography
         fontWeight="bold"
@@ -80,48 +55,34 @@ function Profile() {
       >
         Your Profile
       </Typography>
-      <Avatar alt="Jonathan Reinink" 
-                sx={{width: 45, height: 45}} src={profile1}/>
-      <form className="signup-form" onSubmit={handleSubmit}>
-        <Typography align="left">Name</Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          margin="dense"
-          value={name}
-          placeholder="Enter full name"
-          onChange={handleNameChange}
-          error={Boolean(errors.name)}
-          helperText={errors.name}
-        />
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        marginTop={3}
+        marginBottom={7}
+      >
+        <AccountCircle className="profile-icon" fontSize="large" sx={{ fontSize: "150px" }} />
+      </Box>
+        <Typography align="left" >Name</Typography>
+        <Typography variant="h5">
+          {name}
+        </Typography>
         <Typography align="left" marginTop={2}>
           Email
         </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          margin="dense"
-          value={email}
-          placeholder="Enter email address"
-          onChange={handleEmailChange}
-          error={Boolean(errors.email)}
-          helperText={errors.email}
-        />
-        {errors.submit && (
-          <Typography color="error" className="signup-error">
-            {errors.submit}
-          </Typography>
-        )}
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{ marginTop: 3 }}
-          className="profile-button"
-          fullWidth
+        <Typography variant="h5">{email}</Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          marginTop={3}
         >
-          Create new account
-        </Button>
-      </form>
+          <Button sx={{ marginTop: 1 }} onClick={() => setOpen(true)} startIcon={<Edit />}>
+            Edit profile
+          </Button>
+          <EditProfile userId={userId} open={open} oldName={name} oldEmail={email} onClose={handleEditClose} onEdit={(email, name) => handleEdit(email, name)} />
+        </Box>
     </Box>
   );
 }

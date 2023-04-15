@@ -9,7 +9,7 @@ import { TbGridDots } from 'react-icons/tb'
 import PropTypes from 'prop-types';
 import Api from '../../Helpers/Api';
 
-function Navbar({ isLoggedIn, handleLogout, userId }) {
+function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
   const [active, setActive] = useState('navBar');
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -49,7 +49,7 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
       .catch(error => {
         console.log(`Error retrieving user data for user with ID ${userId}: ${error}`);
       });
-  }, [userId]);
+  }, [userId, refreshData]);
 
   return (
     <section className='navBarSection'>
@@ -107,13 +107,13 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
-                    onClose={handleClose}
+                    onClose={() => handleClose()}
                     MenuListProps={{
                       'aria-labelledby': 'basic-button',
                     }}
                   >
-                    <MenuItem component={CustomLink} to={`/Profile`}>Profile</MenuItem>
-                    <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
+                    <MenuItem component={CustomLink} onClick={handleClose} to={`/Profile/${userId}`}>Profile</MenuItem>
+                    <MenuItem onClick={handleLogoutClick} onClose={handleClose}>Log out</MenuItem>
                   </Menu>
                 </li>
               </ul>

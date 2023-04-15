@@ -22,6 +22,7 @@ import UploadFile from './Components/TripComponents/UploadFile';
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState('');
+    const [refreshData, setRefreshData] = useState(false);
 
     const handleLogin = (userId) => {
         setIsLoggedIn(true);
@@ -32,9 +33,13 @@ const App = () => {
         setIsLoggedIn(false);
     };
 
+    const handleRefresh = () => {
+        setRefreshData(!refreshData);
+    };
+
     return (
         <>  <DndProvider backend={HTML5Backend}>
-            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId} />
+            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId} refreshData={refreshData} />
             <div className="container">
                 <Routes>
                     <Route path="/" element={<PublicLanding />} />
@@ -45,7 +50,7 @@ const App = () => {
                     <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
                     <Route path="/Wishlist" element={<Wishlist />} />
-                    <Route path="/Profile" element={<Profile />} />
+                    <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />
                     <Route path="/Explore" element={<Explore />} />
                     <Route path="/TripNotes" element={<TripNotes />} />
                     <Route path="/Poll" element={<Poll />} />
