@@ -26,7 +26,7 @@ public class Poll implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pollId;
     private String description;
     private HashMap<Long, String> options; //keep track of the options

@@ -9,12 +9,16 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
+import entity.User;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
+import error.PollClosedException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserHasPolledException;
 import error.UserNotFoundException;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +42,7 @@ import session.NoteSessionBeanLocal;
 import session.PlaceSessionBeanLocal;
 import session.PollSessionBeanLocal;
 import session.TripSessionBeanLocal;
+import session.UserSessionBeanLocal;
 
 /**
  * REST Web Service
@@ -61,6 +66,9 @@ public class TripsResource {
 
     @EJB
     private PlaceSessionBeanLocal placeSessionBeanLocal;
+
+    @EJB
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     //to get all the trip
     @GET
@@ -308,7 +316,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
         List<Poll> polls;
-        System.out.println("Retrieve all notes in trip triggered");
+        System.out.println("Retrieve all polls in trip triggered");
         try {
             polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
             return Response.status(200).entity(polls).build();
@@ -317,6 +325,82 @@ public class TripsResource {
                     .add("error", ex.getMessage())
                     .build();
 
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @GET
+    @Path("/{trip_id}/polls/{poll_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response retrievePoll(@PathParam("poll_id") Long pollId) {
+        Poll poll;
+        System.out.println("Retrieve all polls in trip triggered");
+        try {
+            poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            return Response.status(200).entity(poll).build();
+        } catch (PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @GET
+    @Path("/{trip_id}/hasPolled/polls/{poll_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response hasUserPolled(@PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId) {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            boolean res = pollSessionBeanLocal.hasUserPolled(poll, user);
+            return Response.status(200).entity(res).build();
+        } catch (PollNotFoundException | UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("/{trip_id}/calculatePercentage/polls/{poll_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response calculatePercentage(@PathParam("poll_id") Long pollId) {
+        try {
+            Poll p = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            HashMap<Long, Double> res = pollSessionBeanLocal.calculatePercentage(p);
+            return Response.status(200).entity(res).build();
+        } catch (PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    //TODO: put userId as path param instead when user is integrated
+    @PUT
+    @Path("/{trip_id}/polls/{poll_id}/{option_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response submitPoll(@PathParam("trip_id") Long tripId, @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId, @PathParam("option_id") Long optionId) {
+        try {
+            System.out.println("Submit poll in trip triggered");
+            Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            pollSessionBeanLocal.pollOption(poll, optionId, userId);
+            Boolean bool = true;
+            return Response.status(200).entity(bool).build();
+        } catch (PollNotFoundException | UserNotFoundException | UserHasPolledException | PollClosedException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
             return Response.status(404).entity(exception).build();
         }
     }

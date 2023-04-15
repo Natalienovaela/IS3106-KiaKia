@@ -16,6 +16,8 @@ const Api = {
     getAllGroupTrips() {
         return fetch(`${SERVER_PREFIX}/trips/group`);
     },
+
+    //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
@@ -54,7 +56,6 @@ const Api = {
         });
     },
     updateNote(tripId, noteId, note) {
-        //change this to updateTrip with some paraeter to indicate which component are updated
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes/${noteId}`, {
             headers: {
                 Accept: "application/json",
@@ -69,6 +70,30 @@ const Api = {
             method: "DELETE",
         });
     },
+
+    //polls
+    getAllPollsInTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls`);
+    },
+    getPoll(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}`);
+    },
+    hasPolled(tripId, pollId, userId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/hasPolled/polls/${pollId}/user/${userId}`);
+    },
+    calculatePercentage(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/calculatePercentage/polls/${pollId}`);
+    },
+    submitPoll(tripId, userId, pollId, selectedOption) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${selectedOption}/user/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
     //checkLists
     createCheckList(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists`, {
