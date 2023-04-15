@@ -56,7 +56,7 @@ public class DataInitSessionBean {
         if (em.find(User.class, 1l) == null) {
             initialiseUser();
         }
-        if (em.find(Poll.class, 1l) == null) {
+        if (pollSessionBeanLocal.retrieveAllPolls().isEmpty()) {
             initialisePoll();
         }
     }

@@ -11,11 +11,15 @@ import entity.Poll;
 import entity.Trip;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
+import error.PollClosedException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserHasPolledException;
 import error.UserNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -314,6 +318,26 @@ public class TripsResource {
                     .add("error", ex.getMessage())
                     .build();
 
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    //TODO: put userId as path param instead when user is integrated
+    @PUT
+    @Path("/{trip_id}/polls/{poll_id}/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response submitPoll(@PathParam("trip_id") Long tripId, @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId, Long optionId) {
+        try {
+            Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            pollSessionBeanLocal.pollOption(poll, optionId, userId);
+            Poll updated = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            
+            return Response.status(200).entity(updated).build();
+        } catch (PollNotFoundException | UserNotFoundException | UserHasPolledException | PollClosedException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
             return Response.status(404).entity(exception).build();
         }
     }

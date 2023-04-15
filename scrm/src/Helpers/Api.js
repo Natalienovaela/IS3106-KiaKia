@@ -16,10 +16,11 @@ const Api = {
     getAllGroupTrips() {
         return fetch(`${SERVER_PREFIX}/trips/group`);
     },
+
+    //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
-    //notes
     createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
             headers: {
@@ -30,7 +31,6 @@ const Api = {
         });
     },
     updateNote(tripId, noteId, note) {
-        //change this to updateTrip with some paraeter to indicate which component are updated
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes/${noteId}`, {
             headers: {
                 Accept: "application/json",
@@ -45,6 +45,22 @@ const Api = {
             method: "DELETE",
         });
     },
+
+    //polls
+    getAllPollsInTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls`);
+    },
+    submitPoll(tripId, userId, pollId, optionId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify({ optionId }),
+        });
+    },
+
     //checkLists
     createCheckList(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists`, {
@@ -92,7 +108,7 @@ const Api = {
             method: "PUT",
         });
     },
-    
+
     //itinerary
     createItinerary(tripId, data) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,
@@ -113,7 +129,7 @@ const Api = {
             });
     },
     updateItinerary(tripId, itinerary) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,{
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -187,16 +203,16 @@ const Api = {
     },
     //explore
     searchTripByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);
     },
     searchTripByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);
     },
     searchPlaceByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);
     },
     searchPlaceByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);
     },
 
     //bucketList
@@ -244,10 +260,10 @@ const Api = {
             method: "PUT",
             body: JSON.stringify(folder),
         })
-    }, 
+    },
     deletefolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
-            method: "DELETE", 
+            method: "DELETE",
         });
     },
 

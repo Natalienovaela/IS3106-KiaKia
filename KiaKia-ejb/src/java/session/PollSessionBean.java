@@ -102,16 +102,17 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new PollNotFoundException(e.getMessage());
         }
     }
+    
+    @Override
+    public List<Poll> retrieveAllPolls() {
+        return em.createQuery("SELECT p FROM Poll p").getResultList();
+    }
 
     @Override
     public boolean hasUserPolled(Poll p, User u) {
         return p.getPolledBy().contains(u);
     }
-
-    public void persist(Object object) {
-        em.persist(object);
-    }
-
+    
     @Override
     public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
