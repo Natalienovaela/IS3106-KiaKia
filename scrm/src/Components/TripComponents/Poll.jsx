@@ -27,8 +27,12 @@ const Poll = ({ userId, tripId, poll }) => {
     setSelectedOption(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    Api.submitPoll(tripId, userId, pollId, event.target.value);
+  const handleSubmit = () => {
+    console.log(tripId);
+    console.log(userId);
+    console.log(pollId);
+    console.log(selectedOption);
+    Api.submitPoll(tripId, userId, pollId, selectedOption);
   };
 
   return (

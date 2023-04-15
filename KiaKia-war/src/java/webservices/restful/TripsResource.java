@@ -309,7 +309,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
         List<Poll> polls;
-        System.out.println("Retrieve all notes in trip triggered");
+        System.out.println("Retrieve all polls in trip triggered");
         try {
             polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
             return Response.status(200).entity(polls).build();
@@ -324,16 +324,16 @@ public class TripsResource {
     
     //TODO: put userId as path param instead when user is integrated
     @PUT
-    @Path("/{trip_id}/polls/{poll_id}/{userId}")
+    @Path("/{trip_id}/polls/{poll_id}/{option_id}/user/{user_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response submitPoll(@PathParam("trip_id") Long tripId, @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId, Long optionId) {
+    public Response submitPoll(@PathParam("trip_id") Long tripId, @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId,  @PathParam("option_id") Long optionId) {
         try {
+            System.out.println("Submit poll in trip triggered");
             Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
             pollSessionBeanLocal.pollOption(poll, optionId, userId);
-            Poll updated = pollSessionBeanLocal.retrievePollByPollId(pollId);
-            
-            return Response.status(200).entity(updated).build();
+            Boolean bool = true;
+            return Response.status(200).entity(bool).build();
         } catch (PollNotFoundException | UserNotFoundException | UserHasPolledException | PollClosedException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())

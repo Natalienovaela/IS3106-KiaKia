@@ -50,14 +50,13 @@ const Api = {
     getAllPollsInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls`);
     },
-    submitPoll(tripId, userId, pollId, optionId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${userId}`, {
+    submitPoll(tripId, userId, pollId, selectedOption) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${selectedOption}/user/${userId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify({ optionId }),
         });
     },
 
@@ -141,13 +140,13 @@ const Api = {
 
     //placeLineItem
     createPlaceLineItem(tripId, itineraryId, placeId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/places/${placeId}`), {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/places/${placeId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "POST",
-        }
+        })
     },
 
     removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
