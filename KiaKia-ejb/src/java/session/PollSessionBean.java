@@ -16,6 +16,7 @@ import error.UserHasPolledException;
 import error.UserNotFoundException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -104,6 +105,27 @@ public class PollSessionBean implements PollSessionBeanLocal {
     }
     
     @Override
+    public HashMap<Long, Double> calculatePercentage(Poll p) {
+            HashMap<Long, List<Long>> voting = p.getVoting();
+            HashMap<Long, Integer> count = new HashMap<>();
+            int totalVotes = 0;
+            for(Map.Entry<Long, List<Long>> entry : voting.entrySet()) {
+                List<Long> votes = entry.getValue();
+                int optionVote = 0;
+                for(Long i : votes) {
+                    totalVotes++;
+                    optionVote++;
+                }
+                count.put(entry.getKey(), optionVote);
+            }
+            HashMap<Long, Double> res = new HashMap<>();
+            for(Map.Entry<Long, Integer> c : count.entrySet()) {
+                res.put(c.getKey(), (c.getValue()/Double.valueOf(totalVotes)));
+            }
+            return res;
+    }
+    
+    @Override
     public List<Poll> retrieveAllPolls() {
         return em.createQuery("SELECT p FROM Poll p").getResultList();
     }
@@ -143,7 +165,6 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new TripNotFoundException(ex.getMessage());
         }
         return trip.getPolls();
-
     }
 
 }

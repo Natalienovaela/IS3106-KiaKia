@@ -50,6 +50,12 @@ const Api = {
     getAllPollsInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls`);
     },
+    getPoll(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}`);
+    },
+    hasPolled(tripId, pollId, userId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/hasPolled/polls/${pollId}/user/${userId}`);
+    },
     submitPoll(tripId, userId, pollId, selectedOption) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${selectedOption}/user/${userId}`, {
             headers: {
@@ -259,7 +265,7 @@ const Api = {
             method: "PUT",
             body: JSON.stringify(folder),
         })
-    }, 
+    },
     deleteFolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
             method: "DELETE",

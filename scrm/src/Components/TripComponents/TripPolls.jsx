@@ -66,7 +66,7 @@ const TripPolls = () => {
         polls.map((poll) => (
           <div key={poll.pollId} className="rowComponent">
             <div className="pollComponent">
-              <Poll userId={userId} tripId={tripId} poll={poll} />
+              <Poll userId={userId} tripId={tripId} pollId={poll.pollId} />
             </div>
             {/* <div>
               <button className="btn" onClick={() => handleDelete(note.noteId)}>
