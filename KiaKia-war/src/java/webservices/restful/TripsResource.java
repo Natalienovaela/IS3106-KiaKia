@@ -18,9 +18,8 @@ import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserHasPolledException;
 import error.UserNotFoundException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -357,6 +356,24 @@ public class TripsResource {
             boolean res = pollSessionBeanLocal.hasUserPolled(poll, user);
             return Response.status(200).entity(res).build();
         } catch (PollNotFoundException | UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("/{trip_id}/calculatePercentage/polls/{poll_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response calculatePercentage(@PathParam("poll_id") Long pollId) {
+        try {
+            Poll p = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            HashMap<Long, Double> res = pollSessionBeanLocal.calculatePercentage(p);
+            return Response.status(200).entity(res).build();
+        } catch (PollNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();

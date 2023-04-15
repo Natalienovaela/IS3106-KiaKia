@@ -56,6 +56,9 @@ const Api = {
     hasPolled(tripId, pollId, userId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/hasPolled/polls/${pollId}/user/${userId}`);
     },
+    calculatePercentage(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/calculatePercentage/polls/${pollId}`);
+    },
     submitPoll(tripId, userId, pollId, selectedOption) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${selectedOption}/user/${userId}`, {
             headers: {

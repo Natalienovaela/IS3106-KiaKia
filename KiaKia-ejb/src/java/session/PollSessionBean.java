@@ -103,28 +103,32 @@ public class PollSessionBean implements PollSessionBeanLocal {
             throw new PollNotFoundException(e.getMessage());
         }
     }
-    
+
     @Override
     public HashMap<Long, Double> calculatePercentage(Poll p) {
-            HashMap<Long, List<Long>> voting = p.getVoting();
-            HashMap<Long, Integer> count = new HashMap<>();
-            int totalVotes = 0;
-            for(Map.Entry<Long, List<Long>> entry : voting.entrySet()) {
-                List<Long> votes = entry.getValue();
-                int optionVote = 0;
-                for(Long i : votes) {
-                    totalVotes++;
-                    optionVote++;
-                }
-                count.put(entry.getKey(), optionVote);
+        HashMap<Long, List<Long>> voting = p.getVoting();
+        HashMap<Long, Integer> count = new HashMap<>();
+        int totalVotes = 0;
+        for (Map.Entry<Long, List<Long>> entry : voting.entrySet()) {
+            List<Long> votes = entry.getValue();
+            int optionVote = 0;
+            for (Long i : votes) {
+                totalVotes++;
+                optionVote++;
             }
-            HashMap<Long, Double> res = new HashMap<>();
-            for(Map.Entry<Long, Integer> c : count.entrySet()) {
-                res.put(c.getKey(), (c.getValue()/Double.valueOf(totalVotes)));
+            count.put(entry.getKey(), optionVote);
+        }
+        HashMap<Long, Double> res = new HashMap<>();
+        for (Map.Entry<Long, Integer> c : count.entrySet()) {
+            if (totalVotes > 0) {
+                res.put(c.getKey(), (c.getValue() / Double.valueOf(totalVotes)));
+            } else {
+                res.put(c.getKey(), Double.valueOf(0));
             }
-            return res;
+        }
+        return res;
     }
-    
+
     @Override
     public List<Poll> retrieveAllPolls() {
         return em.createQuery("SELECT p FROM Poll p").getResultList();
@@ -134,7 +138,7 @@ public class PollSessionBean implements PollSessionBeanLocal {
     public boolean hasUserPolled(Poll p, User u) {
         return p.getPolledBy().contains(u);
     }
-    
+
     @Override
     public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException {
         Trip trip = em.find(Trip.class, tripId);
