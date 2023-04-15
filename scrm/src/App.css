@@ -107,6 +107,16 @@ li {
     display: flex;
     align-items: center;
   }
+
+  .pollCard {
+    width: 100%;
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
   
 img, video {
     width: 100%;

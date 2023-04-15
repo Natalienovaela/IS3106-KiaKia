@@ -131,7 +131,7 @@ const Poll = ({ userId, tripId, pollId }) => {
         options &&
         submitted != null &&
         (!submitted || (submitted && percentage)) && (
-          <Card>
+          <Card className="pollCard">
             <CardContent>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="h6" gutterBottom>
