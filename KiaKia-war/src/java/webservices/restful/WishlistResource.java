@@ -7,6 +7,7 @@ package webservices.restful;
 
 import entity.Folder;
 import error.FolderNotFoundException;
+import error.TripNotFoundException;
 import error.WishlistNotFoundException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -111,6 +112,40 @@ public class WishlistResource {
             return Response.status(204).build();
         }
         catch(WishlistNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @PUT
+    @Path("/folders/{folder_id}/{trip_id}/add")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addTripToFolder(@PathParam("folder_id") Long folderId, @PathParam("trip_id") Long tripId) {
+        try {
+            folderSessionBeanLocal.addTripToFolder(folderId, tripId);
+            return Response.status(204).build();
+        }
+        catch(FolderNotFoundException | TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @PUT
+    @Path("/folders/{folder_id}/{trip_id}/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeTripToFolder(@PathParam("folder_id") Long folderId, @PathParam("trip_id") Long tripId) {
+        try {
+            folderSessionBeanLocal.removeTripFromFolder(folderId, tripId);
+            return Response.status(204).build();
+        }
+        catch(FolderNotFoundException | TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", "Not found")
                     .build();
