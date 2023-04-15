@@ -69,19 +69,19 @@ public class DataInitSessionBean {
     }
 
     public void initialiseUser() {
-        try {
+//        try {
             Trip trip = em.find(Trip.class, 1l);
             userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
             userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
-            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
-            List<String> userEmails = new ArrayList<String>();
-            List<String> userRoles = new ArrayList<String>();
-            userEmails.add("shinolim22@gmail.com");
-            userRoles.add("EDITOR");
-            tripSessionBeanLocal.createAndInviteUserToTrip(trip, 2l, userEmails, userRoles);
-        } catch (UserNotFoundException ex) {
-            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
+//            List<String> userEmails = new ArrayList<String>();
+//            List<String> userRoles = new ArrayList<String>();
+//            userEmails.add("shinolim22@gmail.com");
+//            userRoles.add("EDITOR");
+//            tripSessionBeanLocal.createAndInviteUserToTrip(trip, 2l, userEmails, userRoles);
+//        } catch (UserNotFoundException ex) {
+//            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
     }
 
