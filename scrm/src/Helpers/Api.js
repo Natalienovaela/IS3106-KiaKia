@@ -5,7 +5,7 @@ const Api = {
     getTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
     },
-    getAllTrips() {
+    getAllTrips(userId) {
         return fetch(`${SERVER_PREFIX}/users/{${userId}/allTrips`);
     },
 
@@ -13,7 +13,7 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/personalTrips`);
     },
 
-    getAllGroupTrips() {
+    getAllGroupTrips(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
@@ -224,22 +224,21 @@ const Api = {
 
     emailExists(email) {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
+    },
+
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
-    }
-    ,
+    },
 
-    createTrip(data, user_id) {
-        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(data),
-            }
-        )
+    resetPassword(user) {
+        return fetch(`${SERVER_PREFIX}/users`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(user),
+        })
     },
 
     updateUser(userId, user) {
