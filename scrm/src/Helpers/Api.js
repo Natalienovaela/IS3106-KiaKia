@@ -286,26 +286,33 @@ const Api = {
     },
 
     // wishlist folder
-    createNewFolder(userId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`, {
+    createNewFolder(userId, folderName) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders/${folderName}`, {
+            method: 'POST',
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            method: "POST",
+            body: JSON.stringify({
+                folderName: folderName
+            }),
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
         })
     },
 
     retrieveAllFolder(userId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`)
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders`)
     },
 
     retrieveFolderWithCertainName(userId, search) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/${search}`)
+        return fetch(`${SERVER_PREFIX}/users/${userId}/${search}`)
     },
 
     updateFolderName(userId, folderId, folder) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders/${folderId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -321,7 +328,7 @@ const Api = {
     },
 
     addTripToFolder(folderId, tripId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/add`, {
+        return fetch(`${SERVER_PREFIX}/users/folders/${folderId}/${tripId}/add`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
