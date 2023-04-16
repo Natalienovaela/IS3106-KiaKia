@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./explore.css";
 import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
 import singapore from "../../Assets/singapore.png";
@@ -8,6 +8,7 @@ import { Button, ButtonGroup, Tabs, Tab } from "@mui/material";
 import Itineraries from "./Itineraries/Itineraries";
 import Places from "./Places/Places";
 import Emoji from "a11y-react-emoji";
+import Api from "../../Helpers/Api";
 
 const dummyData = [
   {
@@ -45,7 +46,23 @@ const dummyData = [
 ];
 
 const Explore = ({ userId }) => {
-  const itineraryCards = dummyData?.map((cardData) => (
+  const [sharedItineraries, setSharedItineraries] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await Api.getAllTrips(userId);
+        const data = await response.json();
+        const sharedTrips = data.filter((trip) => trip.isShared);
+        setSharedItineraries(sharedTrips);
+        console.log("Successfully retrieved shared itineraries");
+      } catch (error) {
+        console.log("Error while retrieving trips list");
+      }
+    };
+  });
+
+  const itineraryCards = sharedItineraries?.map((cardData) => (
     <ItineraryCard key={cardData.id} {...cardData} />
   ));
 
@@ -76,12 +93,11 @@ const Explore = ({ userId }) => {
             className="tabs"
             TabIndicatorProps={{ sx: { backgroundColor: "#ff8f66" } }}
           >
-            <Tab label="Places" className="tab-child" />
             <Tab label="Itineraries" className="tab-child" />
           </Tabs>
           <div className="explore-content">
+            {itineraryCards}
             {selectedTab === 1 && <Itineraries userId={userId} />}
-            {selectedTab === 0 && <Places userId={userId} />}
           </div>
         </div>
       </div>

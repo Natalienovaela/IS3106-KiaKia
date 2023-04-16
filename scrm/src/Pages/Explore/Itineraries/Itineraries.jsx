@@ -168,6 +168,7 @@ const Itineraries = ({ userId }) => {
       await Api.addTripToFolder(selectedFolder.folderId, selectedCard.id);
       setSelectedCard(null);
       setShowPopup(false);
+      console.log("Successfully saved trip");
     } catch (error) {
       console.log("Error while saving card to folder");
     }
