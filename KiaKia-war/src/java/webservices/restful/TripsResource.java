@@ -64,7 +64,7 @@ public class TripsResource {
 
     @EJB
     private CheckListSessionBeanLocal checkListSessionBeanLocal;
-    
+
     @EJB
     private UserSessionBeanLocal userSessionBeanLocal;
 
@@ -73,6 +73,17 @@ public class TripsResource {
     @Path("/random")
     public Response test() {
         return Response.status(204).build();
+    }
+
+    //to get all sharedTrips
+    @GET
+    @Path("/allSharedTrips")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllSharedTrips() {
+        List<Trip> trip = tripSessionBeanLocal.getAllSharedTrips();
+        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
+        };
+        return Response.status(200).entity(entity).build();
     }
 
     //to retrieve all notes in trip
