@@ -92,7 +92,7 @@ function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
             <nav>
               <ul className="navLists flex">
                 <li className="navItem">
-                  <CustomLink to="/Trip" className="navLink">
+                  <CustomLink to={`/Trip/${userId}`} className="navLink">
                     Trip
                   </CustomLink>
                 </li>

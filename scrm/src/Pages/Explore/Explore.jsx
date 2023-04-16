@@ -44,7 +44,7 @@ const dummyData = [
   },
 ];
 
-const Explore = () => {
+const Explore = ({ userId }) => {
   const itineraryCards = dummyData?.map((cardData) => (
     <ItineraryCard key={cardData.id} {...cardData} />
   ));
@@ -55,6 +55,10 @@ const Explore = () => {
     setSelectedTab(newValue);
   };
 
+  const here = () => {
+    console.log(userId);
+  };
+
   return (
     <>
       <div className="container">
@@ -62,6 +66,7 @@ const Explore = () => {
           <h1>
             Explore <Emoji symbol="🌏" label="earth emoji" />
           </h1>
+          <button onClick={here}>check user id here</button>
         </div>
 
         <div className="sec">
@@ -75,8 +80,8 @@ const Explore = () => {
             <Tab label="Itineraries" className="tab-child" />
           </Tabs>
           <div className="explore-content">
-            {selectedTab === 1 && <Itineraries />}
-            {selectedTab === 0 && <Places />}
+            {selectedTab === 1 && <Itineraries userId={userId} />}
+            {selectedTab === 0 && <Places userId={userId} />}
           </div>
         </div>
       </div>

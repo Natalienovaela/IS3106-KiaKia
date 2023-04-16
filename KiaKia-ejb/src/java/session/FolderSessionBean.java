@@ -41,12 +41,12 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
     }
 
     @Override
-    public void updateFolderName(Folder folder) throws FolderNotFoundException {
+    public void updateFolderName(Long folderId, String folderName) throws FolderNotFoundException {
         try {
-            Folder oldFolder = em.find(Folder.class, folder.getFolderId());
+            Folder oldFolder = em.find(Folder.class, folderId);
 
             if (oldFolder != null) {
-                oldFolder.setName(folder.getName());
+                oldFolder.setName(folderName);
 
             } else {
                 throw new FolderNotFoundException("Folder not found in the database");

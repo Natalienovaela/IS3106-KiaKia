@@ -274,9 +274,9 @@ public class UsersResource {
     @Path("{user_id}/folders/{folder_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFolderName(Folder folder) {
+    public Response updateFolderName(@PathParam("folder_Id") Long folderId, String folderName) {
         try {
-            folderSessionBeanLocal.updateFolderName(folder);
+            folderSessionBeanLocal.updateFolderName(folderId, folderName);
             return Response.status(204).build();
         } catch (FolderNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()

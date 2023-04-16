@@ -19,44 +19,60 @@ const Popup = (props) => {
             <>
               {props.folders.map((folder) => (
                 <div key={folder.id} className="folder-list">
+                  <label>{folder.name}</label>
                   <input
                     type="checkbox"
-                    checked={props.selectedFolder == folder.name}
-                    onChange={() => props.onFolderCheckboxChange(folder.name)}
+                    checked={props.selectedFolder.name === folder.name}
+                    onChange={() => props.onFolderCheckboxChange(folder)}
                   />
-                  <label>{folder.name}</label>
                 </div>
               ))}
               <div className="folder new-folder">
+                <h3>Create new Folder</h3>
                 <TextField
                   id="outlined"
                   variant="outlined"
                   placeholder="New folder"
-                  value={props.selectedFolder}
+                  value={props.newFolderName}
                   onChange={props.onNewFolderInputChange}
                 />
+                <button
+                  onClick={props.onCreateNewFolderClick}
+                  className="save-btn"
+                >
+                  Create new folder
+                </button>
+              </div>
+
+              <div className="save-div">
+                <button onClick={props.onSaveButtonClick} className="save-btn">
+                  Save
+                </button>
               </div>
             </>
           ) : (
             <div>
               <p>No folders found.</p>
+
               <div className="folder new-folder">
+                <h3>Create new Folder</h3>
                 <TextField
                   id="outlined"
                   variant="outlined"
                   placeholder="New folder"
-                  value={props.selectedFolder}
+                  value={props.newFolderName}
                   onChange={props.onNewFolderInputChange}
                 />
+
+                <button
+                  onClick={props.onCreateNewFolderClick}
+                  className="save-btn"
+                >
+                  Create new folder
+                </button>
               </div>
             </div>
           )}
-        </div>
-
-        <div className="save-div">
-          <button onClick={props.onSaveButtonClick} className="save-btn">
-            Save
-          </button>
         </div>
       </div>
     </div>

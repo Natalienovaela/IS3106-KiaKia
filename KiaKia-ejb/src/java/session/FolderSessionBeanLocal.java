@@ -27,7 +27,7 @@ public interface FolderSessionBeanLocal {
 
     public Folder createNewFolder(Long userId, Folder folder, String folderName) throws UserNotFoundException;
 
-    public void updateFolderName(Folder folder) throws FolderNotFoundException;
+    public void updateFolderName(Long folderId, String folderName) throws FolderNotFoundException;
 
     public void addTripToFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException;
 
