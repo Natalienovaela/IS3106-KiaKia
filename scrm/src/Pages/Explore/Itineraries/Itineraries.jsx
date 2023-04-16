@@ -47,9 +47,18 @@ const dummyData = [
   },
 ];
 
-const Itineraries = () => {
+const Itineraries = ({ userId }) => {
   const [places, setPlaces] = useState([]);
   const [trips, setTrips] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [thisUserId, setUserId] = useState("");
+  useEffect(() => {
+    setUserId(userId);
+  }, [userId]);
+
+  const handleUserId = () => {
+    setUserId(userId);
+  };
 
   useEffect(() => {
     Api.getCityList()
@@ -68,29 +77,100 @@ const Itineraries = () => {
   // });
 
   const [selectedCard, setSelectedCard] = useState(null);
-  const [folders, setFolders] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState("");
+  const [selectedFolder, setSelectedFolder] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
     console.log(selectedCard);
     console.log("hi this button is clicked");
     setShowPopup(true);
+    console.log(folders);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await Api.retrieveAllFolder(userId);
+        const data = await response.json();
+        setFolders(data);
+      } catch (error) {
+        console.log("Error while retrieving folders list");
+      }
+    };
+
+    fetchData();
+  }, [userId, folders]);
 
   const handleFolderCheckbox = (folder) => {
     setSelectedFolder(folder);
+    console.log(selectedFolder);
   };
 
   const handleNewFolderInput = (event) => {
-    setSelectedFolder(event.target.value);
+    // check if a folder with the same name already exists
+    const newFolderName = event.target.value.trim();
+
+    if (!newFolderName) {
+      return;
+    }
+
+    setNewFolderName(newFolderName);
   };
 
-  const handleSaveButton = () => {
-    // save selected card into selected folder or create a new folder with selected folder name
-    // update the foldrs state
-    // reset the selectedcard and selectedfolder state
+  const handleCreateNewFolder = async () => {
+    // check if new folder name is there
+    if (!newFolderName) {
+      alert("Please enter a folder name");
+    }
+
+    // Check if a folder with the same name already exists
+    const isDuplicateFolderName = folders.some(
+      (folder) => folder.name === newFolderName
+    );
+
+    if (isDuplicateFolderName) {
+      alert(`A folder with the name ${newFolderName} already exists.`);
+      return;
+    }
+
+    // create new folder
+    try {
+      await Api.createNewFolder(thisUserId, newFolderName);
+      setNewFolderName("");
+      console.log("successfully created");
+    } catch (error) {
+      console.log("Error while creating new folder");
+    }
+  };
+
+  const handleCloseButton = () => {
+    setShowPopup(false);
+    setSelectedCard(false);
+  };
+
+  const handleSaveButton = async () => {
+    // check if a folder has been selected or a new folder name has been entered
+    if (!selectedFolder) {
+      alert("Please select a folder or enter a new folder name.");
+      return;
+    }
+
+    // check if the selected card exists
+    if (!selectedCard) {
+      alert("No card has been selected");
+      return;
+    }
+
+    // save selected card into selected folder
+    try {
+      await Api.addTripToFolder(selectedFolder.folderId, selectedCard.id);
+      setSelectedCard(null);
+      setShowPopup(false);
+    } catch (error) {
+      console.log("Error while saving card to folder");
+    }
   };
 
   const itineraryCards = dummyData?.map((cardData) => (
@@ -100,7 +180,9 @@ const Itineraries = () => {
       onClick={() => handleCardClick(cardData)}
     />
   ));
-
+  const here = () => {
+    console.log(thisUserId);
+  };
   return (
     <>
       <p className="page-content">
@@ -114,8 +196,11 @@ const Itineraries = () => {
           selectedCard={selectedCard}
           folders={folders}
           selectedFolder={selectedFolder}
+          newFolderName={newFolderName}
           onFolderCheckboxChange={handleFolderCheckbox}
           onNewFolderInputChange={handleNewFolderInput}
+          onCreateNewFolderClick={handleCreateNewFolder}
+          onCloseButtonClick={handleCloseButton}
           onSaveButtonClick={handleSaveButton}
         />
       )}

@@ -59,7 +59,7 @@ const App = () => {
                     <Route path="/Trip/:userId" element={<Trip userId={userId}/>} />
                     <Route path="/Wishlist/:userId" element={<Wishlist userId={userId}/>} />
                     <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />
-                    <Route path="/Explore" element={<Explore />} />
+                    <Route path="/Explore" element={<Explore userId={userId}/>} />
                     <Route path="/TripNotes" element={<TripNotes />} />
                     <Route path="/PollTest" element={<PollTest />} />
                     <Route path="/TripPolls" element={<TripPolls />} />

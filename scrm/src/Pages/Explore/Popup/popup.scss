@@ -56,12 +56,14 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 1rem;
-    .save-btn {
-        padding: 1rem 2rem;
-        background-image: linear-gradient(to right, #f87171, #ff8f66);
-        color: var(--whiteColor);
-        border: none;
-        border-radius: 30px;
-        
-    }
+   
   } 
+
+  .save-btn {
+    padding: 1rem 2rem;
+    background-image: linear-gradient(to right, #f87171, #ff8f66);
+    color: var(--whiteColor);
+    border: none;
+    border-radius: 30px;
+    margin-top: 1rem;
+}

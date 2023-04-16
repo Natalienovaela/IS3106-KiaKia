@@ -26,6 +26,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.ItinerarySessionBeanLocal;
 import session.NoteSessionBeanLocal;
 import session.PollSessionBeanLocal;
 import session.TripSessionBeanLocal;
@@ -54,6 +55,9 @@ public class DataInitSessionBean {
     
     @EJB
     private TripSessionBeanLocal tripSessionBeanLocal;
+    
+    @EJB
+    private ItinerarySessionBeanLocal itinerarySessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
@@ -127,6 +131,7 @@ public class DataInitSessionBean {
             Trip trip = new Trip("First Trip", new GregorianCalendar(2024, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2024, Calendar.FEBRUARY, 15).getTime());
             em.persist(trip);
             em.flush();
+            itinerarySessionBeanLocal.createItineraries(trip.getStartDate(), trip.getEndDate(), trip.getTripId());
             Note note1 = new Note("My 1st Note", "bla", false);
             noteSessionBeanLocal.createNewNote(note1, trip.getTripId());
             Note note2 = new Note("My 2nd Note", "blabla", false);
@@ -149,6 +154,7 @@ public class DataInitSessionBean {
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
             em.flush();
+            itinerarySessionBeanLocal.createItineraries(trip2.getStartDate(), trip2.getEndDate(), trip2.getTripId());
             Note note10 = new Note("My 10 Note", "blablabla", false);
             noteSessionBeanLocal.createNewNote(note10, trip2.getTripId());
         } catch (UnknownPersistenceException ex) {
