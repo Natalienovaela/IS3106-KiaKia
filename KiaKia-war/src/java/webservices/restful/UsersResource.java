@@ -147,6 +147,22 @@ public class UsersResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
+    
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response resetPassword(User u) {
+        try {
+            userSessionBeanLocal.resetPassword(u);
+            return Response.status(200).entity(u).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
 
     //to get all the personal trips
     @GET

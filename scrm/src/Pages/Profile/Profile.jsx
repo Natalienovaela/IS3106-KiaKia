@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
-import { AccountCircle, Edit } from '@mui/icons-material';
+import { Box, Button, Typography, Avatar } from "@mui/material";
+import { Edit } from '@mui/icons-material';
 import EditProfile from './EditProfile/EditProfile'
 import Api from "../../Helpers/Api";
 
@@ -8,6 +8,7 @@ function Profile({ userId, handleRefresh }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const[firstLetter, setFirstLetter] = useState("");
 
   useEffect(() => {
     Api.getUser(userId)
@@ -17,6 +18,8 @@ function Profile({ userId, handleRefresh }) {
         setName(name);
         const email = data.email;
         setEmail(email);
+        const first = name.charAt(0).toUpperCase();
+        setFirstLetter(first);
       })
       .catch((error) => {
         console.log(
@@ -62,27 +65,27 @@ function Profile({ userId, handleRefresh }) {
         marginTop={3}
         marginBottom={7}
       >
-        <AccountCircle className="profile-icon" fontSize="large" sx={{ fontSize: "150px" }} />
+        <Avatar className="profile-icon" sx={{ backgroundColor: '#f87171', fontSize: '60px', width: 120, height: 120}}>{firstLetter}</Avatar>
       </Box>
-        <Typography align="left" >Name</Typography>
-        <Typography variant="h5">
-          {name}
-        </Typography>
-        <Typography align="left" marginTop={2}>
-          Email
-        </Typography>
-        <Typography variant="h5">{email}</Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          marginTop={3}
-        >
-          <Button sx={{ marginTop: 1 }} onClick={() => setOpen(true)} startIcon={<Edit />}>
-            Edit profile
-          </Button>
-          <EditProfile userId={userId} open={open} oldName={name} oldEmail={email} onClose={handleEditClose} onEdit={(email, name) => handleEdit(email, name)} />
-        </Box>
+      <Typography align="left" >Name</Typography>
+      <Typography variant="h5">
+        {name}
+      </Typography>
+      <Typography align="left" marginTop={2}>
+        Email
+      </Typography>
+      <Typography variant="h5">{email}</Typography>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        marginTop={3}
+      >
+        <Button sx={{ marginTop: 1, backgroundColor: '#f87171', color: 'hsl(0, 0%, 100%)', '&:hover': {color: 'hsl(240, 100%, 50%)'}}} onClick={() => setOpen(true)} startIcon={<Edit />}>
+          Edit profile
+        </Button>
+        <EditProfile userId={userId} open={open} oldName={name} oldEmail={email} onClose={handleEditClose} onEdit={(email, name) => handleEdit(email, name)} />
+      </Box>
     </Box>
   );
 }

@@ -8,19 +8,20 @@ import {
   useResolvedPath,
   useNavigate,
 } from "react-router-dom";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Avatar } from "@mui/material";
 import "./navbar.css";
 import { MdOutlineTravelExplore } from "react-icons/md";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountBox, Key, Logout } from "@mui/icons-material";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { TbGridDots } from "react-icons/tb";
 import PropTypes from "prop-types";
 import Api from "../../Helpers/Api";
 
-function Navbar({ isLoggedIn, handleLogout, userId }) {
+function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
   const [active, setActive] = useState("navBar");
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const[firstLetter, setFirstLetter] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -53,6 +54,8 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
       .then((data) => {
         const name = data.name;
         setName(name);
+        const first = name.charAt(0).toUpperCase();
+        setFirstLetter(first); 
       })
       .catch((error) => {
         console.log(
@@ -122,7 +125,7 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
                   >
-                    <AccountCircle className="icon" fontSize="medium" />
+                    <Avatar className="icon">{firstLetter}</Avatar>
                   </IconButton>
                   <Menu
                     id="basic-menu"
@@ -138,10 +141,26 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
                       onClick={handleClose}
                       to={`/Profile/${userId}`}
                     >
-                      Profile
+                      <ListItemIcon>
+                        <AccountBox />
+                      </ListItemIcon>
+                      <ListItemText primary="Profile" />
+                    </MenuItem>
+                    <MenuItem
+                      component={CustomLink}
+                      onClick={handleClose}
+                      to={`/ResetPassword`}
+                    >
+                      <ListItemIcon>
+                        <Key />
+                      </ListItemIcon>
+                      <ListItemText primary="Reset password" />
                     </MenuItem>
                     <MenuItem onClick={handleLogoutClick} onClose={handleClose}>
-                      Log out
+                      <ListItemIcon>
+                        <Logout />
+                      </ListItemIcon>
+                      <ListItemText primary="Log out" />
                     </MenuItem>
                   </Menu>
                 </li>

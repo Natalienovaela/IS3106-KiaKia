@@ -4,7 +4,6 @@ import { Add, RemoveCircleOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import './CreateTrip.css';
 import Api from '../../Helpers/Api';
-import TripContent from "../TripContent/TripContent";
 import { DatePicker } from "antd";
 import moment from 'moment-timezone';
 import dayjs from 'dayjs';
@@ -21,7 +20,6 @@ function CreateTrip({ userId, handleTrip }) {
   const [endDate, setEndDate] = useState(moment("2023-05-05", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
   const [emails, setEmails] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [tripId, setTripId] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -107,7 +105,6 @@ function CreateTrip({ userId, handleTrip }) {
           if (!tripId) {
             setErrors({ submit: "Failed to create trip. Please try again." });
           } else {
-            setTripId(tripId);
             handleTrip(tripId);
             navigate(`/TripContent`);
             // return <TripContent userId={userId} tripId={tripId}></TripContent>
@@ -160,7 +157,7 @@ function CreateTrip({ userId, handleTrip }) {
         />
         <Typography align="left" marginTop={2}>Dates</Typography>
         <RangePicker style={{ marginTop: '5px', background: 'transparent', width: "100%", height: "55px" }} onChange={handleDateRangeChange} value={[dayjs(startDate.toString()), dayjs(endDate.toString())]} />
-        <Button sx={{ marginTop: 1 }} onClick={() => setOpen(true)} startIcon={<Add />}>
+        <Button sx={{ marginTop: 1, color: '#f87171' }} onClick={() => setOpen(true)} startIcon={<Add />}>
           Invite tripmates
         </Button>
         {emails.map((email, index) => (

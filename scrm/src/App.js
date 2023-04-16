@@ -19,6 +19,7 @@ import TripNotes from './Components/TripComponents/TripNotes';
 import TripPolls from './Components/TripComponents/TripPolls';
 import UploadFile from './Components/TripComponents/UploadFile';
 import PollTest from './Components/TripComponents/PollTest';
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,7 @@ const App = () => {
                     <Route path="/Home/:userId" element={<Home />} />
                     <Route path="/Signup" element={<Signup handleLogin={handleLogin} />} />
                     <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
+                    <Route path="/ResetPassword" element={<ResetPassword userId={userId}/>} />
                     <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip}/>} />
                     <Route path="/TripContent" element={<TripContent userId={userId} tripId={tripId} />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
