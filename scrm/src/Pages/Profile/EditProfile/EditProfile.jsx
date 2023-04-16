@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { Dialog, DialogTitle, InputLabel, DialogContent, DialogActions, Box, Button, TextField, Typography } from "@mui/material";
-import { AccountCircle } from '@mui/icons-material';
+import React, { useEffect, useState } from "react";
+import { Dialog, DialogTitle, InputLabel, DialogContent, DialogActions, Box, Button, TextField, Typography, Avatar } from "@mui/material";
 import Api from "../../../Helpers/Api";
 
 function EditProfile({ userId, open, oldName, oldEmail, onClose, onEdit }) {
   const [name, setName] = useState(oldName);
+  const[firstLetter, setFirstLetter] = useState("");
   const [email, setEmail] = useState(oldEmail);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const first = oldName.charAt(0).toUpperCase();
+      setFirstLetter(first);
+  }, [oldName]);
 
   const handleNameChange = (event) => {
     const nameValue = event.target.value;
@@ -47,15 +52,35 @@ function EditProfile({ userId, open, oldName, oldEmail, onClose, onEdit }) {
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
-      Api.updateUser(userId, { name, email })
+      Api.emailExists(email)
         .then((response) => response.json())
         .then((data) => {
-          const userId = data.userId;
-          if (!userId) {
-            setErrors({ submit: "Failed to edit. Please try again." });
+          if (!data.exists) {
+            Api.updateUser(userId, { name, email })
+              .then((response) => response.json())
+              .then((data) => {
+                const userId = data.userId;
+                if (!userId) {
+                  setErrors({ submit: "Failed to edit. Please try again." });
+                } else {
+                  onEdit(email, name);
+                  onClose();
+                }
+              })
+          } else if (email === oldEmail) {
+            Api.updateUser(userId, { name, email })
+              .then((response) => response.json())
+              .then((data) => {
+                const userId = data.userId;
+                if (!userId) {
+                  setErrors({ submit: "Failed to edit. Please try again." });
+                } else {
+                  onEdit(email, name);
+                  onClose();
+                }
+              })
           } else {
-            onEdit(email, name);
-            onClose();
+            throw new Error("The email address provided is already associated with an existing user");
           }
         })
         .catch((error) => {
@@ -74,7 +99,7 @@ function EditProfile({ userId, open, oldName, oldEmail, onClose, onEdit }) {
           marginTop={3}
           marginBottom={5}
         >
-          <AccountCircle className="editprofile-icon" fontSize="large" sx={{ fontSize: "150px" }} />
+          <Avatar className="profile-icon" sx={{ backgroundColor: '#f87171', fontSize: '60px', width: 120, height: 120}}>{firstLetter}</Avatar>
         </Box>
         <Box mt={2}>
           <InputLabel id="name">Name</InputLabel>

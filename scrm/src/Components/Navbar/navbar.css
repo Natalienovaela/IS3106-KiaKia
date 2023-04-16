@@ -36,8 +36,8 @@
   margin-left: 2rem;
 }
 .header .profile .icon {
-  font-size: 48px;
-  color: var(--PrimaryColor);
+  font-size: 20px;
+  background-color: var(--PrimaryColor);
   transform: translateY(4px);
 }
 .header .navLists {

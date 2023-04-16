@@ -64,7 +64,7 @@ function Login({ handleLogin }) {
         })
         .catch((error) => {
           console.log(email + " " + password);
-          setErrors({ submit: error.message });
+          setErrors({ submit: "Failed to login. Please try again."  });
         });
     }
   };
