@@ -54,7 +54,7 @@ public interface TripSessionBeanLocal {
 
     public void inviteUserToTrip(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException;
 
-    public void createAndInviteUserToTrip(Trip trip, List<String> userEmails, List<UserRoleEnum> userRoles) throws UserNotFoundException;
+    public void createAndInviteUserToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException;
 
     public Trip getTrip(Long tripId) throws TripNotFoundException;
 
@@ -72,5 +72,6 @@ public interface TripSessionBeanLocal {
     public void linkTripWithWishlistFolder(Long tripId, Long folderId) throws TripNotFoundException, FolderNotFoundException;
 
     public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException;
+    public void createAndInviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException;
     
 }

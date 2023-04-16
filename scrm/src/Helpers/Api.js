@@ -16,8 +16,34 @@ const Api = {
     getAllGroupTrips() {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
+
+    //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
+    },
+    createTrip(data, user_id) {
+        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+    },
+    createAndInviteUserToTrip(data, userId, userEmails, userRoles) {
+        return fetch(`${SERVER_PREFIX}/trips?userId=${userId}&userEmails=${userEmails}&userRoles=${userRoles}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
     },
     //notes
     createNote(tripId) {
@@ -30,7 +56,6 @@ const Api = {
         });
     },
     updateNote(tripId, noteId, note) {
-        //change this to updateTrip with some paraeter to indicate which component are updated
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes/${noteId}`, {
             headers: {
                 Accept: "application/json",
@@ -45,6 +70,30 @@ const Api = {
             method: "DELETE",
         });
     },
+
+    //polls
+    getAllPollsInTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls`);
+    },
+    getPoll(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}`);
+    },
+    hasPolled(tripId, pollId, userId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/hasPolled/polls/${pollId}/user/${userId}`);
+    },
+    calculatePercentage(tripId, pollId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/calculatePercentage/polls/${pollId}`);
+    },
+    submitPoll(tripId, userId, pollId, selectedOption) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/${selectedOption}/user/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
     //checkLists
     createCheckList(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/checkLists`, {
@@ -92,7 +141,7 @@ const Api = {
             method: "PUT",
         });
     },
-    
+
     //itinerary
     createItinerary(tripId, data) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,
@@ -113,7 +162,7 @@ const Api = {
             });
     },
     updateItinerary(tripId, itinerary) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`,{
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -125,13 +174,13 @@ const Api = {
 
     //placeLineItem
     createPlaceLineItem(tripId, itineraryId, placeId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/places/${placeId}`), {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/places/${placeId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "POST",
-        }
+        })
     },
 
     removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
@@ -173,6 +222,8 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
 
+    emailExists(email) {
+        return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     }
@@ -190,18 +241,30 @@ const Api = {
             }
         )
     },
+
+    updateUser(userId, user) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(user),
+        })
+    },
+
     //explore
     searchTripByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);
     },
     searchTripByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchTripByCountry/${country}`);
     },
     searchPlaceByCity(city) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCity/${city}`);
     },
     searchPlaceByCountry(country) {
-        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);     
+        return fetch(`${SERVER_PREFIX}/explore/searchPlaceByCountry/${country}`);
     },
 
     //bucketList
@@ -249,10 +312,10 @@ const Api = {
             method: "PUT",
             body: JSON.stringify(folder),
         })
-    }, 
+    },
     deleteFolder(wishlistId, folderId) {
         return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
-            method: "DELETE", 
+            method: "DELETE",
         });
     },
 

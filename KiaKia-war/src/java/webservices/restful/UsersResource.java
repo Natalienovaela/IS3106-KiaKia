@@ -13,6 +13,10 @@ import error.InvalidLoginException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -27,6 +31,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -80,6 +85,26 @@ public class UsersResource {
         }
     }
 
+    @GET
+    @Path("/query")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response emailExists(@QueryParam("email") String email) {
+        try {
+            boolean exists = userSessionBeanLocal.emailExists(email);
+            Map<String, Boolean> responseMap = new HashMap<>();
+            responseMap.put("exists", exists);
+            return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Not found")
+                    .build();
+
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -100,6 +125,26 @@ public class UsersResource {
                     .add("error", e.getMessage())
                     .build();
             return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @PUT
+    @Path("/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editUser(@PathParam("userId") Long userId, User u) {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            user.setName(u.getName());
+            user.setEmail(u.getEmail());
+            userSessionBeanLocal.updateUser(user);
+            return Response.status(200).entity(user).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
 

@@ -13,6 +13,7 @@ import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserHasPolledException;
 import error.UserNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -36,5 +37,9 @@ public interface PollSessionBeanLocal {
     public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException;
 
     public List<Poll> retrieveAllPollsInTrip(Long tripId) throws TripNotFoundException;
+
+    public List<Poll> retrieveAllPolls();
+
+    public HashMap<Long, Double> calculatePercentage(Poll p);
     
 }

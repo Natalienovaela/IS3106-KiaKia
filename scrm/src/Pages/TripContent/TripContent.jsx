@@ -18,7 +18,7 @@ import TripNotes from "../../Components/TripComponents/TripNotes";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 const { RangePicker } = DatePicker;
 
-function TripContent() {
+function TripContent( { userId, tripId }) {
   //TO DO: change back to useParams and delete the hardcoded id
   // const { id } = useParams();
   const id = 1;
@@ -78,6 +78,8 @@ function TripContent() {
 
   useEffect(() => {
     reloadData();
+    console.log(tripId);
+    console.log(userId);
   }, [reloadData]);
 
   const handleShareButtonClick = () => {

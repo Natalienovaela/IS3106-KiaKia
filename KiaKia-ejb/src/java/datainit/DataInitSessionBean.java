@@ -11,9 +11,12 @@ import entity.Trip;
 import entity.User;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -25,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import session.NoteSessionBeanLocal;
 import session.PollSessionBeanLocal;
+import session.TripSessionBeanLocal;
 import session.UserSessionBeanLocal;
 
 /**
@@ -47,6 +51,9 @@ public class DataInitSessionBean {
 
     @EJB
     private UserSessionBeanLocal userSessionBeanLocal;
+    
+    @EJB
+    private TripSessionBeanLocal tripSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
@@ -56,14 +63,26 @@ public class DataInitSessionBean {
         if (em.find(User.class, 1l) == null) {
             initialiseUser();
         }
-        if (em.find(Poll.class, 1l) == null) {
+        if (pollSessionBeanLocal.retrieveAllPolls().isEmpty()) {
             initialisePoll();
         }
     }
 
     public void initialiseUser() {
-        Trip trip = em.find(Trip.class, 1l);
-        userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
+//        try {
+            Trip trip = em.find(Trip.class, 1l);
+            userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
+            userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
+//            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
+//            List<String> userEmails = new ArrayList<String>();
+//            List<String> userRoles = new ArrayList<String>();
+//            userEmails.add("shinolim22@gmail.com");
+//            userRoles.add("EDITOR");
+//            tripSessionBeanLocal.createAndInviteUserToTrip(trip, 2l, userEmails, userRoles);
+//        } catch (UserNotFoundException ex) {
+//            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
     }
 
     public void initialisePoll() {
@@ -76,12 +95,27 @@ public class DataInitSessionBean {
             options.put(3L, "Sentosa");
             Poll poll1 = new Poll("Where you wanna go the most in Singapore?", options, creator);
             pollSessionBeanLocal.createNewPoll(poll1, trip.getTripId());
+
             HashMap<Long, String> options2 = new HashMap<>();
             options2.put(1L, "Chicken Rice");
             options2.put(2L, "Laksa");
             options2.put(3L, "Prata");
             Poll poll2 = new Poll("What you wanna eat the most in Singapore?", options2, creator);
             pollSessionBeanLocal.createNewPoll(poll2, trip.getTripId());
+
+            HashMap<Long, String> options3 = new HashMap<>();
+            options3.put(1L, "A");
+            options3.put(2L, "B");
+            Poll poll3 = new Poll("Which letter you like?", options3, creator);
+            pollSessionBeanLocal.createNewPoll(poll3, trip.getTripId());
+
+            HashMap<Long, String> options4 = new HashMap<>();
+            options4.put(3L, "C");
+            options4.put(1L, "D");
+            options4.put(2L, "E");
+            options4.put(3L, "F");
+            Poll poll4 = new Poll("Which letter you like?", options4, creator);
+            pollSessionBeanLocal.createNewPoll(poll4, trip.getTripId());
 
         } catch (UnknownPersistenceException | TripNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,19 +133,19 @@ public class DataInitSessionBean {
             noteSessionBeanLocal.createNewNote(note2, trip.getTripId());
             Note note3 = new Note("My 3rd Note", "bla", false);
             noteSessionBeanLocal.createNewNote(note3, trip.getTripId());
-            Note note4 = new Note("My 4th Note", "blabla", false);
-            noteSessionBeanLocal.createNewNote(note4, trip.getTripId());
-            Note note5 = new Note("My 5th Note", "bla", false);
-            noteSessionBeanLocal.createNewNote(note5, trip.getTripId());
-            Note note6 = new Note("My 6th Note", "blabla", false);
-            noteSessionBeanLocal.createNewNote(note6, trip.getTripId());
-            Note note7 = new Note("My 7th Note", "bla", false);
-            noteSessionBeanLocal.createNewNote(note7, trip.getTripId());
-            Note note8 = new Note("My 8th Note", "blabla", false);
-            noteSessionBeanLocal.createNewNote(note8, trip.getTripId());
-            Note note9 = new Note("My 9th Note", "bla", false);
-            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
-            
+//            Note note4 = new Note("My 4th Note", "blabla", false);
+//            noteSessionBeanLocal.createNewNote(note4, trip.getTripId());
+//            Note note5 = new Note("My 5th Note", "bla", false);
+//            noteSessionBeanLocal.createNewNote(note5, trip.getTripId());
+//            Note note6 = new Note("My 6th Note", "blabla", false);
+//            noteSessionBeanLocal.createNewNote(note6, trip.getTripId());
+//            Note note7 = new Note("My 7th Note", "bla", false);
+//            noteSessionBeanLocal.createNewNote(note7, trip.getTripId());
+//            Note note8 = new Note("My 8th Note", "blabla", false);
+//            noteSessionBeanLocal.createNewNote(note8, trip.getTripId());
+//            Note note9 = new Note("My 9th Note", "bla", false);
+//            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
+
             Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
             em.persist(trip2);
             em.flush();

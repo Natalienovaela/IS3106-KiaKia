@@ -75,7 +75,7 @@ public class Folder implements Serializable {
         return trips;
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips (List<Trip> trips) {
         this.trips = trips;
     }
 

@@ -55,8 +55,12 @@ function Login({ handleLogin }) {
         .then((response) => response.json())
         .then((data) => {
           const userId = data.userId;
-          navigate(`/Home/${userId}`);
-          handleLogin(userId);
+          if (!userId) {
+            setErrors({ submit: "Failed to login. Please try again." });
+          } else {
+            navigate(`/Home/${userId}`);
+            handleLogin(userId);
+          }
         })
         .catch((error) => {
           console.log(email + " " + password);

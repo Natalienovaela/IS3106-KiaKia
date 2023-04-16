@@ -10,12 +10,18 @@ import entity.Note;
 import entity.Poll;
 import entity.Trip;
 import enumeration.UserRoleEnum;
+import entity.User;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
+import error.PollClosedException;
 import error.PollNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
+import error.UserHasPolledException;
 import error.UserNotFoundException;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -28,6 +34,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,6 +43,7 @@ import session.NoteSessionBeanLocal;
 import session.PlaceSessionBeanLocal;
 import session.PollSessionBeanLocal;
 import session.TripSessionBeanLocal;
+import session.UserSessionBeanLocal;
 
 /**
  * REST Web Service
@@ -59,6 +67,9 @@ public class TripsResource {
 
     @EJB
     private PlaceSessionBeanLocal placeSessionBeanLocal;
+    
+    @EJB
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     //just to try if the api works 
     @GET
@@ -273,7 +284,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
         List<Poll> polls;
-        System.out.println("Retrieve all notes in trip triggered");
+        System.out.println("Retrieve all polls in trip triggered");
         try {
             polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
             return Response.status(200).entity(polls).build();
@@ -298,7 +309,81 @@ public class TripsResource {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
 
+    @Path("/{trip_id}/polls/{poll_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response retrievePoll(@PathParam("poll_id") Long pollId) {
+        Poll poll;
+        System.out.println("Retrieve all polls in trip triggered");
+        try {
+            poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            return Response.status(200).entity(poll).build();
+        } catch (PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @GET
+    @Path("/{trip_id}/hasPolled/polls/{poll_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response hasUserPolled(@PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId) {
+        try {
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            boolean res = pollSessionBeanLocal.hasUserPolled(poll, user);
+            return Response.status(200).entity(res).build();
+        } catch (PollNotFoundException | UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @GET
+    @Path("/{trip_id}/calculatePercentage/polls/{poll_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response calculatePercentage(@PathParam("poll_id") Long pollId) {
+        try {
+            Poll p = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            HashMap<Long, Double> res = pollSessionBeanLocal.calculatePercentage(p);
+            return Response.status(200).entity(res).build();
+        } catch (PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    //TODO: put userId as path param instead when user is integrated
+    @PUT
+    @Path("/{trip_id}/polls/{poll_id}/{option_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response submitPoll(@PathParam("trip_id") Long tripId, @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId, @PathParam("option_id") Long optionId) {
+        try {
+            System.out.println("Submit poll in trip triggered");
+            Poll poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
+            pollSessionBeanLocal.pollOption(poll, optionId, userId);
+            Boolean bool = true;
+            return Response.status(200).entity(bool).build();
+        } catch (PollNotFoundException | UserNotFoundException | UserHasPolledException | PollClosedException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
             return Response.status(404).entity(exception).build();
         }
     }
@@ -328,6 +413,40 @@ public class TripsResource {
             tripSessionBeanLocal.addNewTrip(t, userId);
             return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") String userEmails, @QueryParam("userRoles") String userRoles) {
+        try {
+            System.out.println("Received request to create and invite users to trip.");
+            System.out.println("Trip: " + t);
+            System.out.println("UserId: " + userId);
+            System.out.println("UserEmails: " + userEmails);
+            System.out.println("UserRoles: " + userRoles);
+            List<String> userEmailsList = new ArrayList<>();
+            List<String> userRolesList = new ArrayList<>();
+            if (!userEmails.isEmpty()) {
+                String[] userEmailsArray = userEmails.split(",");
+                userEmailsList = Arrays.asList(userEmailsArray);
+                System.out.println(userEmailsList.size());
+                String[] userRolesArray = userRoles.split(",");
+                userRolesList = Arrays.asList(userRolesArray);
+            }
+
+            tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmailsList, userRolesList);
+
+            System.out.println("Trip created and users invited successfully.");
+            System.out.println("Adding trip to response: " + t);
+            return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException ex) {
+            System.err.println("Failed to create and invite users to trip: " + ex.getMessage());
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
