@@ -309,14 +309,14 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/${search}`)
     },
 
-    updateFolderName(userId, folderId, folder) {
+    updateFolderName(userId, folderId, folderName) {
         return fetch(`${SERVER_PREFIX}/users/${userId}/folders/${folderId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify(folder),
+            body: JSON.stringify(folderName),
         })
     },
     deleteFolder(userId, folderId) {
