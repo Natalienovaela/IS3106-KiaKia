@@ -11,6 +11,7 @@ import tokyo from "../../Assets/tokyo.jpg";
 import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
 import newyork from "../../Assets/newyork.png";
 import japan from "../../Assets/japan.png";
+import Emoji from "a11y-react-emoji";
 
 const dummyData = [
   {
@@ -131,7 +132,7 @@ const Home = () => {
       <div className="container">
         <div className="pageTitle">
           <h1>Welcome,</h1>
-          <h1>{name}</h1>
+          <h1>{name} <Emoji symbol="🙂" label="welcome emoji" /></h1>
           <hr />
           <p>
             What a fresh new day to start planning for your trip, isn't it?{" "}

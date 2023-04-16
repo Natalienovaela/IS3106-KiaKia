@@ -1,9 +1,12 @@
 import React from "react";
 import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import moment from "moment";
+import Emoji from "a11y-react-emoji";
 
 function Trip() {
+  const { userId } = useParams();
   const [personalData, setPersonalData] = useState([]);
   const [groupData, setGroupData] = useState([]);
 
@@ -12,11 +15,8 @@ function Trip() {
     reloadPersonalData();
   }, []);
 
-  {
-    /*later on need to get all trips from particular id --> user, and specify personal or group trip */
-  }
   const reloadPersonalData = () => {
-    Api.getAllPersonalTrips()
+    Api.getAllPersonalTrips(userId)
       .then((res) => res.json())
       .then((trips) => {
         for (const trip of trips) {
@@ -29,7 +29,7 @@ function Trip() {
   };
 
   const reloadGroupData = () => {
-    Api.getAllTrips()
+    Api.getAllGroupTrips(userId)
     .then((res) => res.json())
     .then((trips) => {
       for (const trip of trips) {
@@ -44,7 +44,7 @@ function Trip() {
   return (
     <>
       <div className="pageTitle">
-        <h1>Your Upcoming Trip(s)</h1>
+        <h1>Your Upcoming Trip(s) <Emoji symbol="✈️" label="earth emoji" /></h1>
       </div>
 
       <div className="sec">
