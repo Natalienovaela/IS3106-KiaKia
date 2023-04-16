@@ -123,6 +123,7 @@ public class BudgetExpenseResource
 
     @GET
     @Path("/{trip_id}/budget")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBudgetByCategory(@PathParam("trip_id") Long tripId, BudgetExpenseCategory category) 
     {
