@@ -8,17 +8,29 @@ import {
   useResolvedPath,
   useNavigate,
 } from "react-router-dom";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import "./navbar.css";
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { AccountCircle } from "@mui/icons-material";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { TbGridDots } from "react-icons/tb";
+import PropTypes from "prop-types";
 import Api from "../../Helpers/Api";
 
 function Navbar({ isLoggedIn, handleLogout, userId }) {
   const [active, setActive] = useState("navBar");
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   //function to toggle bar
   const showNav = () => {
@@ -47,7 +59,7 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
           `Error retrieving user data for user with ID ${userId}: ${error}`
         );
       });
-  }, [userId]);
+  }, [userId, refreshData]);
 
   return (
     <section className="navBarSection">
@@ -103,12 +115,36 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
                 <span className="user">Hello, {name}!</span>
 
                 <li className="profile">
-                  <Link to="/Profile" className="logo flex">
-                    <AccountCircle className="icon" fontSize="large" />
-                  </Link>
+                  <IconButton
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <AccountCircle className="icon" fontSize="medium" />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={() => handleClose()}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem
+                      component={CustomLink}
+                      onClick={handleClose}
+                      to={`/Profile/${userId}`}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleLogoutClick} onClose={handleClose}>
+                      Log out
+                    </MenuItem>
+                  </Menu>
                 </li>
-
-                <button onClick={handleLogoutClick}>Log out</button>
               </ul>
             </nav>
 
@@ -159,6 +195,10 @@ function Navbar({ isLoggedIn, handleLogout, userId }) {
     </section>
   );
 }
+
+Navbar.propTypes = {
+  handleClick: PropTypes.func,
+};
 
 export default Navbar;
 

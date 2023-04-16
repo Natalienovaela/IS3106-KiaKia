@@ -10,7 +10,6 @@
     <class>entity.Place</class>
     <class>entity.PlaceLineItem</class>
     <class>entity.Trip</class>
-    <class>entity.Wishlist</class>
     <class>entity.Budget</class>
     <class>entity.BudgetExpenseCategory</class>
     <class>entity.DayItinerary</class>

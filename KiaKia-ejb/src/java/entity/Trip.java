@@ -17,7 +17,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -48,9 +47,6 @@ public class Trip implements Serializable {
     private Boolean isShared = Boolean.FALSE;
     
     private String inviteToken;
-    
-    //@ManyToMany(mappedBy="wishlistTrips")
-    //private List<User> wishlisted = new ArrayList<>();
     
     @OneToMany
     private List<Note> notes = new ArrayList<>();
@@ -101,6 +97,13 @@ public class Trip implements Serializable {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Trip(String name, Date startDate, Date endDate, CountryEnum country) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.country = country;
     }
     
     public Long getTripId() {
@@ -223,14 +226,6 @@ public class Trip implements Serializable {
     public void setInviteToken(String inviteToken) {
         this.inviteToken = inviteToken;
     }
-
-    //public List<User> getWishlisted() {
-     //   return wishlisted;
-    //}
-
-    //public void setWishlisted(List<User> wishlisted) {
-    //    this.wishlisted = wishlisted;
-   // }
 
     public List<DayItinerary> getItinerary() {
         return itinerary;

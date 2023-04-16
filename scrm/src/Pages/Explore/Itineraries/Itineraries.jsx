@@ -60,12 +60,10 @@ const Itineraries = () => {
       });
   }, []);
 
-  // get all trips
-  /*
-  useEffect(() => {
-    Api.searchTripByCity(city);
-  });
-  */
+  // // get all trips
+  // useEffect(() => {
+  //   Api.searchTripByCity(city);
+  // });
 
   return (
     <>

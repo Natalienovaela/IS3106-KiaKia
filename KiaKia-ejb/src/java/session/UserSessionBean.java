@@ -41,6 +41,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     @Override
     public void createUser(User u) {
         em.persist(u);
+        em.flush();
     }
     
     @Override
@@ -104,7 +105,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
         try {
             return retrieveUserByUsername(username) != null;
         } catch (UserNotFoundException ex) {
-            throw new UserNotFoundException(ex.getMessage());
+            return false;
         }
     }
 
@@ -114,7 +115,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
         try {
             return retrieveUserByEmail(email) != null;
         } catch (UserNotFoundException ex) {
-            throw new UserNotFoundException(ex.getMessage());
+            return false;
         }
     }
 
