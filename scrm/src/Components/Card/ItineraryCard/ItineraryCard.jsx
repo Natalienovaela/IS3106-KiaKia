@@ -7,6 +7,10 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Api from "../../../Helpers/Api";
 
 const dummyData = [
   {
@@ -16,28 +20,42 @@ const dummyData = [
   },
 ];
 
-const ItineraryCard = (props) => {
-  const placeHighlight = props.places?.map((place) => (
+const ItineraryCard = ({
+  id,
+  onClick,
+  img,
+  places,
+  tags,
+  desc,
+  cityName,
+  numOfDays,
+  card,
+}) => {
+  const placeHighlight = places?.map((place) => (
     <li className="place">{place}</li>
   ));
   const [click, setclick] = useState(false);
 
-  const handleClick = () => {
+  const handleBookmarkClick = () => {
+    // add item to selected folder
     setclick(!click);
-    console.log("clicked");
+    console.log("button is clicked");
+    onClick({ card });
   };
 
-  const tags = props.tags?.map((tag) => <Chip label={tag}></Chip>);
+  const [userFolder, setUserFolder] = useState("");
+
+  const tagsin = tags?.map((tag) => <Chip label={tag}></Chip>);
 
   return (
     <div className="itinerary-card">
       <div className="itinerary-imageDiv">
-        <img src={props.img} alt="City" className="itinerary-card-image" />
+        <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
           <Profile />
 
           <IconButton
-            onClick={handleClick}
+            onClick={handleBookmarkClick}
             size="large"
             sx={{ color: "white" }}
           >
@@ -46,15 +64,15 @@ const ItineraryCard = (props) => {
         </div>
 
         <div className="city-div">
-          <h2>{props.cityName}</h2>
-          <p className="num-of-days">{props.numOfDays} days</p>
+          <h2>{cityName}</h2>
+          <p className="num-of-days">{numOfDays} days</p>
         </div>
       </div>
 
       <div className="card-details">
         <ul className="place-highlight">{placeHighlight}</ul>
-        <p className="card-desc">{props.desc}</p>
-        <div className="tags">{tags}</div>
+        <p className="card-desc">{desc}</p>
+        <div className="tags">{tagsin}</div>
       </div>
     </div>
   );

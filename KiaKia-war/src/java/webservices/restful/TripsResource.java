@@ -64,9 +64,6 @@ public class TripsResource {
 
     @EJB
     private CheckListSessionBeanLocal checkListSessionBeanLocal;
-
-    @EJB
-    private PlaceSessionBeanLocal placeSessionBeanLocal;
     
     @EJB
     private UserSessionBeanLocal userSessionBeanLocal;

@@ -25,7 +25,7 @@ public interface FolderSessionBeanLocal {
 
     public void deleteFolder(Long userId, Long folderId) throws UserNotFoundException;
 
-    public Folder createNewFolder(Long userId, Folder folder) throws UserNotFoundException;
+    public Folder createNewFolder(Long userId, Folder folder, String folderName) throws UserNotFoundException;
 
     public void updateFolderName(Folder folder) throws FolderNotFoundException;
 

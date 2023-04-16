@@ -62,7 +62,7 @@ function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
           `Error retrieving user data for user with ID ${userId}: ${error}`
         );
       });
-  }, [userId, refreshData]);
+  }, [userId]);
 
   return (
     <section className="navBarSection">

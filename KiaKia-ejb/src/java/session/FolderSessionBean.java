@@ -90,11 +90,12 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
     }
 
     @Override
-    public Folder createNewFolder(Long userId, Folder folder) throws UserNotFoundException {
+    public Folder createNewFolder(Long userId, Folder folder, String folderName) throws UserNotFoundException {
         try {
             User user = em.find(User.class, userId);
             em.persist(folder);
             user.getWishlistFolders().add(folder);
+            folder.setName(folderName);
             return folder;
         } catch (Exception ex) {
             throw new UserNotFoundException("User does not exist");

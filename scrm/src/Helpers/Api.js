@@ -225,10 +225,10 @@ const Api = {
     emailExists(email) {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     },
-
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     },
+    
 
     resetPassword(user) {
         return fetch(`${SERVER_PREFIX}/users`, {
@@ -284,8 +284,8 @@ const Api = {
     },
 
     // wishlist folder
-    createNewFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
+    createNewFolder(userId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -294,16 +294,16 @@ const Api = {
         })
     },
 
-    retrieveAllFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`)
+    retrieveAllFolder(userId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`)
     },
 
-    retrieveFolderWithCertainName(wishlistId, search) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/${search}`)
+    retrieveFolderWithCertainName(userId, search) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/${search}`)
     },
 
-    updateFolderName(wishlistId, folderId, folder) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    updateFolderName(userId, folderId, folder) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -312,8 +312,8 @@ const Api = {
             body: JSON.stringify(folder),
         })
     },
-    deleteFolder(wishlistId, folderId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    deleteFolder(userId, folderId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
             method: "DELETE",
         });
     },
