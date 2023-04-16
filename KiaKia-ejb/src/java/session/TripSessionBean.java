@@ -119,6 +119,11 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
 
     }
+    
+    @Override
+    public List<Trip> getAllSharedTrips() {
+        return em.createQuery("SELECT t FROM Trip t WHERE t.isShared = TRUE").getResultList();
+    }
 
     @Override
     public Trip getTrip(Long tripId) throws TripNotFoundException {
