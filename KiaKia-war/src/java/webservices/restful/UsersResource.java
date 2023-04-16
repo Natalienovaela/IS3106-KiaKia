@@ -274,17 +274,17 @@ public class UsersResource {
     @Path("{user_id}/folders/{folder_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFolderName(@PathParam("folder_Id") Long folderId, String folderName) {
-        try {
-            folderSessionBeanLocal.updateFolderName(folderId, folderName);
-            return Response.status(204).build();
-        } catch (FolderNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
-                    .build();
-            return Response.status(404).entity(exception)
-                    .type(MediaType.APPLICATION_JSON).build();
-        }
+    public Response updateFolderName(@PathParam("user_id") Long userId, @PathParam("folder_id") Long folderId, String folderName) {
+      try {
+        folderSessionBeanLocal.updateFolderName(folderId, folderName);
+        return Response.status(204).build();
+      } catch (FolderNotFoundException ex) {
+        JsonObject exception = Json.createObjectBuilder()
+          .add("error", "Not found")
+          .build();
+        return Response.status(404).entity(exception)
+          .type(MediaType.APPLICATION_JSON).build();
+      }
     }
 
     @DELETE
