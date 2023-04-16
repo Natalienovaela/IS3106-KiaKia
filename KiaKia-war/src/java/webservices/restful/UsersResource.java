@@ -221,13 +221,13 @@ public class UsersResource {
     }
 
     @POST
-    @Path("{user_id}/folders")
+    @Path("{user_id}/folders/{folderName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewFolder(@PathParam("user_id") Long userId) {
+    public Response createNewFolder(@PathParam("user_id") Long userId, @PathParam("folderName") String folderName) {
         Folder folder = new Folder();
         try {
-            folderSessionBeanLocal.createNewFolder(userId, folder);
+            folder = folderSessionBeanLocal.createNewFolder(userId, folder, folderName);
             return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
