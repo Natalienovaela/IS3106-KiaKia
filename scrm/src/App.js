@@ -55,7 +55,7 @@ const App = () => {
                     <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip}/>} />
                     <Route path="/TripContent" element={<TripContent userId={userId} tripId={tripId} />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
-                    <Route path="/Wishlist" element={<Wishlist />} />
+                    <Route path="/Wishlist/:userId" element={<Wishlist userId={userId}/>} />
                     <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />
                     <Route path="/Explore" element={<Explore />} />
                     <Route path="/TripNotes" element={<TripNotes />} />

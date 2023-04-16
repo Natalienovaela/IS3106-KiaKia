@@ -6,9 +6,11 @@ import SearchBar from "../../../Components/SearchBar/SearchBar";
 import japan from "../../../Assets/japan.png";
 import Emoji from "a11y-react-emoji";
 import Api from "../../../Helpers/Api";
+import Popup from "../Popup/Popup";
 
 const dummyData = [
   {
+    id: 1,
     img: singapore,
     cityName: "Singapore",
     places: ["Marina Bay Sands", "Haw Par Villa", "Lau Pa Sat"],
@@ -17,6 +19,7 @@ const dummyData = [
     numOfDays: 5,
   },
   {
+    id: 2,
     img: newyork,
     cityName: "New York",
     places: ["Broadway", "NYC"],
@@ -25,6 +28,7 @@ const dummyData = [
     numOfDays: 15,
   },
   {
+    id: 3,
     img: japan,
     cityName: "Tokyo",
     places: ["Shinjuku", "Akihabara", "Senso-ji"],
@@ -33,6 +37,7 @@ const dummyData = [
     numOfDays: 15,
   },
   {
+    id: 4,
     img: newyork,
     cityName: "New York",
     places: ["Broadway", "NYC"],
@@ -42,13 +47,10 @@ const dummyData = [
   },
 ];
 
-const itineraryCards = dummyData?.map((cardData) => (
-  <ItineraryCard key={cardData.id} {...cardData} />
-));
-
 const Itineraries = () => {
   const [places, setPlaces] = useState([]);
   const [trips, setTrips] = useState([]);
+
   useEffect(() => {
     Api.getCityList()
       .then((response) => response.json())
@@ -65,6 +67,40 @@ const Itineraries = () => {
   //   Api.searchTripByCity(city);
   // });
 
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [folders, setFolders] = useState([]);
+  const [selectedFolder, setSelectedFolder] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    console.log(selectedCard);
+    console.log("hi this button is clicked");
+    setShowPopup(true);
+  };
+
+  const handleFolderCheckbox = (folder) => {
+    setSelectedFolder(folder);
+  };
+
+  const handleNewFolderInput = (event) => {
+    setSelectedFolder(event.target.value);
+  };
+
+  const handleSaveButton = () => {
+    // save selected card into selected folder or create a new folder with selected folder name
+    // update the foldrs state
+    // reset the selectedcard and selectedfolder state
+  };
+
+  const itineraryCards = dummyData?.map((cardData) => (
+    <ItineraryCard
+      key={cardData.id}
+      {...cardData}
+      onClick={() => handleCardClick(cardData)}
+    />
+  ));
+
   return (
     <>
       <p className="page-content">
@@ -73,6 +109,16 @@ const Itineraries = () => {
       <SearchBar label="Search city or country" options={places} />
 
       <div className="cards">{itineraryCards}</div>
+      {selectedCard && (
+        <Popup
+          selectedCard={selectedCard}
+          folders={folders}
+          selectedFolder={selectedFolder}
+          onFolderCheckboxChange={handleFolderCheckbox}
+          onNewFolderInputChange={handleNewFolderInput}
+          onSaveButtonClick={handleSaveButton}
+        />
+      )}
     </>
   );
 };

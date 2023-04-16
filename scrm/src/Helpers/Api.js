@@ -5,7 +5,7 @@ const Api = {
     getTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
     },
-    getAllTrips() {
+    getAllTrips(userId) {
         return fetch(`${SERVER_PREFIX}/users/{${userId}/allTrips`);
     },
 
@@ -13,7 +13,7 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/personalTrips`);
     },
 
-    getAllGroupTrips() {
+    getAllGroupTrips(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
@@ -224,10 +224,11 @@ const Api = {
 
     emailExists(email) {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
+    },
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
-    }
-    ,
+    },
+    
 
     createTrip(data, user_id) {
         return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
@@ -285,8 +286,8 @@ const Api = {
     },
 
     // wishlist folder
-    createNewFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
+    createNewFolder(userId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -295,16 +296,16 @@ const Api = {
         })
     },
 
-    retrieveAllFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`)
+    retrieveAllFolder(userId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders`)
     },
 
-    retrieveFolderWithCertainName(wishlistId, search) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/${search}`)
+    retrieveFolderWithCertainName(userId, search) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/${search}`)
     },
 
-    updateFolderName(wishlistId, folderId, folder) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    updateFolderName(userId, folderId, folder) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -313,8 +314,8 @@ const Api = {
             body: JSON.stringify(folder),
         })
     },
-    deleteFolder(wishlistId, folderId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    deleteFolder(userId, folderId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
             method: "DELETE",
         });
     },

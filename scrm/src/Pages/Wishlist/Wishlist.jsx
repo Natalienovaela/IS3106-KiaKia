@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useParams, useState, useEffect } from "react";
 import "./wishlist.css";
 import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard";
 import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
@@ -8,6 +8,7 @@ import tokyo from "../../Assets/tokyo.jpg";
 import { MdOutlineEdit } from "react-icons/md";
 import Emoji from "a11y-react-emoji";
 import { Button } from "@mui/material";
+import Api from "../../Helpers/Api";
 
 // note: have to make wishlist inaccessible if not logged in!!
 // dummy data for trips
@@ -134,13 +135,28 @@ const PlacesFolders = placesFolderDummyData?.map((data) => (
 ));
 const WishlistFolders = dummyData2?.map((data) => <WishlistFolder {...data} />);
 
-const Wishlist = () => {
+const Wishlist = ({ userId }) => {
+  const [name, setName] = useState("");
+  useEffect(() => {
+    Api.getUser(userId)
+      .then((response) => response.json())
+      .then((data) => {
+        const name = data.name;
+        setName(name);
+      })
+      .catch((error) => {
+        console.log(
+          `Error retrieving user data for user with ID ${userId}: ${error}`
+        );
+      });
+  }, [userId]);
+
   return (
     <>
       <div className="container">
         <div className="pageTitle">
           <h1>
-            Wishlist <Emoji symbol="✨" label="sparkle emoji" />
+            {name}'s Wishlist <Emoji symbol="✨" label="sparkle emoji" />
           </h1>
         </div>
 
