@@ -23,6 +23,7 @@ import PollTest from './Components/TripComponents/PollTest';
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState('');
+    const [tripId, setTripId] = useState('');
     const [refreshData, setRefreshData] = useState(false);
 
     const handleLogin = (userId) => {
@@ -38,6 +39,10 @@ const App = () => {
         setRefreshData(!refreshData);
     };
 
+    const handleTrip = (tripId) => {
+        setTripId(tripId);
+    }
+
     return (
         <>  <DndProvider backend={HTML5Backend}>
             <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId} refreshData={refreshData} />
@@ -47,8 +52,8 @@ const App = () => {
                     <Route path="/Home/:userId" element={<Home />} />
                     <Route path="/Signup" element={<Signup handleLogin={handleLogin} />} />
                     <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
-                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} />} />
-                    <Route path="/TripContent" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
+                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip}/>} />
+                    <Route path="/TripContent" element={<TripContent userId={userId} tripId={tripId} />} /> {/*Need to change to /Trip/:id later on */}
                     <Route path="/Trip" element={<Trip />} />
                     <Route path="/Wishlist" element={<Wishlist />} />
                     <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />

@@ -4,13 +4,14 @@ import { Add, RemoveCircleOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import './CreateTrip.css';
 import Api from '../../Helpers/Api';
+import TripContent from "../TripContent/TripContent";
 import { DatePicker } from "antd";
 import moment from 'moment-timezone';
 import dayjs from 'dayjs';
 import InviteTripmates from './InviteTripmates/InviteTripmates';
 const { RangePicker } = DatePicker;
 
-function CreateTrip({ userId }) {
+function CreateTrip({ userId, handleTrip }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [countries, setCountries] = useState([]);
@@ -20,6 +21,7 @@ function CreateTrip({ userId }) {
   const [endDate, setEndDate] = useState(moment("2023-05-05", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
   const [emails, setEmails] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [tripId, setTripId] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -102,7 +104,14 @@ function CreateTrip({ userId }) {
         .then(data => {
           const tripId = data.tripId;
           console.log(tripId);
-          navigate(`/TripContent`);
+          if (!tripId) {
+            setErrors({ submit: "Failed to create trip. Please try again." });
+          } else {
+            setTripId(tripId);
+            handleTrip(tripId);
+            navigate(`/TripContent`);
+            // return <TripContent userId={userId} tripId={tripId}></TripContent>
+          }
         })
         .catch((error) => {
           setErrors({ submit: error.message });
@@ -133,22 +142,22 @@ function CreateTrip({ userId }) {
           helperText={errors.country}
         /> */}
         <Autocomplete
-        value={country}
-        onChange={handleCountryChange}
-        inputValue={value}
-        onInputChange={(event, newInputValue) => {
-          setValue(newInputValue);
-        }}
-        id="controllable-states-demo"
-        options={countries}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
-          <TextField {...params} placeholder="e.g. Japan, Singapore" 
-          error={Boolean(errors.country)}
-          helperText={errors.country}
-          />
-        )}
-      />
+          value={country}
+          onChange={handleCountryChange}
+          inputValue={value}
+          onInputChange={(event, newInputValue) => {
+            setValue(newInputValue);
+          }}
+          id="controllable-states-demo"
+          options={countries}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField {...params} placeholder="e.g. Japan, Singapore"
+              error={Boolean(errors.country)}
+              helperText={errors.country}
+            />
+          )}
+        />
         <Typography align="left" marginTop={2}>Dates</Typography>
         <RangePicker style={{ marginTop: '5px', background: 'transparent', width: "100%", height: "55px" }} onChange={handleDateRangeChange} value={[dayjs(startDate.toString()), dayjs(endDate.toString())]} />
         <Button sx={{ marginTop: 1 }} onClick={() => setOpen(true)} startIcon={<Add />}>
