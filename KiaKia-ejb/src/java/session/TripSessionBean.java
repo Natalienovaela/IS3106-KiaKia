@@ -66,14 +66,13 @@ public class TripSessionBean implements TripSessionBeanLocal {
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
-        
+
         String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
         List<BudgetExpenseCategory> categories = new ArrayList<>();
-        for (String name: categoryNames)
-        {
+        for (String name : categoryNames) {
             categories.add(new BudgetExpenseCategory(name));
         }
-        
+
         trip.setCategories(categories);
     }
 
@@ -111,12 +110,11 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
 
     @Override
-    public List<Trip> getAllTrips(Long userId) throws UserNotFoundException{
+    public List<Trip> getAllTrips(Long userId) throws UserNotFoundException {
         try {
             User user = em.find(User.class, userId);
             return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user").setParameter("user", user).getResultList();
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             throw new UserNotFoundException("User not found");
         }
 
@@ -158,25 +156,28 @@ public class TripSessionBean implements TripSessionBeanLocal {
     public List<Trip> getAllPersonalTrips(Long userId) throws UserNotFoundException {
         try {
             User user = em.find(User.class, userId);
-            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user GROUP BY t.trip HAVING COUNT(t.userRoleEnum) = 1").setParameter("user", user).getResultList();
-        }
-        catch(Exception ex) {
+            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user AND t.trip NOT IN (SELECT ta.trip FROM TripAssignment ta WHERE ta.user != :user) GROUP BY t.trip")
+                    .setParameter("user", user)
+                    .getResultList();
+
+        } catch (Exception ex) {
             throw new UserNotFoundException("User not found");
         }
-        
     }
 
     @Override
     public List<Trip> getAllGroupTrips(Long userId) throws UserNotFoundException {
         try {
             User user = em.find(User.class, userId);
-            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user GROUP BY t.trip HAVING COUNT(t.userRoleEnum) > 1").setParameter("user", user).getResultList();
-        }
-        catch(Exception ex) {
+            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user AND t.trip IN (SELECT ta.trip FROM TripAssignment ta GROUP BY ta.trip HAVING COUNT(ta.user) > 1)")
+                    .setParameter("user", user)
+                    .getResultList();
+
+        } catch (Exception ex) {
             throw new UserNotFoundException("User not found");
         }
     }
-    
+
     @Override
     public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException {
         try {
@@ -184,12 +185,10 @@ public class TripSessionBean implements TripSessionBeanLocal {
             try {
                 User user = em.find(User.class, userId);
                 return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
-            }
-            catch(Exception ex) {
+            } catch (Exception ex) {
                 throw new UserNotFoundException("User not found");
             }
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             throw new TripNotFoundException("Trip not found");
         }
     }
@@ -316,7 +315,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
                 System.out.println(email);
-                
+
                 System.out.println(userRoles.get(i));
                 UserRoleEnum userRole = UserRoleEnum.valueOf(userRoles.get(i));
                 User user = userSessionBeanLocal.retrieveUserByEmail(email);
@@ -353,20 +352,20 @@ public class TripSessionBean implements TripSessionBeanLocal {
             trip.setInviteToken(token);
             String userRole = role.toString();
 
-             try {
-            Future<Boolean> asyncResult = emailSessionBeanLocal.emailInvitationToUserAsync(user, trip, userRole, email);
-            // Store the Future<Boolean> in a variable for future use
-            // You can use this variable to check the result of the asynchronous computation later on
-            // For example, you can call asyncResult.get() to get the result and check if the email was sent successfully
-            Boolean emailSent = asyncResult.get();
-            if (emailSent) {
-                System.out.println("Email sent successfully!");
-            } else {
-                System.out.println("Failed to send email.");
+            try {
+                Future<Boolean> asyncResult = emailSessionBeanLocal.emailInvitationToUserAsync(user, trip, userRole, email);
+                // Store the Future<Boolean> in a variable for future use
+                // You can use this variable to check the result of the asynchronous computation later on
+                // For example, you can call asyncResult.get() to get the result and check if the email was sent successfully
+                Boolean emailSent = asyncResult.get();
+                if (emailSent) {
+                    System.out.println("Email sent successfully!");
+                } else {
+                    System.out.println("Failed to send email.");
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
             }
-        } catch (InterruptedException | ExecutionException ex) {
-            ex.printStackTrace();
-        }
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
