@@ -84,7 +84,6 @@ public class TripSessionBean implements TripSessionBeanLocal {
             trip.getBucketList().size();
             trip.getCheckLists().size();
             trip.getDocuments().size();
-            trip.getWishlisted().size();
             return trip;
         } else {
             throw new TripNotFoundException("Trip not found in the database");
@@ -110,8 +109,15 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
 
     @Override
-    public List<Trip> getAllTrips() {
-        return em.createQuery("SELECT t FROM Trip t").getResultList();
+    public List<Trip> getAllTrips(Long userId) throws UserNotFoundException{
+        try {
+            User user = em.find(User.class, userId);
+            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user").setParameter("user", user).getResultList();
+        }
+        catch(Exception ex) {
+            throw new UserNotFoundException("User not found");
+        }
+
     }
 
     @Override
@@ -147,13 +153,43 @@ public class TripSessionBean implements TripSessionBeanLocal {
     }
 
     @Override
-    public List<Trip> getAllPersonalTrips() {
-        return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS EMPTY AND t.viewers IS EMPTY").getResultList();
+    public List<Trip> getAllPersonalTrips(Long userId) throws UserNotFoundException {
+        try {
+            User user = em.find(User.class, userId);
+            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user GROUP BY t.trip HAVING COUNT(t.userRoleEnum) = 1").setParameter("user", user).getResultList();
+        }
+        catch(Exception ex) {
+            throw new UserNotFoundException("User not found");
+        }
+        
     }
 
     @Override
-    public List<Trip> getAllGroupTrips() {
-        return em.createQuery("SELECT t FROM Trip t WHERE t.editors IS NOT EMPTY OR t.viewers IS NOT EMPTY").getResultList();
+    public List<Trip> getAllGroupTrips(Long userId) throws UserNotFoundException {
+        try {
+            User user = em.find(User.class, userId);
+            return em.createQuery("SELECT t.trip FROM TripAssignment t WHERE t.user = :user GROUP BY t.trip HAVING COUNT(t.userRoleEnum) > 1").setParameter("user", user).getResultList();
+        }
+        catch(Exception ex) {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+    
+    @Override
+    public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            try {
+                User user = em.find(User.class, userId);
+                return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
+            }
+            catch(Exception ex) {
+                throw new UserNotFoundException("User not found");
+            }
+        }
+        catch(Exception ex) {
+            throw new TripNotFoundException("Trip not found");
+        }
     }
 
     @Override

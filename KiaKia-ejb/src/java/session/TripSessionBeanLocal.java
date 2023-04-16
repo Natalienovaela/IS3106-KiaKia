@@ -42,11 +42,11 @@ public interface TripSessionBeanLocal {
 //
 //    public void addPolls(Long tripId, Poll poll) throws TripNotFoundException;
 
-    public List<Trip> getAllTrips();
+    public List<Trip> getAllTrips(Long userId) throws UserNotFoundException;
 
-    public List<Trip> getAllPersonalTrips();
+    public List<Trip> getAllPersonalTrips(Long userId) throws UserNotFoundException ;
 
-    public List<Trip> getAllGroupTrips();
+    public List<Trip> getAllGroupTrips(Long userId) throws UserNotFoundException ;
 
     public void acceptTripInvite(String token, String role) throws TripNotFoundException, UserNotFoundException;
 
@@ -70,5 +70,7 @@ public interface TripSessionBeanLocal {
     public List<Trip> searchTripByCityOrCountry(String city, String country) throws CityOrCountryNotSelected;
 
     public void linkTripWithWishlistFolder(Long tripId, Long folderId) throws TripNotFoundException, FolderNotFoundException;
+
+    public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException;
     
 }

@@ -9,6 +9,7 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
+import enumeration.UserRoleEnum;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollNotFoundException;
@@ -59,44 +60,11 @@ public class TripsResource {
     @EJB
     private PlaceSessionBeanLocal placeSessionBeanLocal;
 
-    //to get all the trip
-    @GET
-    @Path("/AllTrip")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
-
     //just to try if the api works 
     @GET
     @Path("/random")
     public Response test() {
         return Response.status(204).build();
-    }
-
-    //to get all the personal trips
-    @GET
-    @Path("/personal")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllPersonalTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllPersonalTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
-
-    //to get all the group trips
-    @GET
-    @Path("/group")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllGroupTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllGroupTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
-        };
-        return Response.status(200).entity(entity).build();
     }
 
     //to retrieve all notes in trip
@@ -318,6 +286,23 @@ public class TripsResource {
         }
     }
 
+    @GET
+    @Path("{trip_id}/users/{userId}/userRole")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getUserRole(@PathParam("tripId") Long tripId, @PathParam("userId") Long userId) {
+        try {
+            UserRoleEnum userRoleEnum = tripSessionBeanLocal.getRole(tripId, userId);
+            return Response.status(200).entity(userRoleEnum).build();
+        } catch (UserNotFoundException | TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
 //    @DELETE
 //    @Path("/{trip_id}/polls/{poll_id}")
 //    @Produces(MediaType.APPLICATION_JSON)
@@ -334,7 +319,6 @@ public class TripsResource {
 //            return Response.status(404).entity(exception).build();
 //        }
 //    }
-
     @POST
     @Path("/{user_id}")
     @Consumes(MediaType.APPLICATION_JSON)

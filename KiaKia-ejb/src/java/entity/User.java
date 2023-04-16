@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,19 +39,17 @@ public class User implements Serializable {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date dob;
-    @OneToOne(optional=false)
-    private Wishlist wishlist;
     private File photo;
     private String resetPasswordToken;
     @Temporal(TemporalType.DATE)
     private Date tokenExpiryDate;
     
 
-    @ManyToMany
-    private List<Trip> wishlistTrips = new ArrayList<>(); // pending
+    @OneToMany
+    private List<Folder> wishlistFolders = new ArrayList<>(); 
 
-    @ManyToMany
-    private List<Place> wishlistPlaces = new ArrayList<>(); // pending
+    @OneToMany
+    private List<Place> wishlistPlaces = new ArrayList<>(); 
 
     public User() {
     }
@@ -159,20 +158,12 @@ public class User implements Serializable {
         this.photo = photo;
     }
 
-    public Wishlist getWishlist() {
-        return wishlist;
+    public List<Folder> getWishlistFolders() {
+        return wishlistFolders;
     }
 
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
-    }
-
-    public List<Trip> getWishlistTrips() {
-        return wishlistTrips;
-    }
-
-    public void setWishlistTrips(List<Trip> wishlistTrips) {
-        this.wishlistTrips = wishlistTrips;
+    public void setWishlistFolders(List<Folder> wishlistFolders) {
+        this.wishlistFolders = wishlistFolders;
     }
 
     public List<Place> getWishlistPlaces() {

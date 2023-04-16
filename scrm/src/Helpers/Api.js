@@ -6,15 +6,15 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
     },
     getAllTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
+        return fetch(`${SERVER_PREFIX}/users/{${userId}/allTrips`);
     },
 
-    getAllPersonalTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
+    getAllPersonalTrips(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/personalTrips`);
     },
 
     getAllGroupTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/group`);
+        return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
@@ -172,6 +172,11 @@ const Api = {
     getUser(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
+
+    getUserRole(userId, tripId) {
+        return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
+    }
+    ,
 
     createTrip(data, user_id) {
         return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
