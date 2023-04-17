@@ -110,12 +110,31 @@ const Home = () => {
   ));
 
   useEffect(() => {
+    getPlaces();
+    getUser();
+  }, []);
+
+  const getPlaces = () => {
     Api.getAllPlaces()
       .then((response) => response.json())
       .then((data) => {
         setPlacesData(data);
       });
-  }, []);
+  };
+
+  const getUser = () => {
+    Api.getUser(userId)
+      .then((response) => response.json())
+      .then((data) => {
+        const name = data.name;
+        setName(name);
+      })
+      .catch((error) => {
+        console.log(
+          `Error retrieving user data for user with ID ${userId}: ${error}`
+        );
+      });
+  };
 
   return (
     <>
