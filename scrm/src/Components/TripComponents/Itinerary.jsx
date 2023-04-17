@@ -66,6 +66,10 @@ const Itinerary = (props) => {
       });
     console.log("the : " + startDate + " " + endDate);
   }, []);
+  useEffect(() => {
+    reloadData();
+    console.log(tripId);
+  }, [reloadData]);
 
   return (
     <>

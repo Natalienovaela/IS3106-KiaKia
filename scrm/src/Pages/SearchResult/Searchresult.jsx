@@ -5,6 +5,7 @@ import Api from "../../Helpers/Api";
 
 const Searchresult = () => {
   const [placesData, setPlacesData] = useState([]);
+  const [sharedTrips, setSharedTrips] = useState([]);
   useEffect(() => {
     Api.getAllPlaces()
       .then((response) => response.json())
@@ -12,20 +13,38 @@ const Searchresult = () => {
         setPlacesData(data);
       });
   }, []);
+  /*
+  useEffect(() => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setSharedTrips(data);
+      });
+  }, []);
+  */
   const { query } = useParams();
   const filteredPlaces = placesData.filter((place) =>
     place.name.toLowerCase().startsWith(query.toLowerCase())
   );
+  const numOfFilteredResults = filteredPlaces.length;
 
   const placeCards = filteredPlaces?.map((data) => (
     <PlaceCard key={data.id} {...data} />
   ));
 
   return (
-    <>
-      <h2>Search Result of '{query}'</h2>
-      <div className="card-container">{placeCards}</div>
-    </>
+    <div className="container">
+      <div className="pageTitle">
+        <h1>Showing search result for '{query}'</h1>
+      </div>
+
+      <div className="sec">
+        {numOfFilteredResults < 1 && (
+          <h2>There is no search result found for '{query}'.</h2>
+        )}
+        <div className="secTitle">{placeCards}</div>
+      </div>
+    </div>
   );
 };
 
