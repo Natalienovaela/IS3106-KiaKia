@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Note from "./Note";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import Box from "@mui/material/Box";
 
 const TripNotes = ({ tripId, userId, userRole }) => {
   // const {
@@ -62,16 +64,18 @@ const TripNotes = ({ tripId, userId, userRole }) => {
 
   return (
     <div className="trip-notes">
-      <h2>Notes</h2>
-      {/* {error && <div> {error} </div>}
+      <div className="rowComponent">
+        <h2>Notes</h2>
+        {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
-      {userRole !== "VIEWER" && (
-        <div>
-          <button className="btn container" onClick={handleCreateNote}>
-            Create Note
-          </button>
-        </div>
-      )}
+        {userRole !== "VIEWER" && (
+          <Box sx={{ paddingLeft: 2 }}>
+            <IconButton onClick={handleCreateNote}>
+              <AddRoundedIcon />
+            </IconButton>
+          </Box>
+        )}
+      </div>
       {notes &&
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">

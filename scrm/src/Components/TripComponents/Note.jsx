@@ -6,6 +6,8 @@ import Api from "../../Helpers/Api";
 import { debounce } from "lodash";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Box from "@mui/material/Box";
 
 const Note = ({ tripId, note, userRole, handleDelete }) => {
   const [title, setTitle] = React.useState(note.title);
@@ -97,11 +99,11 @@ const Note = ({ tripId, note, userRole, handleDelete }) => {
             />
           )}
           {userRole !== "VIEWER" && (
-            <div>
+            <Box sx={{ paddingLeft: 2 }}>
               <IconButton onClick={() => handleDelete(note.noteId)}>
-                <DeleteIcon />
+                <DeleteOutlineOutlinedIcon />
               </IconButton>
-            </div>
+            </Box>
           )}
         </div>
       </Stack>
