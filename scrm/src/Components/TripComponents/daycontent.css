@@ -29,8 +29,18 @@
   border: 1px solid gray;
   border-radius: 20px;
   padding: 1rem;
-  width: 50%;
+  width: 100%;
   background-color: var(--whiteColorDeam);
+}
+.itinerary-details .placesLineItem .place-ind .sideway {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0px;
+}
+.itinerary-details .placesLineItem .place-ind .sideway .btn-delete {
+  display: flex;
+  position: relative;
 }
 .itinerary-details .placesLineItem .add-place-div {
   display: flex;
@@ -72,5 +82,7 @@
 .places {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  width: 500px;
   gap: 2rem;
 }/*# sourceMappingURL=daycontent.css.map */

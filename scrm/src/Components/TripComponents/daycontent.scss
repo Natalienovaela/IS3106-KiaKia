@@ -32,8 +32,21 @@
                 border: 1px solid gray;
                 border-radius: 20px;
                 padding: 1rem;
-                width: 50%;
+                width: 100%;
                 background-color: var(--whiteColorDeam);
+            }
+
+            .sideway {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+             
+                gap: 0px;
+                .btn-delete {
+            
+                    display: flex;
+                    position:relative;
+                }
             }
             
         }
@@ -58,6 +71,8 @@
             }
         }
     }
+
+
 }
 
 .date-range-picker {
@@ -83,5 +98,8 @@
 .places {
     display:flex;
     flex-direction: row;
+    align-items: center;
+    width: 500px;
     gap: 2rem;
+    
 }
