@@ -36,10 +36,11 @@
   margin-left: 2rem;
 }
 .header .profile .icon {
-  font-size: 48px;
-  color: var(--PrimaryColor);
-  transform: translateY(4px);
+  font-size: 20px;
+  background: var(--PrimaryColor);
+  color: var(--whiteColor);
 }
+
 .header .navLists {
   width: 100%;
   flex-direction: row;

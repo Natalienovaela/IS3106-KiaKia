@@ -17,6 +17,18 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
+    getNumberUsersinTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/users`);
+    },
+
+    getAllSharedTrips() {
+        return fetch(`${SERVER_PREFIX}/trips/allSharedTrips`);
+    },
+
+    getNumOfDaysTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/days`);
+    },
+
     //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);

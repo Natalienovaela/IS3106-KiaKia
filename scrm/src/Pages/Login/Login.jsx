@@ -7,7 +7,7 @@ import "./Login.css";
 import PropTypes from 'prop-types';
 import Api from "../../Helpers/Api";
 
-function Login({ setToken, handleLogin }) {
+function Login({ handleLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -60,9 +60,8 @@ function Login({ setToken, handleLogin }) {
             setErrors({ submit: "Failed to login. Please try again." });
           } else {
             navigate(`/Home/${userId}`);
-            handleLogin(userId);
             const token = data.loginToken;
-            setToken(token);
+            handleLogin(userId, token);
           }
         })
         .catch((error) => {

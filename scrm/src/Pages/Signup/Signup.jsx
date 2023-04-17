@@ -109,7 +109,8 @@ function Signup({ handleLogin }) {
                   setErrors({ submit: "Failed to sign up. Please try again." });
                 } else {
                   navigate(`/Home/${userId}`);
-                  handleLogin(userId);
+                  const token = data.loginToken;
+                  handleLogin(userId, token);
                 }
               })
               .catch((error) => {
