@@ -51,10 +51,10 @@ const Explore = ({ userId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await Api.getAllTrips(userId);
+        const response = await Api.getAllSharedTrips();
         const data = await response.json();
-        const sharedTrips = data.filter((trip) => trip.isShared);
-        setSharedItineraries(sharedTrips);
+        setSharedItineraries(data);
+        console.log(data);
         console.log("Successfully retrieved shared itineraries");
       } catch (error) {
         console.log("Error while retrieving trips list");
@@ -93,10 +93,12 @@ const Explore = ({ userId }) => {
             className="tabs"
             TabIndicatorProps={{ sx: { backgroundColor: "#ff8f66" } }}
           >
+            <Tab label="Places" className="tab-child" />
             <Tab label="Itineraries" className="tab-child" />
           </Tabs>
           <div className="explore-content">
             {itineraryCards}
+            {selectedTab === 0 && <Places userId={userId} />}
             {selectedTab === 1 && <Itineraries userId={userId} />}
           </div>
         </div>

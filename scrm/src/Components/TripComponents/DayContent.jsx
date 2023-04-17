@@ -6,7 +6,21 @@ import TextField from "@mui/material/TextField";
 const DayContent = ({ index, item }, ...props) => {
   const [itinerary, setItinerary] = useState([]);
   const [places, setPlaces] = useState([]);
-  const [editMode, setEditMode] = useState(false);
+  const [placesData, setPlacesData] = useState([]);
+  const [placesDataName, setPlacesDataNames] = useState([]);
+  const getPlaces = () => {
+    Api.getAllPlaces()
+      .then((response) => response.json())
+      .then((data) => {
+        setPlacesData(data);
+        const names = data.map((place) => place.name);
+        setPlacesDataNames(names);
+      });
+  };
+
+  useEffect(() => {
+    getPlaces();
+  }, []);
 
   // to get country list for search bar value
   useEffect(() => {
@@ -32,6 +46,7 @@ const DayContent = ({ index, item }, ...props) => {
     [props.itinerary]
   );
 
+  const [editMode, setEditMode] = useState(false);
   const handleCancelButton = () => {
     setSelectedDayIndex(null);
     setInputValue(itinerary[selectedDayIndex]?.place || "");
@@ -72,7 +87,7 @@ const DayContent = ({ index, item }, ...props) => {
               setInputValue(newInputValue);
             }}
             id="controllable-states-demo"
-            options={places}
+            options={placesDataName}
             sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} label="Search places" />
