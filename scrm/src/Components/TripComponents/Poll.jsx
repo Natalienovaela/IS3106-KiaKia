@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Api from "../../Helpers/Api";
 
 const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
@@ -218,11 +219,16 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                           <LinearProgress
                             variant="determinate"
                             value={percentage[option.id] * 100}
-                            color="primary"
                             style={{
                               height: 12,
                               borderRadius: 6,
                               overflow: "hidden",
+                            }}
+                            sx={{
+                              backgroundColor: "var(--inputColor)",
+                              "& .MuiLinearProgress-bar": {
+                                backgroundColor: `var(--PrimaryColor)`,
+                              },
                             }}
                           />
                         </div>
@@ -232,11 +238,11 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                 </CardContent>
               </Card>
               {userRole !== "VIEWER" && (
-                <div>
+                <Box sx={{ paddingLeft: 2 }}>
                   <IconButton onClick={handleDelete}>
-                    <DeleteIcon />
+                    <DeleteOutlineOutlinedIcon />
                   </IconButton>
-                </div>
+                </Box>
               )}
             </div>
           </>

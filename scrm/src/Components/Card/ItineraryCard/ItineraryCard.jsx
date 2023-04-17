@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./itinerarycard.css";
 import image from "../../../Assets/img.jpg";
 import Chip from "@mui/material/Chip";
-import Profile from "../../Profile/Profile";
+import { useNavigate } from "react-router-dom";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
@@ -76,15 +76,17 @@ const ItineraryCard = (props) => {
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          <Profile />
-
-          <IconButton
-            onClick={handleBookmarkClick}
-            size="large"
-            sx={{ color: "white" }}
-          >
-            {click ? <Bookmark /> : <BookmarkBorder />}
-          </IconButton>
+          {props.inTrip !== true || userId === undefined ? (
+            <IconButton
+              onClick={handleBookmarkClick}
+              size="large"
+              sx={{ color: "white" }}
+            >
+              {click ? <Bookmark /> : <BookmarkBorder />}
+            </IconButton>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="city-div" onClick={handleClick}>

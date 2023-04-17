@@ -7,6 +7,7 @@ import DayContent from "./DayContent";
 import DayContents from "./DayContents";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import "./daycontent.css";
 // import { DragDropContext } from "react-beautiful-dnd";
 
 const Itinerary = (props) => {
@@ -77,9 +78,12 @@ const Itinerary = (props) => {
       <h2>Itinerary</h2>
 
       <div className="date-range-picker">
-        <h3>
-          {startDate.toLocaleDateString()} to {endDate.toLocaleDateString()}
-        </h3>
+        <div className="date">
+          <h2 className="date-num">{startDate.toLocaleDateString()}</h2>
+          <h2>to </h2>
+          <h2 className="date-num">{endDate.toLocaleDateString()}</h2>
+        </div>
+
         <RangePicker
           onChange={handleDateRangeChange}
           value={[dayjs(startDate.toString()), dayjs(endDate.toString())]}
@@ -93,7 +97,12 @@ const Itinerary = (props) => {
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
             <>
-              <DayContents item={item} index={index} tripId={tripId} />
+              <DayContents
+                item={item}
+                index={index}
+                tripId={tripId}
+                userRole={props.userRole}
+              />
             </>
           ))}
       </div>
