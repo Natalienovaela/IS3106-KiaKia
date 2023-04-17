@@ -185,7 +185,11 @@ const Note = ({ tripId, note, userRole }) => {
             sx={{
               // width: "100%",
               width: "500px",
+              borderRadius: 5,
               backgroundColor: "#fff",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 5, // Set border radius on the OutlinedInput component
+              },
               "& .MuiInputBase-input.Mui-disabled": {
                 WebkitTextFillColor: "#000000",
               },

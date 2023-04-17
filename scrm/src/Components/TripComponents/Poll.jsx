@@ -154,7 +154,7 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
         (!submitted || (submitted && percentage)) && (
           <>
             <div className="rowComponent" key={pollId}>
-              <Card className="pollCard" elevation={0}>
+              <Card className="pollCard" elevation={0} sx={{ borderRadius: 5 }}>
                 <CardContent>
                   <Box sx={{ mb: 2, maxWidth: "500px" }}>
                     <Typography variant="h6" gutterBottom>
