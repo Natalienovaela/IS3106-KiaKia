@@ -98,37 +98,25 @@ const placesFolderDummyData = [
   },
 ];
 
-/*
-function PlacesFolder(props) {
-  const placeCards = props.places?.map((cardData) => (
-    <PlaceCard {...cardData} />
-  ));
-  return (
-    <>
-      <div className="subSecTitle">
-        <h3>{props.folderName}</h3>
-        <button className="btn-no">
-          <MdOutlineEdit className="icon" />
-        </button>
-      </div>
-      <div className="list">{placeCards}</div>
-    </>
-  );
-}
-
-
-const PlacesFolders = placesFolderDummyData?.map((data) => (
-  <PlacesFolder {...data} className="cards" />
-));
-*/
-//const WishlistFolders = dummyData2?.map((data) => <WishlistFolder {...data} />);
-
 const Wishlist = ({ userId, ...props }) => {
   const [editMode, setEditMode] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [selectedFolder, setSelectedFolder] = useState("");
+  const [wishlistPlaces, setWishlistPlaces] = useState([]);
   const [name, setName] = useState("");
 
+  // get all wishlist places for this user
+  useEffect(() => {
+    Api.getWishlistPlaces(userId)
+      .then((response) => response.json())
+      .then((data) => setWishlistPlaces(data))
+      .catch((error) => {
+        console.log(error.message);
+      });
+    console.log(wishlistPlaces);
+  }, []);
+
+  // get user
   useEffect(() => {
     Api.getUser(userId)
       .then((response) => response.json())
@@ -186,6 +174,9 @@ const Wishlist = ({ userId, ...props }) => {
       {...data}
     />
   ));
+  const placeCards = wishlistPlaces?.map((cardData) => (
+    <PlaceCard key={cardData.id} {...cardData} />
+  ));
 
   return (
     <>
@@ -199,14 +190,39 @@ const Wishlist = ({ userId, ...props }) => {
         <div className="sec">
           <div className="secTitle">
             <h2>Trips You Love</h2>
-            {WishlistFolders}
+            <div className="wishlist-folder">
+              {WishlistFolders}
+
+              <>
+                {folders.length < 1 ? (
+                  <h3 className="blank-msg">
+                    There's no saved trips here. Save some Trips you find
+                    interesting!
+                  </h3>
+                ) : (
+                  <></>
+                )}
+              </>
+            </div>
           </div>
 
-          {/*
           <div className="secTitle">
             <h2>Places You Love</h2>
-            <div>{PlacesFolders}</div>
-  </div> */}
+            <div className="subSecTitle">
+              {placeCards}
+
+              <>
+                {wishlistPlaces.length < 1 ? (
+                  <h3 className="blank-msg">
+                    There's no saved places here. Save some Trips you find
+                    interesting!
+                  </h3>
+                ) : (
+                  <></>
+                )}
+              </>
+            </div>
+          </div>
         </div>
       </div>
     </>

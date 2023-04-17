@@ -76,15 +76,13 @@ const TripNotes = ({ tripId, userId, userRole }) => {
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">
             <div className="noteComponent">
-              <Note tripId={tripId} note={note} userRole={userRole} />
+              <Note
+                tripId={tripId}
+                note={note}
+                userRole={userRole}
+                handleDelete={handleDelete}
+              />
             </div>
-            {userRole !== "VIEWER" && (
-              <div>
-                <IconButton onClick={() => handleDelete(note.noteId)}>
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            )}
           </div>
         ))}
     </div>

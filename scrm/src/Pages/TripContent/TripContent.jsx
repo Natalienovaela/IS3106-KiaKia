@@ -183,8 +183,22 @@ function TripContent() {
           </Grid>
           <Grid item xs>
             <div className="trip-main-content">
-              <TripNotes tripId={tripId} userId={userId} userRole={userRole} />
-              <TripPolls tripId={tripId} userId={userId} userRole={userRole} />
+              <section className="trip-main-content-item">
+                <TripNotes
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
+              </section>
+              <span className="line"></span>
+
+              <section className="trip-main-content-item">
+                <TripPolls
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
+              </section>
 
               <span className="line"></span>
               <section
