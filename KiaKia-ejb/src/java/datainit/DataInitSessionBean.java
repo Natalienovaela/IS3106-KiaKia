@@ -102,7 +102,7 @@ public class DataInitSessionBean {
         emails.add("varrene@gmail.com");
         roles.add("VIEWER");
         roles.add("EDITOR");
-        tripSessionBeanLocal.createAndInviteUsersToTrip(trip, 1l, emails, roles);
+        tripSessionBeanLocal.inviteUsersToTrip(trip, 1l, emails, roles);
         Trip singapore = em.find(Trip.class, 2l);
         List<String> userEmails = new ArrayList<String>();
         List<String> userRoles = new ArrayList<String>();
