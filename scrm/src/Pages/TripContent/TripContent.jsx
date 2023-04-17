@@ -15,6 +15,7 @@ import utc from "dayjs/plugin/utc";
 
 import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
+import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 const { RangePicker } = DatePicker;
 
@@ -217,6 +218,7 @@ function TripContent() {
                 </ul>
 
                 <TripNotes tripId={tripId} />
+                <TripPolls tripId={tripId} userId={userId} />
               </section>
               <span className="line"></span>
               <section

@@ -242,7 +242,7 @@ const Api = {
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     },
-    
+
 
     resetPassword(user) {
         return fetch(`${SERVER_PREFIX}/users`, {
@@ -376,8 +376,86 @@ const Api = {
 
     getAllPlaces() {
         return fetch(`${SERVER_PREFIX}/places`);
-    }
+    },
 
+    //budgetExpense
+    setBudget(tripId, categoryId, data) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${categoryId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+    },
+
+    updateBudget(budgetId, data) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/updateBudget/${budgetId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+    },
+
+    deleteBudget(tripId, budgetId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`);
+    },
+    
+    getBudgetByCategory(tripId, categoryId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/category/${categoryId}`);
+    },
+
+    getAvailableCategory(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/availableCategories`);
+    },
+
+    getTotalBudget(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalBudget`);
+    },
+
+    addExpense(tripId, data) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+    },
+
+    deleteExpense(tripId, expenseId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense/${expenseId}`);
+    },
+
+    getTotalExpenseByCategory(tripId, categoryId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpense/category/${categoryId}`);
+    },
+
+    getTotalExpense(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpense`);
+    },
+
+    getTotalExpenseByUser(tripId, userId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpense/user/${userId}`);
+    },
+
+    getDebtsByUser(tripId, userId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/debts/user/${userId}`);
+    },
+
+    getOverallDebts(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/debts`);
+    },
+
+    payDebts(tripId, payerId, beneficiaryId, amt) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt?payerId=${payerId}&beneficiaryId=${beneficiaryId}&amt=${amt}`);
+    },
+    
 };
 
 export default Api;
