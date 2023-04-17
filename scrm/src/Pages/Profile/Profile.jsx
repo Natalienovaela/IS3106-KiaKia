@@ -81,7 +81,7 @@ function Profile({ userId, handleRefresh }) {
         alignItems="center"
         marginTop={3}
       >
-        <Button sx={{ marginTop: 1, backgroundColor: '#f87171', color: 'hsl(0, 0%, 100%)', '&:hover': {color: 'hsl(240, 100%, 50%)'}}} onClick={() => setOpen(true)} startIcon={<Edit />}>
+        <Button sx={{ marginTop: 1, backgroundColor: '#f87171', color: 'hsl(0, 0%, 100%)', '&:hover': {color: '#ff8f66'}}} onClick={() => setOpen(true)} startIcon={<Edit />}>
           Edit profile
         </Button>
         <EditProfile userId={userId} open={open} oldName={name} oldEmail={email} onClose={handleEditClose} onEdit={(email, name) => handleEdit(email, name)} />

@@ -37,7 +37,8 @@
 }
 .header .profile .icon {
   font-size: 20px;
-  background-color: var(--PrimaryColor);
+  background: var(--PrimaryColor);
+  color: var(--whiteColor);
   transform: translateY(4px);
 }
 .header .navLists {

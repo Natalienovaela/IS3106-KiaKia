@@ -12,7 +12,7 @@ function Trip({userId}) {
     <TripCard key={cardData.id} userId={userId} {...cardData} />
   ));
   const groupTripCards = groupData?.map((cardData) => (
-    <TripCard key={cardData.id} userId={userId} {...cardData} />
+    <TripCard key={cardData.id} userId={userId} id = {cardData.id} {...cardData} />
   ));
 
   useEffect(() => {
