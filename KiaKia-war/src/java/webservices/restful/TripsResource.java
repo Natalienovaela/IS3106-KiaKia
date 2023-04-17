@@ -254,7 +254,7 @@ public class TripsResource {
     }
 
     @PUT
-    @Path("/{trip_id}/share")
+    @Path("/{trip_id}/shareWhole")
     @Produces(MediaType.APPLICATION_JSON)
     public Response shareWholeTrip(@PathParam("trip_id") Long tripId) {
         try {

@@ -238,7 +238,7 @@ const Api = {
     getUserRole(userId, tripId) {
         return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     },
-    
+
 
     resetPassword(user) {
         return fetch(`${SERVER_PREFIX}/users`, {
