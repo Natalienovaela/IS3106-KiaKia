@@ -218,11 +218,13 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                   )}
                 </CardContent>
               </Card>
-              <div>
-                <IconButton onClick={handleDelete}>
-                  <DeleteIcon />
-                </IconButton>
-              </div>
+              {userRole !== "VIEWER" && (
+                <div>
+                  <IconButton onClick={handleDelete}>
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
+              )}
             </div>
           </>
         )}
