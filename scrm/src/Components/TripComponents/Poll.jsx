@@ -10,9 +10,11 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Api from "../../Helpers/Api";
 
-const Poll = ({ userId, tripId, pollId, userRole }) => {
+const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
   const [poll, setPoll] = useState(null);
 
   const [options, setOptions] = useState(null);
@@ -114,7 +116,24 @@ const Poll = ({ userId, tripId, pollId, userRole }) => {
     }
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    Api.deletePoll(tripId, pollId, userId)
+      .then((res) => {
+        if (!res.ok) {
+          //http OK from server
+          console.log("error");
+          throw Error("could not fetch data");
+        }
+        return res.json(); //return another promise of data
+      })
+      .then((data) => {
+        // console.log("percentage " + data);
+        setPolls(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
   // const handleSubmit = () => {
   //   if (selectedOption != null) {
@@ -134,7 +153,7 @@ const Poll = ({ userId, tripId, pollId, userRole }) => {
         submitted != null &&
         (!submitted || (submitted && percentage)) && (
           <>
-            <div>
+            <div className="rowComponent" key={pollId}>
               <Card className="pollCard">
                 <CardContent>
                   <Box sx={{ mb: 2 }}>
@@ -199,11 +218,11 @@ const Poll = ({ userId, tripId, pollId, userRole }) => {
                   )}
                 </CardContent>
               </Card>
-            </div>
-            <div>
-              <IconButton onClick={handleDelete}>
-                <DeleteIcon />
-              </IconButton>
+              <div>
+                <IconButton onClick={handleDelete}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
             </div>
           </>
         )}

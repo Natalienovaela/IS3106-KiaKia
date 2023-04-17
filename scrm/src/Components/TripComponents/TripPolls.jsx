@@ -47,6 +47,7 @@ const TripPolls = ({ userId, tripId, userRole }) => {
                 tripId={tripId}
                 pollId={poll.pollId}
                 userRole={userRole}
+                setPolls={setPolls}
               />
             </div>
             {/* <div>

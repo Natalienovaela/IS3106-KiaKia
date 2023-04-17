@@ -120,24 +120,6 @@ function TripContent() {
                 </div>
               </div>
 
-              <div className="trip-rough-outline">
-                <p>Here's a rough outline of what your trip might look like:</p>
-                <ul>
-                  <li>
-                    Day 1: Arrive at your destination and check in to your
-                    accommodations
-                  </li>
-                  <li>Day 2: Explore the local area and try some new foods</li>
-                  <li>
-                    Day 3: Take a guided tour of the city and learn about its
-                    history
-                  </li>
-                  <li>
-                    Day 4: Relax at a nearby beach or go on a hike in the
-                    mountains
-                  </li>
-                </ul>
-              </div>
               {userRole == "ADMIN" && (
                 <button onClick={handleShareButtonClick} className="btn">
                   {isTripShared ? "Unshare Trip" : "Share Trip"}
@@ -201,42 +183,9 @@ function TripContent() {
           </Grid>
           <Grid item xs>
             <div className="trip-main-content">
-              <section
-                className="trip-main-content-item"
-                title="Overview"
-                id="overview"
-              >
-                <h2>Overview</h2>
-                <p>Here are some ideas for things to do on your trip:</p>
-                <ul>
-                  <li>Hike to the top of the nearest mountain</li>
-                  <li>
-                    Take a cooking class and learn how to make local cuisine
-                  </li>
-                  <li>Visit a museum or historical site</li>
-                  <li>Relax on a nearby beach or lake</li>
-                </ul>
-                <p>Here are some ideas for things to do on your trip:</p>
-                <ul>
-                  <li>Hike to the top of the nearest mountain</li>
-                  <li>
-                    Take a cooking class and learn how to make local cuisine
-                  </li>
-                  <li>Visit a museum or historical site</li>
-                  <li>Relax on a nearby beach or lake</li>
-                </ul>
+              <TripNotes tripId={tripId} userId={userId} userRole={userRole} />
+              <TripPolls tripId={tripId} userId={userId} userRole={userRole} />
 
-                <TripNotes
-                  tripId={tripId}
-                  userId={userId}
-                  userRole={userRole}
-                />
-                <TripPolls
-                  tripId={tripId}
-                  userId={userId}
-                  userRole={userRole}
-                />
-              </section>
               <span className="line"></span>
               <section
                 className="trip-main-content-item"

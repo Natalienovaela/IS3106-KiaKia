@@ -103,6 +103,11 @@ const Api = {
             method: "PUT",
         });
     },
+    deletePoll(tripId, pollId, userId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/user/${userId}`, {
+            method: "DELETE",
+        });
+    },
 
     //checkLists
     createCheckList(tripId) {
