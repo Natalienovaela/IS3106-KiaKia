@@ -361,6 +361,27 @@ const Api = {
         });
     },
 
+    // places wishlist
+    getWishlistPlaces(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace`);
+    },
+
+    linkUserWithWishlistPlace(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
+    removeWishlistPlaceFromUser(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+            method: "DELETE",
+        })
+    },
+
     //cityorcountry
     getCityList() {
         return fetch(`${SERVER_PREFIX}/cityOrCountry/city`);
