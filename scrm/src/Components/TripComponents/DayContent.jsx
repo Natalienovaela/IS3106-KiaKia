@@ -22,6 +22,10 @@ const DayContent = ({ index, item }, ...props) => {
     getPlaces();
   }, []);
 
+  useEffect(() => {
+    console.log(itinerary);
+  }, [itinerary]);
+
   // to get country list for search bar value
   useEffect(() => {
     Api.getCityList()
