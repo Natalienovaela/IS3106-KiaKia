@@ -106,7 +106,7 @@ function CreateTrip({ userId, handleTrip }) {
             setErrors({ submit: "Failed to create trip. Please try again." });
           } else {
             handleTrip(tripId);
-            navigate(`/TripContent`);
+            navigate(`/TripContent/${userId}/${tripId}`);
             // return <TripContent userId={userId} tripId={tripId}></TripContent>
           }
         })
