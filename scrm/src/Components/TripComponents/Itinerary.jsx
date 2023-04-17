@@ -57,7 +57,8 @@ const Itinerary = (props) => {
     Api.getTrip(id) // later change to trip id
       .then((res) => res.json())
       .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
+        const { name, startDate, endDate, itinerary, isShared, country } = trip;
+        console.log(itinerary);
         setName(name);
         setItinerary(itinerary);
         setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
@@ -92,7 +93,7 @@ const Itinerary = (props) => {
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
             <>
-              <DayContents item={item} index={index} />
+              <DayContents item={item} index={index} tripId={tripId} />
             </>
           ))}
       </div>
