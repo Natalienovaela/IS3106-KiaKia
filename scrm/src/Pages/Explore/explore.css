@@ -28,14 +28,36 @@
   border-radius: 15px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 0.5rem 2rem;
-  border: 1px solid var(--PrimaryColor);
-  background-color: var(--whiteColorDeam);
+  padding: 0.5rem 1rem;
+  gap: 10px;
+  background-color: transparent;
 }
 .tabs .tab-child {
-  background-color: var(--whiteColorDeam);
+  background-color: transparent;
+  font-size: 24px;
   color: var(--textColor);
+  border-radius: 15px;
 }
 .tabs .tab-child.Mui-selected {
-  color: var(--PrimaryColor);
+  color: var(--whiteColorDeam);
+  background-image: var(--gradientColor);
+}
+
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 0rem;
+  align-items: center;
+}
+.search-bar .input-field {
+  padding: 0.5rem 1rem;
+  width: 40%;
+  font-size: 20px;
+  border-radius: 15px;
+  background-color: var(--whiteColorDeam);
+}
+.search-bar .button {
+  border: none;
+  position: absolute;
+  left: 38%;
 }/*# sourceMappingURL=explore.css.map */
