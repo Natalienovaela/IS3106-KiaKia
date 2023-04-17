@@ -247,6 +247,50 @@ public class DataInitSessionBean {
         Place gardenBay = new Place("Gardens by the Bay", "18 Marina Gardens Dr", "Beauty abounds in the Gardens. Beyond the flora and fauna that you’ll find here, admire the Gardens’ iconic structures – architectural marvels that reimagine nature with artistic finesse.", CountryEnum.SINGAPORE, CityEnum.SINGAPORE);
         em.persist(gardenBay);
         em.flush();
+        
+        Place louvre = new Place("Louvre Museum", "75001 Paris, France", "So many works of art to discover in this fabulous museum that used to be a palace!", CountryEnum.FRANCE, CityEnum.PARIS);
+        em.persist(louvre);
+        em.flush();
+        
+        Place eiffel = new Place("Eiffel Tower", "7th arrondissement, Paris, France", "Paris's most iconic attraction", CountryEnum.FRANCE, CityEnum.PARIS);
+        em.persist(eiffel);
+        em.flush();
+        
+        Place bigBen = new Place("Big Ben", "Westminster, London SW1A 0AA, UK", "A legendary monument that you must not miss!", CountryEnum.UNITEDKINGDOM, CityEnum.LONDON);
+        em.persist(bigBen);
+        em.flush();
+        
+        Place buckingham = new Place("Buckingham Palace", "Westminster, London SW1A 1AA, UK", "Take tours to the palace and see for youself the legendary \"Changing of The Guard!\"", CountryEnum.UNITEDKINGDOM, CityEnum.LONDON);
+        em.persist(buckingham);
+        em.flush();
+       
+        Place skytree = new Place("Tokyo Skytree", "1 Chome-1-2 Oshiage, Sumida City, Tokyo 131-0045, Japan", "A broadcasting and observation tower in Sumida, Tokyo, looking magnificent at night", CountryEnum.JAPAN, CityEnum.TOKYO);
+        em.persist(skytree);
+        em.flush();
+        
+        Place fushimi = new Place("Fushimi Inari Taisha", "68 Fukakusa Yabunouchicho, Fushimi Ward, Kyoto, 612-0882, Japan", "It is famous for its thousands of vermilion torii gates, which straddle a network of trails behind its main buildings.", CountryEnum.JAPAN, CityEnum.KYOTO);
+        em.persist(fushimi);
+        em.flush();
+        
+        Place disneyLand = new Place("Tokyo Disneyland", "1-1 Maihama, Urayasu, Chiba 279-0031, Japan", "Tokyo Disneyland with its seven themed lands offers fun attractions and fantastic entertainment, with restaurants and shops galore!", CountryEnum.JAPAN, CityEnum.TOKYO);
+        em.persist(disneyLand);
+        em.flush();
+        
+        Place bigBuddha = new Place("Big Buddha", "Ngong Ping Rd, Lantau Island, Hong Kong", "This is one of the most serene places to visit in Hong Kong and symbolizes the harmonious relationship between man and nature", CountryEnum.HONGKONG, CityEnum.HONGKONG);
+        em.persist(bigBuddha);
+        em.flush();
+        
+        Place monument = new Place("The Monument", "Jl. Silang Monas, Jakarta 10110, Indonesia", "Come and see the iconinc landmark in Jakarta here!", CountryEnum.INDONESIA, CityEnum.JAKARTA);
+        em.persist(monument);
+        em.flush();
+        
+        Place bajra = new Place("The Bajra Sandhi Monument", "Jalan Raya Puputan, Niti Mandala Renon, Denpasar Timur, Kota Denpasar, Bali 80234, Indonesia", "The name Bajra symbolizes the shape of the bell that is used during religious processions and ceremonies.", CountryEnum.INDONESIA, CityEnum.DENPASAR);
+        em.persist(bajra);
+        em.flush();
+        
+        Place timeSquare = new Place("Times Square", "Manhattan, NY 10036, United States", "A major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City.", CountryEnum.UNITEDSTATES, CityEnum.NEWYORK);
+        em.persist(timeSquare);
+        em.flush();
     }
 
 }
