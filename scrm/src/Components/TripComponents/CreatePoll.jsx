@@ -9,8 +9,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Api from "../../Helpers/Api";
 
+// const CreatePoll = ({ tripId, userId }) => {
 const CreatePoll = () => {
+  const tripId = 1;
+  const userId = 1;
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([{ option: "" }]);
@@ -45,9 +49,20 @@ const CreatePoll = () => {
   };
 
   const handleSubmit = () => {
-    const optionStrings = options.map((o) => o.option);
-    setQuestion("");
-    setOptions([{ option: "" }]);
+    const nonEmptyOptions = options.filter((o) => o.option !== "");
+    if (question != "" && nonEmptyOptions.length > 1) {
+      const details = nonEmptyOptions.map((o) => o.option);
+      details.unshift(question);
+      console.log(details);
+      Api.createPoll(tripId, userId, details);
+      setQuestion("");
+      setOptions([{ option: "" }]);
+      setOpen(false);
+    } else if (question == "") {
+      throw Error("Question cannot be empty");
+    } else {
+      throw Error("There must be more than 1 option");
+    }
   };
 
   return (
@@ -93,8 +108,8 @@ const CreatePoll = () => {
                 </div>
                 {options.length > 1 && (
                   <div>
-                    <IconButton>
-                      <DeleteIcon onClick={() => handleOptionRemove(index)} />
+                    <IconButton onClick={() => handleOptionRemove(index)}>
+                      <DeleteIcon />
                     </IconButton>
                   </div>
                 )}
@@ -104,7 +119,7 @@ const CreatePoll = () => {
           <Button onClick={handleOptionAdd}>Add another option</Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Create</Button>
+          <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
     </div>

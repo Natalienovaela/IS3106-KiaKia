@@ -39,6 +39,7 @@ public class PollSessionBean implements PollSessionBeanLocal {
     @PersistenceContext(unitName = "KiaKia-ejbPU")
     private EntityManager em;
 
+    //for datainit
     @Override
     public Long createNewPoll(Poll poll, Long tripId) throws UnknownPersistenceException, TripNotFoundException {
 
