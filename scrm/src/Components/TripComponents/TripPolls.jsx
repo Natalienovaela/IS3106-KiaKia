@@ -3,33 +3,7 @@ import CreatePoll from "./CreatePoll";
 import Poll from "./Poll";
 import React, { useState, useEffect } from "react";
 
-// const polls = [
-//   {
-//     creator: {
-//       name: "Natasha Rafaela",
-//     },
-//     description: "Where you wanna go the most in Singapore?",
-//     isClosed: false,
-//     options: {
-//       1: "Marina Bay Sands",
-//       2: "Gardens By The Bay",
-//       3: "Sentosa",
-//     },
-//     pollId: 10,
-//     polledBy: [],
-//     voting: {
-//       1: [],
-//       2: [],
-//       3: [],
-//     },
-//   },
-// ];
-
-// const TripPolls = ({ userId, tripId }) => {
-const TripPolls = () => {
-  const userId = 1;
-  const tripId = 1;
-
+const TripPolls = ({ userId, tripId, userRole }) => {
   const [polls, setPolls] = useState([]);
 
   useEffect(() => {
@@ -48,7 +22,7 @@ const TripPolls = () => {
       })
       .then((data) => {
         setPolls(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -58,7 +32,7 @@ const TripPolls = () => {
   return (
     <div className="trip-polls">
       <h3>Polls</h3>
-      <CreatePoll setPolls={setPolls} />
+      {userRole !== "VIEWER" && <CreatePoll setPolls={setPolls} />}
       {/* <div>
         <button className="note btn container" onClick={handleCreateNote}>
           Create Note
@@ -68,7 +42,13 @@ const TripPolls = () => {
         polls.map((poll) => (
           <div key={poll.pollId} className="rowComponent">
             <div className="pollComponent">
-              <Poll userId={userId} tripId={tripId} pollId={poll.pollId} />
+              <Poll
+                userId={userId}
+                tripId={tripId}
+                pollId={poll.pollId}
+                userRole={userRole}
+                setPolls={setPolls}
+              />
             </div>
             {/* <div>
               <button className="btn" onClick={() => handleDelete(note.noteId)}>

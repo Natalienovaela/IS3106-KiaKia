@@ -426,22 +426,23 @@ public class TripsResource {
         }
     }
 
-//    @DELETE
-//    @Path("/{trip_id}/polls/{poll_id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response deletePoll(@PathParam("trip_id") Long tripId,
-//            @PathParam("poll_id") Long pollId) {
-//        try {
-//            System.out.println("Delete poll triggered");
-//            Boolean res = pollSessionBeanLocal.removePoll(tripId, pollId);
-//            return Response.status(204).entity(res).build();
-//        } catch (TripNotFoundException | PollNotFoundException ex) {
-//            JsonObject exception = Json.createObjectBuilder()
-//                    .add("error", ex.getMessage())
-//                    .build();
-//            return Response.status(404).entity(exception).build();
-//        }
-//    }
+    @DELETE
+    @Path("/{trip_id}/polls/{poll_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletePoll(@PathParam("trip_id") Long tripId,
+            @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId) {
+        try {
+            System.out.println("Delete poll triggered");
+            pollSessionBeanLocal.removePoll(tripId, pollId);
+            return Response.status(200).entity(pollSessionBeanLocal.retrieveAllPollsInTrip(tripId)).build();
+        } catch (TripNotFoundException | PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
     @POST
     @Path("/{user_id}")
     @Consumes(MediaType.APPLICATION_JSON)
