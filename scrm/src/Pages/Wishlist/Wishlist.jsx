@@ -160,7 +160,6 @@ const Wishlist = ({ userId, ...props }) => {
   }, [userId, folders, folders.folderName]);
 
   const handleSaveFolderName = async () => {
-    // todo: call api to save folder name
     // check if new folder name is there
     if (!newFolderName) {
       alert("Please enter a new folder name");
