@@ -139,11 +139,24 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
               </>
             ))}
             {placeList.map((placeItem, index) => (
-              <div className="places">
-                <h3>{index + 1} </h3>
-                <h3 className="item" key={index}>
-                  {placeItem}
-                </h3>
+              <div className="sideway">
+                <div className="places">
+                  <h3>{index + 1} </h3>
+                  <h3 className="item" key={index}>
+                    {placeItem}
+                  </h3>
+                </div>
+                {userRole !== "VIEWER" && (
+                  <div className="btn-delete">
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(index);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                )}
               </div>
             ))}
           </div>
