@@ -23,11 +23,26 @@ const dummyData = [
 ];
 const Places = () => {
   const [inputValue, setInputValue] = React.useState("");
-  const placeCards = dummyData?.map((cardData) => (
-    <PlaceCard key={cardData.id} {...cardData} />
-  ));
+  //const placeCards = dummyData?.map((cardData) => (
+  //<PlaceCard key={cardData.id} {...cardData} />
+  //));
 
   const [places, setPlaces] = useState([]);
+  const [placesData, setPlacesData] = useState([]);
+  const getPlaces = () => {
+    Api.getAllPlaces()
+      .then((response) => response.json())
+      .then((data) => {
+        setPlacesData(data);
+      });
+  };
+
+  useEffect(() => {
+    getPlaces();
+  }, []);
+  const placeCards = placesData?.map((data) => (
+    <PlaceCard key={data.id} {...data} />
+  ));
 
   // to get country list for search bar value
   useEffect(() => {
