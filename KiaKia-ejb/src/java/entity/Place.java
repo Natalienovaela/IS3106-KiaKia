@@ -52,6 +52,17 @@ public class Place implements Serializable {
         this.placeId = placeId;
     }
 
+    public Place() {
+    }
+
+    public Place(String name, String address, String description, CountryEnum country, CityEnum city) {
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.country = country;
+        this.city = city;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

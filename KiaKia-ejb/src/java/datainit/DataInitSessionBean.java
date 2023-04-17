@@ -6,9 +6,12 @@
 package datainit;
 
 import entity.Note;
+import entity.Place;
 import entity.Poll;
 import entity.Trip;
 import entity.User;
+import enumeration.CityEnum;
+import enumeration.CountryEnum;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserNotFoundException;
@@ -52,10 +55,10 @@ public class DataInitSessionBean {
 
     @EJB
     private UserSessionBeanLocal userSessionBeanLocal;
-    
+
     @EJB
     private TripSessionBeanLocal tripSessionBeanLocal;
-    
+
     @EJB
     private ItinerarySessionBeanLocal itinerarySessionBeanLocal;
 
@@ -63,6 +66,9 @@ public class DataInitSessionBean {
     public void PostConstruct() {
         if (em.find(Trip.class, 1l) == null) {
             initialiseTrip();
+        }
+        if (em.find(Place.class, 1l) == null) {
+            initialisePlaces();
         }
         if (em.find(User.class, 1l) == null) {
             initialiseUser();
@@ -74,9 +80,9 @@ public class DataInitSessionBean {
 
     public void initialiseUser() {
 //        try {
-            Trip trip = em.find(Trip.class, 1l);
-            userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
-            userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
+        Trip trip = em.find(Trip.class, 1l);
+        userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
+        userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
 //            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
 //            List<String> userEmails = new ArrayList<String>();
 //            List<String> userRoles = new ArrayList<String>();
@@ -86,7 +92,7 @@ public class DataInitSessionBean {
 //        } catch (UserNotFoundException ex) {
 //            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
+
     }
 
     public void initialisePoll() {
@@ -162,6 +168,24 @@ public class DataInitSessionBean {
         } catch (TripNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void initialisePlaces() {
+        Place marinaBay = new Place("Marina Bay Sands", "10 Bayfront Ave, Singapore 018956", "This iconic integrated resort boasts luxury accommodations, upscale shopping and an infinity pool with unparalleled views of the city.", CountryEnum.SINGAPORE, CityEnum.SINGAPORE);
+        em.persist(marinaBay);
+        em.flush();
+        
+        Place botanic = new Place("Singapore Botanic Gardens", "1 Cluny Road, Singapore 259569", "Situated just five minutes away from bustling Orchard Road, the Singapore Botanic Gardens is a lush sanctuary in the heart of the city.", CountryEnum.SINGAPORE, CityEnum.SINGAPORE);
+        em.persist(botanic);
+        em.flush();
+        
+        Place merlion = new Place("Merlion Park", "1 Fullerton Rd, Singapore 049213", "Meet the local legend and globally-recognised icon with a visit to Merlion Park.", CountryEnum.SINGAPORE, CityEnum.SINGAPORE);
+        em.persist(merlion);
+        em.flush();
+        
+        Place gardenBay = new Place("Gardens by the Bay", "18 Marina Gardens Dr", "Beauty abounds in the Gardens. Beyond the flora and fauna that you’ll find here, admire the Gardens’ iconic structures – architectural marvels that reimagine nature with artistic finesse.", CountryEnum.SINGAPORE, CityEnum.SINGAPORE);
+        em.persist(gardenBay);
+        em.flush();
     }
 
 }

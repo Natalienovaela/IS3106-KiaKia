@@ -7,7 +7,7 @@ const TripCard = (props) => {
 
 
     const handleClick = () => {
-        navigate(`/TripContent/${props.userId}/${props.id}`);
+        navigate(`/TripContent/${props.userId}/${props.tripId}`);
     };
 
     return (

@@ -1,0 +1,67 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+
+  .card-content {
+    flex-shrink: 0;
+    background-color: #FAFAFA;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.06), 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 65px;
+    width: 636px;
+    
+    .category-icon {
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      background-color: #FAFAFA;
+      border: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 17px;
+    }
+
+    .expense-detail {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    
+    .expense-description {
+      font-size: 14px;
+      margin-left: 13px;
+      margin: 0;
+    }
+    
+    .category {
+      font-size: 14px;
+      margin-top: 5px;
+      margin: 0;
+    }
+    
+    .date {
+      font-size: 14px;
+      margin-top: 5px;
+      margin: 0;
+    }
+
+    .date::before {
+      content: "•";
+      margin: 8px;
+    }  
+
+    .expense-amount {
+      margin: 13px;
+      margin-left: auto;
+      font-size: 18px;
+    }
+  }
+}

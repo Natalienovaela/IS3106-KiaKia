@@ -18,10 +18,10 @@ import TripNotes from "../../Components/TripComponents/TripNotes";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 const { RangePicker } = DatePicker;
 
-function TripContent( { userId, tripId }) {
+function TripContent() {
   //TO DO: change back to useParams and delete the hardcoded id
-  // const { id } = useParams();
-  const id = 1;
+  const { userId, tripId } = useParams();
+  // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState(
@@ -63,7 +63,7 @@ function TripContent( { userId, tripId }) {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(id)
+    Api.getTrip(tripId)
       .then((res) => res.json())
       .then((trip) => {
         const { name, startDate, endDate, itinerary, isShared } = trip;
@@ -84,11 +84,11 @@ function TripContent( { userId, tripId }) {
 
   const handleShareButtonClick = () => {
     if (!isTripShared) {
-      Api.shareTrip(id).then(() => {
+      Api.shareTrip(tripId).then(() => {
         reloadData();
       });
     } else {
-      Api.unshareTrip(id).then(() => {
+      Api.unshareTrip(tripId).then(() => {
         reloadData();
       });
     }
@@ -216,7 +216,7 @@ function TripContent( { userId, tripId }) {
                   <li>Relax on a nearby beach or lake</li>
                 </ul>
 
-                <TripNotes tripId={id} />
+                <TripNotes tripId={tripId} />
               </section>
               <span className="line"></span>
               <section

@@ -10,6 +10,7 @@ import Home from "./Pages/Home/Home";
 import Explore from "./Pages/Explore/Explore";
 import Footer from "./Components/Footer/Footer";
 import TripContent from "./Pages/TripContent/TripContent";
+import PlacesContent from "./Pages/PlacesContent/PlacesContent";
 import PublicLanding from "./Pages/PublicLanding/PublicLanding";
 import Signup from "./Pages/Signup/Signup";
 import Login from "./Pages/Login/Login";
@@ -20,6 +21,7 @@ import TripPolls from './Components/TripComponents/TripPolls';
 import UploadFile from './Components/TripComponents/UploadFile';
 import PollTest from './Components/TripComponents/PollTest';
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import CreatePoll from './Components/TripComponents/CreatePoll';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,7 +57,9 @@ const App = () => {
                     <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
                     <Route path="/ResetPassword" element={<ResetPassword userId={userId}/>} />
                     <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip}/>} />
-                    <Route path="/TripContent/:userId/:tripId" element={<TripContent userId={userId} tripId={tripId} />} /> {/*Need to change to /Trip/:id later on */}
+                    <Route path="/TripContent/:userId/:tripId" element={<TripContent/>} /> {/*Need to change to /Trip/:id later on */}
+                    <Route path="/TripContent/:tripId" element={<TripContent/>} />
+                    <Route path="/PlacesContent/:placeId" element={<PlacesContent/>} />
                     <Route path="/Trip/:userId" element={<Trip userId={userId}/>} />
                     <Route path="/Wishlist/:userId" element={<Wishlist userId={userId}/>} />
                     <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />
@@ -64,11 +68,12 @@ const App = () => {
                     <Route path="/PollTest" element={<PollTest />} />
                     <Route path="/TripPolls" element={<TripPolls />} />
                     <Route path="/UploadFile" element={<UploadFile />} />
+                    <Route path="/CreatePoll" element={<CreatePoll />} />
                 </Routes>
             </div>
             {/* Will change this component */}
             <Footer />
-        </DndProvider>
+        </DndProvider >
         </>
     )
 }
