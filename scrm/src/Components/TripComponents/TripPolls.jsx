@@ -1,4 +1,5 @@
 import Api from "../../Helpers/Api";
+import CreatePoll from "./CreatePoll";
 import Poll from "./Poll";
 import React, { useState, useEffect } from "react";
 
@@ -57,6 +58,7 @@ const TripPolls = () => {
   return (
     <div className="trip-polls">
       <h3>Polls</h3>
+      <CreatePoll setPolls={setPolls} />
       {/* <div>
         <button className="note btn container" onClick={handleCreateNote}>
           Create Note

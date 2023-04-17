@@ -323,12 +323,13 @@ public class TripsResource {
         }
     }
 
+    @GET
     @Path("/{trip_id}/polls/{poll_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrievePoll(@PathParam("poll_id") Long pollId) {
         Poll poll;
-        System.out.println("Retrieve all polls in trip triggered");
+        System.out.println("Retrieve specific poll triggered");
         try {
             poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
             return Response.status(200).entity(poll).build();
