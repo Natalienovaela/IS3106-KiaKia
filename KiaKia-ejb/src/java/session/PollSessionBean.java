@@ -93,8 +93,8 @@ public class PollSessionBean implements PollSessionBeanLocal {
             User u = userSessionBeanLocal.retrieveUserByUserId(userId);
             if (!hasUserPolled(oldPoll, u) && !oldPoll.isIsClosed()) {
                 oldPoll.getPolledBy().add(u);
-//                HashMap<Long, List<Long>> oldVoting = oldPoll.getVoting();
-//                oldVoting.get(votedOption).add(u.getUserId());
+                HashMap<Long, List<Long>> oldVoting = oldPoll.getVoting();
+                oldVoting.get(votedOption).add(u.getUserId());
             } else if (hasUserPolled(oldPoll, u)) {
                 throw new UserHasPolledException("User has already polled");
             } else {

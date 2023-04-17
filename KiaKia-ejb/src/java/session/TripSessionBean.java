@@ -119,7 +119,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
 
     }
-    
+
     @Override
     public List<Trip> getAllSharedTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.isShared = TRUE").getResultList();
@@ -186,15 +186,11 @@ public class TripSessionBean implements TripSessionBeanLocal {
     @Override
     public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException {
         try {
-            Trip trip = em.find(Trip.class, tripId);
-            try {
-                User user = em.find(User.class, userId);
-                return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
-            } catch (Exception ex) {
-                throw new UserNotFoundException("User not found");
-            }
-        } catch (Exception ex) {
-            throw new TripNotFoundException("Trip not found");
+            Trip trip = retrieveTripByTripId(tripId);
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
+        } catch (TripNotFoundException | UserNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
         }
     }
 

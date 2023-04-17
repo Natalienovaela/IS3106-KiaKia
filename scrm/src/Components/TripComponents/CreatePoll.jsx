@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Api from "../../Helpers/Api";
 
 // const CreatePoll = ({ tripId, userId }) => {
-const CreatePoll = () => {
+const CreatePoll = ({ setPolls }) => {
   const tripId = 1;
   const userId = 1;
   const [open, setOpen] = useState(false);
@@ -54,10 +54,24 @@ const CreatePoll = () => {
       const details = nonEmptyOptions.map((o) => o.option);
       details.unshift(question);
       console.log(details);
-      Api.createPoll(tripId, userId, details);
-      setQuestion("");
-      setOptions([{ option: "" }]);
-      setOpen(false);
+      Api.createPoll(tripId, userId, details)
+        .then((res) => {
+          if (!res.ok) {
+            //http OK from server
+            console.log("error");
+            throw Error("could not fetch data");
+          }
+          return res.json(); //return another promise of data
+        })
+        .then((data) => {
+          setPolls(data);
+          setQuestion("");
+          setOptions([{ option: "" }]);
+          setOpen(false);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     } else if (question == "") {
       throw Error("Question cannot be empty");
     } else {

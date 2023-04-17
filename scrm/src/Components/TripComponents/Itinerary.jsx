@@ -3,6 +3,10 @@ import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
+import DayContent from "./DayContent";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const Itinerary = () => {
   const { RangePicker } = DatePicker;
@@ -60,6 +64,36 @@ const Itinerary = () => {
       });
     console.log("the : " + startDate + " " + endDate);
   }, []);
+
+  const [places, setPlaces] = useState([]);
+
+  // to get country list for search bar value
+  useEffect(() => {
+    Api.getCountryList()
+      .then((response) => response.json())
+      .then((data) => {
+        setPlaces(data);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving country list");
+      });
+  }, []);
+  const [inputValue, setInputValue] = React.useState("");
+  const [value, setValue] = React.useState(places[0]);
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const handleDayChange = useCallback(
+    (index) => {
+      setSelectedDayIndex(index);
+      setValue(itinerary[index]?.place || null);
+      setInputValue(inputValue[index] || "");
+    },
+    [itinerary]
+  );
+
+  useEffect(() => {
+    handleDayChange(0);
+  }, [itinerary, handleDayChange]);
+
   return (
     <>
       <h2>Itinerary</h2>
@@ -79,12 +113,12 @@ const Itinerary = () => {
         {itinerary
           .map((item) => ({ ...item, date: new Date(item.date) })) // convert date strings to date objects
           .sort((a, b) => a.date - b.date)
-          .map((item) => (
-            <div className="itinerary-details" key={item.id}>
-              <h3>{item.description}</h3>
-            </div>
+          .map((item, index) => (
+            <DayContent item={item} index={index} />
           ))}
       </div>
+
+      {/*}
       <p>Here's a rough outline of what your trip might look like:</p>
       <ul className="itinerary-details">
         <li>
@@ -104,6 +138,39 @@ const Itinerary = () => {
         <li>Visit a museum or historical site</li>
         <li>Relax on a nearby beach or lake</li>
       </ul>
+
+
+            {/*}
+            <div className="itinerary-details" key={item.id}>
+              <h3>
+                Day {index + 1}{" "}
+                <button onClick={() => handleDayChange(index)}>
+                  Change Place
+                </button>
+                <button onClick={() => handleDayChange(index)}>Cancel</button>
+              </h3>
+              {index === selectedDayIndex && (
+                <Autocomplete
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  id="controllable-states-demo"
+                  options={places}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Search places" />
+                  )}
+                />
+              )}
+              <p>{inputValue}</p>
+            </div>
+                  
+          */}
     </>
   );
 };

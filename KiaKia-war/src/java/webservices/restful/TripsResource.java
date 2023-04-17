@@ -254,7 +254,7 @@ public class TripsResource {
     }
 
     @PUT
-    @Path("/{trip_id}/share")
+    @Path("/{trip_id}/shareWhole")
     @Produces(MediaType.APPLICATION_JSON)
     public Response shareWholeTrip(@PathParam("trip_id") Long tripId) {
         try {
@@ -308,11 +308,13 @@ public class TripsResource {
     }
 
     @GET
-    @Path("{trip_id}/users/{userId}/userRole")
+    @Path("{trip_id}/users/{user_id}/userRole")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getUserRole(@PathParam("tripId") Long tripId, @PathParam("userId") Long userId) {
+    public Response getUserRole(@PathParam("trip_id") Long tripId, @PathParam("user_id") Long userId) {
         try {
+            System.out.println("get user role triggered" + tripId + userId);
+            
             UserRoleEnum userRoleEnum = tripSessionBeanLocal.getRole(tripId, userId);
             return Response.status(200).entity(userRoleEnum).build();
         } catch (UserNotFoundException | TripNotFoundException ex) {
@@ -323,12 +325,13 @@ public class TripsResource {
         }
     }
 
+    @GET
     @Path("/{trip_id}/polls/{poll_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrievePoll(@PathParam("poll_id") Long pollId) {
         Poll poll;
-        System.out.println("Retrieve all polls in trip triggered");
+        System.out.println("Retrieve specific poll triggered");
         try {
             poll = pollSessionBeanLocal.retrievePollByPollId(pollId);
             return Response.status(200).entity(poll).build();
