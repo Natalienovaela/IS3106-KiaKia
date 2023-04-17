@@ -27,7 +27,7 @@ public class Budget implements Serializable {
     private BigDecimal budgetAmt;
     private boolean isShared;
     
-    @OneToOne
+    @OneToOne(mappedBy = "budget")
     private BudgetExpenseCategory category;
 
     public Budget() {

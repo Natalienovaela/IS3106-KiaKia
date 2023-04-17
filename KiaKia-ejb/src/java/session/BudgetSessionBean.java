@@ -9,6 +9,7 @@ import entity.Budget;
 import entity.BudgetExpenseCategory;
 import entity.Trip;
 import error.BudgetNotFoundException;
+import error.CategoryNotFoundException;
 import error.TripNotFoundException;
 import error.UnableToSetBudgetException;
 import java.math.BigDecimal;
@@ -30,18 +31,23 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     private EntityManager em;
 
     @Override
-    public void setBudget(Long tripId, Budget newB, BudgetExpenseCategory category) throws TripNotFoundException, UnableToSetBudgetException
+    public void setBudget(Long tripId, Budget newB, Long categoryId) throws TripNotFoundException, UnableToSetBudgetException, CategoryNotFoundException
     {   
-        if (tripId == null) 
+        if (tripId == null || categoryId == null) 
         {
-            throw new IllegalArgumentException("Trip ID cannot be null.");
+            throw new IllegalArgumentException("Trip ID and Category ID cannot be null.");
         }
         
         Trip trip = em.find(Trip.class, tripId);
-
         if (trip == null)
         {
             throw new TripNotFoundException("Trip is not found.");
+        }
+        
+        BudgetExpenseCategory category = em.find(BudgetExpenseCategory.class, categoryId);
+        if (category == null)
+        {
+            throw new CategoryNotFoundException("Category not found.");
         }
         
         if (category.getBudget() == null)
@@ -98,17 +104,23 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public BigDecimal getBudgetByCategory(Long tripId, BudgetExpenseCategory category) throws BudgetNotFoundException, TripNotFoundException
+    public BigDecimal getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException
     {   
-        if (tripId == null) 
+        if (tripId == null || categoryId == null) 
         {
-            throw new IllegalArgumentException("Trip ID cannot be null.");
+            throw new IllegalArgumentException("Trip ID and Category ID cannot be null.");
         }
 
         Trip trip = em.find(Trip.class, tripId);
         if (trip == null) 
         {
             throw new TripNotFoundException("Trip not found.");
+        }
+        
+        BudgetExpenseCategory category = em.find(BudgetExpenseCategory.class, categoryId);
+        if (category == null)
+        {
+            throw new CategoryNotFoundException("Category not found.");
         }
 
         Budget budget = trip.getBudgets()

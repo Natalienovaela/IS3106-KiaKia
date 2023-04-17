@@ -1,0 +1,61 @@
+.card-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 10px;
+  width: 706px;
+  height: 200px;
+  margin-bottom: 30px;
+
+  .budget-expense-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #FAFAFA;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    width: 70%;
+    height: 100%;
+
+    .dropdown-container {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar-container {
+      margin-bottom: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-evenly;
+
+      .buttons {
+        background-color: #f37e30;
+        color: white;
+        border-radius: 20px;
+        padding: 5px 15px;
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  .overview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #FAFAFA;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    width: 30%;
+    height: 100%;
+    margin-left: 10px;
+
+    .overview-buttons {
+      margin-right: 10px;
+      text-transform: capitalize;
+    }
+  }
+}
