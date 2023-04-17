@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -375,8 +377,33 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
+    
+    @POST
+    @Path("/{trip_id}/polls/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPoll(@PathParam("trip_id") Long tripId, @PathParam("user_id") Long userId, String[] details) {
+        try {
+            System.out.println("create poll invoked");
+            Trip trip = tripSessionBeanLocal.retrieveTripByTripId(tripId);
+            User creator = userSessionBeanLocal.retrieveUserByUserId(userId);
+            HashMap<Long, String> options = new HashMap<>();
+            String question = details[0];
+            for(int i = 1; i < details.length; i++) {
+                long l = i;
+                options.put(l, details[i]);
+            }
+            Poll poll1 = new Poll(question, options, creator);
+            pollSessionBeanLocal.createNewPoll(poll1, trip.getTripId());
+            return Response.status(200).entity(pollSessionBeanLocal.retrieveAllPollsInTrip(tripId)).build();
+        } catch (UnknownPersistenceException | TripNotFoundException | UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
 
-    //TODO: put userId as path param instead when user is integrated
     @PUT
     @Path("/{trip_id}/polls/{poll_id}/{option_id}/user/{user_id}")
     @Produces(MediaType.APPLICATION_JSON)

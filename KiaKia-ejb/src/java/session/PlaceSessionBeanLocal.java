@@ -7,6 +7,7 @@ package session;
 
 import entity.Place;
 import error.CityOrCountryNotSelected;
+import error.PlaceNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,5 +19,9 @@ import javax.ejb.Local;
 public interface PlaceSessionBeanLocal {
 
     public List<Place> searchPlaceByCityOrCountry(String city, String country) throws CityOrCountryNotSelected;
+
+    public Place getPlace(Long placeId) throws PlaceNotFoundException;
+
+    public List<Place> getAllPlaces();
     
 }

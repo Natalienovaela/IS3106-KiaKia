@@ -78,6 +78,16 @@ const Api = {
     getPoll(tripId, pollId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}`);
     },
+    createPoll(tripId, userId, details) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/user/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(details),
+        });
+    },
     hasPolled(tripId, pollId, userId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/hasPolled/polls/${pollId}/user/${userId}`);
     },
@@ -353,6 +363,15 @@ const Api = {
 
     getCountryList() {
         return fetch(`${SERVER_PREFIX}/cityOrCountry/country`);
+    },
+
+    //places
+    getPlace(placeId) {
+        return fetch(`${SERVER_PREFIX}/places/${placeId}`);
+    },
+
+    getAllPlaces() {
+        return fetch(`${SERVER_PREFIX}/places`);
     },
 
     //budgetExpense

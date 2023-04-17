@@ -1,0 +1,48 @@
+.places-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .banner {
+    width: 100%;
+    min-height: 380px;
+    max-height: 380px;
+    position: relative;
+    display: flex;
+  }
+  .banner .banner-img {
+    position: absolute;
+    height: 100%;
+  }
+  .banner .banner-details {
+    position: absolute;
+    z-index: 1000;
+    color: white;
+    bottom: 3rem;
+    left: 2rem;
+  }
+  .banner .banner-details h2 {
+    font-size: 36px;
+    font-weight: 500;
+  }
+  .banner .banner-details .banner-details-2 {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .places-main-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .places-main-content .places-main-content-item {
+    padding: 2rem 0;
+  }
+  .line {
+    border-bottom: 2px solid #ccc;
+    display: block;
+  }
+  
+  .MuiLink-root {
+    color: black;
+  }/*# sourceMappingURL=placescontent.css.map */
