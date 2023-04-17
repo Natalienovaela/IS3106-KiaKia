@@ -50,6 +50,12 @@
   font-size: 30px;
 }
 
+.blank-msg {
+  font-style: italic;
+  color: var(--greyText);
+  font-weight: 400;
+}
+
 .list {
   display: flex;
   flex-direction: row;
