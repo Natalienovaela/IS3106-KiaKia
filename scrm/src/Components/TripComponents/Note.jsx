@@ -152,6 +152,7 @@ const Note = ({ tripId, note, userRole }) => {
         {note && (
           <>
             <TextField
+              className="note"
               variant="standard"
               fullWidth
               placeholder="Title of your note"
@@ -159,6 +160,11 @@ const Note = ({ tripId, note, userRole }) => {
               value={title}
               onChange={handleTitleChange}
               disabled={userRole === "VIEWER" ? true : false}
+              sx={{
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#000000",
+                },
+              }}
               style={{ width: " 100%" }}
               InputProps={{
                 style: {
@@ -173,15 +179,22 @@ const Note = ({ tripId, note, userRole }) => {
 
         {note && (
           <TextField
+            className="note"
             multiline
             placeholder="Write anything here: how to get around, reminder, tips, etc."
             disabled={userRole === "VIEWER" ? true : false}
             sx={{
               width: "100%",
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "#000000",
+              },
             }}
             InputProps={{
               inputComponent: TextareaAutosize,
               rows: 3,
+              classes: {
+                disabled: "disabled-note",
+              },
             }}
             value={content}
             onChange={handleContentChange}
