@@ -4,13 +4,15 @@ import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
 import DayContent from "./DayContent";
+import DayContents from "./DayContents";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 // import { DragDropContext } from "react-beautiful-dnd";
 
-const Itinerary = () => {
+const Itinerary = (props) => {
   const { RangePicker } = DatePicker;
   const id = 1;
+  const tripId = props.tripId;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState(
@@ -52,7 +54,7 @@ const Itinerary = () => {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(id)
+    Api.getTrip(id) // later change to trip id
       .then((res) => res.json())
       .then((trip) => {
         const { name, startDate, endDate, itinerary, isShared } = trip;
@@ -64,35 +66,6 @@ const Itinerary = () => {
       });
     console.log("the : " + startDate + " " + endDate);
   }, []);
-
-  const [places, setPlaces] = useState([]);
-
-  // to get country list for search bar value
-  useEffect(() => {
-    Api.getCountryList()
-      .then((response) => response.json())
-      .then((data) => {
-        setPlaces(data);
-      })
-      .catch((error) => {
-        console.log("Error while retrieving country list");
-      });
-  }, []);
-  const [inputValue, setInputValue] = React.useState("");
-  const [value, setValue] = React.useState(places[0]);
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
-  const handleDayChange = useCallback(
-    (index) => {
-      setSelectedDayIndex(index);
-      setValue(itinerary[index]?.place || null);
-      setInputValue(inputValue[index] || "");
-    },
-    [itinerary]
-  );
-
-  useEffect(() => {
-    handleDayChange(0);
-  }, [itinerary, handleDayChange]);
 
   return (
     <>
@@ -114,7 +87,9 @@ const Itinerary = () => {
           .map((item) => ({ ...item, date: new Date(item.date) })) // convert date strings to date objects
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
-            <DayContent item={item} index={index} />
+            <>
+              <DayContents item={item} index={index} />
+            </>
           ))}
       </div>
 
