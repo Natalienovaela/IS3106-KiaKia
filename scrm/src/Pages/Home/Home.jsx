@@ -5,7 +5,6 @@ import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard"
 import image from "../../Assets/img.jpg";
 import Api from "../../Helpers/Api";
 import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
-import { data } from "jquery";
 import singapore from "../../Assets/singapore.png";
 import tokyo from "../../Assets/tokyo.jpg";
 import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
@@ -100,12 +99,9 @@ const Home = () => {
   const { userId } = useParams();
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const [placesData, setPlacesData] = useState([]);
 
-  const horizontalCards = dummyData?.map((cardData) => (
-    <HorizontalCard {...cardData} />
-  ));
-
-  const placeCards = placesDummyData?.map((data) => (
+  const placeCards = placesData?.map((data) => (
     <PlaceCard key={data.id} {...data} />
   ));
 
@@ -114,18 +110,12 @@ const Home = () => {
   ));
 
   useEffect(() => {
-    Api.getUser(userId)
+    Api.getAllPlaces()
       .then((response) => response.json())
       .then((data) => {
-        const name = data.name;
-        setName(name);
-      })
-      .catch((error) => {
-        console.log(
-          `Error retrieving user data for user with ID ${userId}: ${error}`
-        );
+        setPlacesData(data);
       });
-  }, [userId]);
+  }, []);
 
   return (
     <>
@@ -146,9 +136,14 @@ const Home = () => {
           <div className="subSec">
             <div className="subSecTitle">
               <h3>Top Places</h3>
-              <p>see more...</p>
             </div>
-            <div className="cards-horizontal">{placeCards}</div>
+            <div className="places-group">
+              {placesData.map((place) => (
+                <div key={place.id}>
+                </div>
+              ))}
+              <div className="cards-horizontal">{placeCards}</div>
+            </div>
           </div>
           <div className="subSec">
             <div className="subSecTitle">

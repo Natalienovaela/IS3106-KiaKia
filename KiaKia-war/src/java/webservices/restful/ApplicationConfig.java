@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
         resources.add(webservices.restful.ExploreResource.class);
         resources.add(webservices.restful.ItineraryResource.class);
         resources.add(webservices.restful.KiaKiaResource.class);
+        resources.add(webservices.restful.PlacesResource.class);
         resources.add(webservices.restful.TripsResource.class);
         resources.add(webservices.restful.UsersResource.class);
     }
