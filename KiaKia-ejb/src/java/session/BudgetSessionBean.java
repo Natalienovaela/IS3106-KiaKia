@@ -64,16 +64,16 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public void updateBudget(Budget budget) throws BudgetNotFoundException
+    public void updateBudget(Long budgetId, Budget newB) throws BudgetNotFoundException
     {
-        Budget oldB = em.find(Budget.class, budget.getBudgetId());
+        Budget oldB = em.find(Budget.class, budgetId);
         
         if (oldB == null)
         {
             throw new BudgetNotFoundException("Budget not found.");
         }
         
-        oldB.setBudgetAmt(budget.getBudgetAmt());
+        oldB.setBudgetAmt(newB.getBudgetAmt());
         
         em.merge(oldB);
     }

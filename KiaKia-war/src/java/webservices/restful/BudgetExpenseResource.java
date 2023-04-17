@@ -41,7 +41,7 @@ import session.ExpenseSessionBeanLocal;
  *
  * @author MK
  */
-@Path("budgetExpense")
+@Path("budgetExpense/")
 public class BudgetExpenseResource 
 {
     @EJB
@@ -81,14 +81,14 @@ public class BudgetExpenseResource
     }
 
     @PUT
-    @Path("/budget")
+    @Path("/${updateBudget/{budgetId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBudget(Budget budget) 
+    public Response updateBudget( @PathParam("budgetId") Long budgetId, Budget newB) 
     {
         try 
         {
-            budgetSessionBeanLocal.updateBudget(budget);
+            budgetSessionBeanLocal.updateBudget(budgetId, newB);
             return Response.status(204).build();
         } 
         catch (BudgetNotFoundException ex) 
@@ -301,7 +301,7 @@ public class BudgetExpenseResource
     }
     
     @GET
-    @Path("/{tripId}/debts/{userId}")
+    @Path("/{tripId}/debts/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDebtsByUser(@PathParam("userId") Long userId, @PathParam("tripId") Long tripId) 
     {
@@ -356,7 +356,6 @@ public class BudgetExpenseResource
     
     @PUT
     @Path("/{tripId}/payDebt")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response payDebt(@PathParam("tripId") Long tripId,
                             @QueryParam("payerId") Long payerId,

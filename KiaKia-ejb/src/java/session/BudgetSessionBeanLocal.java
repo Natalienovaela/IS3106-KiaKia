@@ -25,7 +25,7 @@ public interface BudgetSessionBeanLocal
     
     public void setBudget(Long tripId, Budget newB, Long categoryId) throws UnableToSetBudgetException, TripNotFoundException, CategoryNotFoundException;
     
-    public void updateBudget(Budget budget) throws BudgetNotFoundException;
+    public void updateBudget(Long budgetId, Budget newB) throws BudgetNotFoundException;
     
     public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException;
     
