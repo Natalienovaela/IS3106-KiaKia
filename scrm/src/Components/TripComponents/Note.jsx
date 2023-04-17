@@ -117,7 +117,7 @@ import { Stack } from "@mui/material";
 import Api from "../../Helpers/Api";
 import { debounce } from "lodash";
 
-const Note = ({ tripId, note }) => {
+const Note = ({ tripId, note, userRole }) => {
   const [title, setTitle] = React.useState(note.title);
   const [content, setContent] = React.useState(note.content);
 
@@ -158,6 +158,7 @@ const Note = ({ tripId, note }) => {
               size="small"
               value={title}
               onChange={handleTitleChange}
+              disabled={userRole === "VIEWER" ? true : false}
               style={{ width: " 100%" }}
               InputProps={{
                 style: {
@@ -174,6 +175,7 @@ const Note = ({ tripId, note }) => {
           <TextField
             multiline
             placeholder="Write anything here: how to get around, reminder, tips, etc."
+            disabled={userRole === "VIEWER" ? true : false}
             sx={{
               width: "100%",
             }}
