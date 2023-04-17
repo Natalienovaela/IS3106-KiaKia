@@ -81,7 +81,7 @@ public class BudgetExpenseResource
     }
 
     @PUT
-    @Path("/${updateBudget/{budgetId}")
+    @Path("/updateBudget/{budgetId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBudget( @PathParam("budgetId") Long budgetId, Budget newB) 
