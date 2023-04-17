@@ -367,7 +367,7 @@ const Api = {
     },
 
     linkUserWithWishlistPlace(userId, wishlistPlaceId) {
-        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}/link`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
