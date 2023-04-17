@@ -75,7 +75,7 @@ const ItineraryCard = (props) => {
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          {/* {props.inTrip !== true || userId === undefined ? ( */}
+          {props.inTrip !== true || props.userId ? (
             <IconButton
               onClick={handleBookmarkClick}
               size="large"
@@ -83,9 +83,9 @@ const ItineraryCard = (props) => {
             >
               {click ? <Bookmark /> : <BookmarkBorder />}
             </IconButton>
-          {/* // ) : (
-          //   <></>
-          // )} */}
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="city-div" onClick={handleClick}>

@@ -202,6 +202,7 @@ function TripContent() {
               </section>
 
               <span className="line"></span>
+              {/*
               <section
                 className="trip-main-content-item"
                 title="Idea Bucket"
@@ -210,6 +211,7 @@ function TripContent() {
                 <h2>Idea Bucket</h2>
                 <p>Insert Idea Bucket component here</p>
               </section>
+              */}
               <span className="line"></span>
               <section
                 className="trip-main-content-item"

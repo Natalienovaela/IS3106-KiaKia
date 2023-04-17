@@ -75,7 +75,12 @@ const Places = ({ userId }) => {
     getPlaces();
   }, []);
   const placeCards = placesData?.map((data) => (
-    <PlaceCard key={data.id} {...data} onClick={() => handleCardClick(data)} />
+    <PlaceCard
+      key={data.id}
+      {...data}
+      onClick={() => handleCardClick(data)}
+      userId={userId}
+    />
   ));
 
   return (
