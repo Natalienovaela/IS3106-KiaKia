@@ -1,6 +1,8 @@
 import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
 import Note from "./Note";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const TripNotes = ({ tripId, userId, userRole }) => {
   // const {
@@ -60,12 +62,12 @@ const TripNotes = ({ tripId, userId, userRole }) => {
 
   return (
     <div className="trip-notes">
-      <h3>Notes</h3>
+      <h2>Notes</h2>
       {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
       {userRole !== "VIEWER" && (
         <div>
-          <button className="note btn container" onClick={handleCreateNote}>
+          <button className="btn container" onClick={handleCreateNote}>
             Create Note
           </button>
         </div>
@@ -74,18 +76,13 @@ const TripNotes = ({ tripId, userId, userRole }) => {
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">
             <div className="noteComponent">
-              <Note tripId={tripId} note={note} userRole={userRole} />
+              <Note
+                tripId={tripId}
+                note={note}
+                userRole={userRole}
+                handleDelete={handleDelete}
+              />
             </div>
-            {userRole !== "VIEWER" && (
-              <div>
-                <button
-                  className="btn"
-                  onClick={() => handleDelete(note.noteId)}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
           </div>
         ))}
     </div>

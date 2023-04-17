@@ -31,7 +31,7 @@ const TripPolls = ({ userId, tripId, userRole }) => {
 
   return (
     <div className="trip-polls">
-      <h3>Polls</h3>
+      <h2>Polls</h2>
       {userRole !== "VIEWER" && <CreatePoll setPolls={setPolls} />}
       {/* <div>
         <button className="note btn container" onClick={handleCreateNote}>

@@ -154,9 +154,9 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
         (!submitted || (submitted && percentage)) && (
           <>
             <div className="rowComponent" key={pollId}>
-              <Card className="pollCard">
+              <Card className="pollCard" elevation={0} sx={{ borderRadius: 5 }}>
                 <CardContent>
-                  <Box sx={{ mb: 2 }}>
+                  <Box sx={{ mb: 2, maxWidth: "500px" }}>
                     <Typography variant="h6" gutterBottom>
                       {poll.description}
                     </Typography>
@@ -172,12 +172,19 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                           value={option.id}
                           control={<Radio />}
                           label={option.value}
+                          style={{
+                            maxWidth: "500px",
+                            wordBreak: "break-all",
+                          }}
                         />
                       ))}
                       <Button
                         className="btn"
                         variant="contained"
                         onClick={handleSubmit}
+                        style={{
+                          maxWidth: "500px",
+                        }}
                       >
                         Submit
                       </Button>
@@ -195,10 +202,16 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                               marginBottom: 4,
                             }}
                           >
-                            <Typography variant="body1">
+                            <Typography
+                              variant="body1"
+                              style={{ wordBreak: "break-word" }}
+                            >
                               {option.value}
                             </Typography>
-                            <Typography variant="body1">
+                            <Typography
+                              variant="body1"
+                              style={{ wordBreak: "break-word" }}
+                            >
                               {Math.round(percentage[option.id] * 100)}%
                             </Typography>
                           </div>
