@@ -5,22 +5,47 @@ const Api = {
     getTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}`);
     },
-    getAllTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
+    getAllTrips(userId) {
+        return fetch(`${SERVER_PREFIX}/users/{${userId}/allTrips`);
     },
 
-    getAllPersonalTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/AllTrip`);
+    getAllPersonalTrips(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/personalTrips`);
     },
 
-    getAllGroupTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/group`);
+    getAllGroupTrips(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
     //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
     },
+    createTrip(data, user_id) {
+        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+    },
+    createAndInviteUserToTrip(data, userId, userEmails, userRoles) {
+        return fetch(`${SERVER_PREFIX}/trips?userId=${userId}&userEmails=${userEmails}&userRoles=${userRoles}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        )
+    },
+    //notes
     createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
             headers: {
@@ -207,18 +232,36 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
 
-    createTrip(data, user_id) {
-        return fetch(`${SERVER_PREFIX}/trips/${user_id}`,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(data),
-            }
-        )
+    emailExists(email) {
+        return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     },
+    getUserRole(userId, tripId) {
+        return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
+    },
+    
+
+    resetPassword(user) {
+        return fetch(`${SERVER_PREFIX}/users`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(user),
+        })
+    },
+
+    updateUser(userId, user) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(user),
+        })
+    },
+
     //explore
     searchTripByCity(city) {
         return fetch(`${SERVER_PREFIX}/explore/searchTripByCity/${city}`);
@@ -251,42 +294,51 @@ const Api = {
     },
 
     // wishlist folder
-    createNewFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`, {
+    createNewFolder(userId, folderName) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders/${folderName}`, {
+            method: 'POST',
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            method: "POST",
+            body: JSON.stringify({
+                folderName: folderName
+            }),
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
         })
     },
 
-    retrieveAllFolder(wishlistId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders`)
+    retrieveAllFolder(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders`)
     },
 
-    retrieveFolderWithCertainName(wishlistId, search) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/${search}`)
+    retrieveFolderWithCertainName(userId, search) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/${search}`)
     },
 
-    updateFolderName(wishlistId, folderId, folder) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    updateFolderName(userId, folderId, folderName) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/folders/${folderId}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify(folder),
+            body: JSON.stringify({
+                folderName: folderName
+            }),
         })
     },
-    deleteFolder(wishlistId, folderId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/${wishlistId}/folders/${folderId}`, {
+    deleteFolder(userId, folderId) {
+        return fetch(`${SERVER_PREFIX}/wishlist/${userId}/folders/${folderId}`, {
             method: "DELETE",
         });
     },
 
     addTripToFolder(folderId, tripId) {
-        return fetch(`${SERVER_PREFIX}/wishlist/folders/${folderId}/${tripId}/add`, {
+        return fetch(`${SERVER_PREFIX}/users/folders/${folderId}/${tripId}/add`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",

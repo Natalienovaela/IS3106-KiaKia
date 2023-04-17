@@ -45,18 +45,12 @@ public class Expense implements Serializable {
     private boolean isShared;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "payer_id")
     private User payer;
     
     @ManyToOne(fetch = FetchType.LAZY)
     private BudgetExpenseCategory category;
     
     @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//        name = "expense_user",
-//        joinColumns = @JoinColumn(name = "expense_id"),
-//        inverseJoinColumns = @JoinColumn(name = "user_id")
-//    )
     private List<User> payees = new ArrayList<>();
     
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)

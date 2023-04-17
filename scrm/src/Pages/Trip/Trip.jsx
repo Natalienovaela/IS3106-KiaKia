@@ -1,22 +1,27 @@
 import React from "react";
 import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
+import TripCard from "../../Components/Card/TripCard/TripCard";
 import moment from "moment";
+import Emoji from "a11y-react-emoji";
 
-function Trip() {
+function Trip({userId}) {
   const [personalData, setPersonalData] = useState([]);
   const [groupData, setGroupData] = useState([]);
+  const personalTripCards = personalData?.map((cardData) => (
+    <TripCard key={cardData.id} userId={userId} {...cardData} />
+  ));
+  const groupTripCards = groupData?.map((cardData) => (
+    <TripCard key={cardData.id} userId={userId} id = {cardData.id} {...cardData} />
+  ));
 
   useEffect(() => {
     reloadGroupData();
     reloadPersonalData();
   }, []);
 
-  {
-    /*later on need to get all trips from particular id --> user, and specify personal or group trip */
-  }
   const reloadPersonalData = () => {
-    Api.getAllPersonalTrips()
+    Api.getAllPersonalTrips(userId)
       .then((res) => res.json())
       .then((trips) => {
         for (const trip of trips) {
@@ -29,7 +34,7 @@ function Trip() {
   };
 
   const reloadGroupData = () => {
-    Api.getAllTrips()
+    Api.getAllGroupTrips(userId)
     .then((res) => res.json())
     .then((trips) => {
       for (const trip of trips) {
@@ -44,7 +49,7 @@ function Trip() {
   return (
     <>
       <div className="pageTitle">
-        <h1>Your Upcoming Trip(s)</h1>
+        <h1>Your Upcoming Trip(s) <Emoji symbol="✈️" label="plane emoji" /></h1>
       </div>
 
       <div className="sec">
@@ -53,9 +58,9 @@ function Trip() {
           <div className="trip-personal-group">
             {personalData.map((trip) => (
               <div key={trip.id}>
-              <h2>{trip.name}</h2>
               </div>
             ))}
+             <div className="cards">{personalTripCards}</div>
           </div>
         </div>
       </div>
@@ -68,6 +73,7 @@ function Trip() {
               <h2>{trip.name}</h2>
               </div>
             ))}
+            <div className="cards">{groupTripCards}</div>
           </div>
         </div>
       </div>

@@ -47,9 +47,9 @@ function Signup({ handleLogin }) {
       ...prevErrors,
       password:
         passwordValue.length < 8 ||
-        !/[a-z]/.test(passwordValue) ||
-        !/[A-Z]/.test(passwordValue) ||
-        !/[0-9]/.test(passwordValue)
+          !/[a-z]/.test(passwordValue) ||
+          !/[A-Z]/.test(passwordValue) ||
+          !/[0-9]/.test(passwordValue)
           ? "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number!"
           : undefined,
       confirmPassword:
@@ -95,17 +95,29 @@ function Signup({ handleLogin }) {
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
-      Api.createUser({ name, email, password })
+      Api.emailExists(email)
         .then((response) => response.json())
         .then((data) => {
-          const userId = data.userId;
-          navigate(`/Home/${userId}`);
-          handleLogin(userId);
+          if (data.exists) {
+            setErrors({ submit: "Email already exists!" });
+          } else {
+            Api.createUser({ name, email, password })
+              .then((response) => response.json())
+              .then((data) => {
+                const userId = data.userId;
+                if (!userId) {
+                  setErrors({ submit: "Failed to sign up. Please try again." });
+                } else {
+                  navigate(`/Home/${userId}`);
+                  handleLogin(userId);
+                }
+              })
+              .catch((error) => {
+                console.log(email + " " + password);
+                setErrors({ submit: error.message });
+              });
+          }
         })
-        .catch((error) => {
-          console.log(email + " " + password);
-          setErrors({ submit: error.message });
-        });
     }
   };
   return (

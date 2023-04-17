@@ -20,8 +20,8 @@ const { RangePicker } = DatePicker;
 
 function TripContent() {
   //TO DO: change back to useParams and delete the hardcoded id
-  // const { id } = useParams();
-  const id = 1;
+  const { userId, tripId } = useParams();
+  // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState(
@@ -63,7 +63,7 @@ function TripContent() {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(id)
+    Api.getTrip(tripId)
       .then((res) => res.json())
       .then((trip) => {
         const { name, startDate, endDate, itinerary, isShared } = trip;
@@ -78,15 +78,17 @@ function TripContent() {
 
   useEffect(() => {
     reloadData();
+    console.log(tripId);
+    console.log(userId);
   }, [reloadData]);
 
   const handleShareButtonClick = () => {
     if (!isTripShared) {
-      Api.shareTrip(id).then(() => {
+      Api.shareTrip(tripId).then(() => {
         reloadData();
       });
     } else {
-      Api.unshareTrip(id).then(() => {
+      Api.unshareTrip(tripId).then(() => {
         reloadData();
       });
     }
@@ -214,7 +216,7 @@ function TripContent() {
                   <li>Relax on a nearby beach or lake</li>
                 </ul>
 
-                <TripNotes tripId={id} />
+                <TripNotes tripId={tripId} />
               </section>
               <span className="line"></span>
               <section

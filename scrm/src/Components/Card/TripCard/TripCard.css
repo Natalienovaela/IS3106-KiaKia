@@ -1,0 +1,66 @@
+.trip-card {
+    min-width: 300px;
+    max-width: 300px;
+    height: 180px;
+    display: flex;
+    border-radius: 15px;
+    position: relative;
+    top: 0;
+    filter: drop-shadow(0px 10px 5px rgba(0, 0, 0, 0.1)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.05));
+  }
+  .trip-card:hover {
+    transform: translateY(-15px);
+  }
+  .trip-card .pc-image-div {
+    width: 100%;
+    position: relative;
+    font-size: 30px;
+  }
+  .trip-card img {
+    -o-object-fit: cover;
+       object-fit: cover;
+    height: 100%;
+    border-radius: 15px;
+  }
+  .trip-card:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.858) 4.48%, rgba(0, 0, 0, 0) 30.14%);
+    height: 100%;
+    width: 100%;
+    content: "";
+    z-index: 10;
+    border-radius: 15px;
+  }
+  .trip-card .bookmark-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: var(--whiteColor);
+    z-index: 10000;
+  }
+  .trip-card .card-content {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 270px;
+    top: 130px;
+    left: 15px;
+    z-index: 1000;
+  }
+  .trip-card .card-content .card-title {
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--whiteColor);
+  }
+  .trip-card .card-content .country {
+    color: var(--greyText);
+  }
+  
+  .MuiIcon-fontSizeLarge {
+    font-size: 30px;
+  }/*# sourceMappingURL=tripcard.css.map */

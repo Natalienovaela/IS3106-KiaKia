@@ -1,0 +1,76 @@
+.add-expense-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 500px;
+  height: 500px;
+
+  .form-control {
+    margin: 10px 0;
+    width: 100%;
+
+    label {
+      margin-bottom: 5px;
+      color: #6B7280;
+    }
+
+    .MuiSelect-select {
+      padding: 10px;
+      border-radius: 5px;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      font-size: 16px;
+
+      &:focus {
+        outline: none;
+        border-color: #f37e30;
+      }
+    }
+
+    .MuiInputLabel-shrink {
+      transform: translate(0, 1.5px) scale(0.75);
+      color: #f37e30;
+    }
+
+    .MuiInput-underline:before,
+    .MuiInput-underline:after {
+      display: none;
+    }
+
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      padding-top: 10px;
+    }
+
+    .chip {
+      margin: 5px;
+    }
+  }
+
+  .submit-button {
+    margin-top: auto;
+    border-radius: 25px;
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f37e30;
+    color: #fff;
+
+    &:hover {
+      background-color: #e56c22;
+    }
+  }
+}
+
+.modal-content {
+  padding: 40px;
+  width: 600px;
+
+  @media (max-width: 640px) {
+    width: 90%;
+    padding: 20px;
+  }
+}

@@ -7,10 +7,10 @@ package session;
 
 import entity.Folder;
 import entity.Trip;
-import entity.Wishlist;
+import entity.User;
 import error.FolderNotFoundException;
 import error.TripNotFoundException;
-import error.WishlistNotFoundException;
+import error.UserNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,26 +27,26 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public List<Folder> retrieveAllFolder(Long wishlistId) throws WishlistNotFoundException {
+    public List<Folder> retrieveAllFolder(Long userId) throws UserNotFoundException {
         try {
-            Wishlist wishlist = em.find(Wishlist.class, wishlistId);
-            if (wishlist != null) {
-                return wishlist.getFolders();
+            User user = em.find(User.class, userId);
+            if (user != null) {
+                return user.getWishlistFolders();
             } else {
-                throw new WishlistNotFoundException("Wishlisst does not exist");
+                throw new UserNotFoundException("User does not exist");
             }
         } catch (Exception ex) {
-            throw new WishlistNotFoundException("Wishlist does not exist");
+            throw new UserNotFoundException("User does not exist");
         }
     }
 
     @Override
-    public void updateFolderName(Folder folder) throws FolderNotFoundException {
+    public void updateFolderName(Long folderId, String folderName) throws FolderNotFoundException {
         try {
-            Folder oldFolder = em.find(Folder.class, folder.getFolderId());
+            Folder oldFolder = em.find(Folder.class, folderId);
 
             if (oldFolder != null) {
-                oldFolder.setName(folder.getName());
+                oldFolder.setName(folderName);
 
             } else {
                 throw new FolderNotFoundException("Folder not found in the database");
@@ -55,49 +55,53 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
             throw new FolderNotFoundException("Folder does not exist");
         }
     }
-    
+
     @Override
-    public void deleteFolder(Long wishlistId, Long folderId) throws WishlistNotFoundException {
+    public void deleteFolder(Long userId, Long folderId) throws UserNotFoundException {
         try {
-            Wishlist wishlist = em.find(Wishlist.class, wishlistId);
-            
+            User user= em.find(User.class, userId);
+
             try {
-              Folder folder = em.find(Folder.class, folderId);
-              wishlist.getFolders().remove(folder);
-              em.remove(folder);
+                Folder folder = em.find(Folder.class, folderId);
+                user.getWishlistFolders().remove(folder);
+                em.remove(folder);
+            } catch (Exception ex) {
+
             }
-            catch (Exception ex) {
-                
-            }
-        }
-        catch (Exception ex) {
-            throw new WishlistNotFoundException("Wishlist does not exist");
+        } catch (Exception ex) {
+            throw new UserNotFoundException("User does not exist");
         }
     }
 
     @Override
-    public List<Folder> retrieveFolderWithCertainName(Long wishlistId, String search) {
-        List<Folder> folders = em.createQuery("SELECT w.folders FROM Wishlist w WHERE w.folders.name LIKE CONCAT('%',:search ,'%')").setParameter("search", search).getResultList();
-        for(Folder folder : folders) {
-            folder.getTrips().size();
-        }
-        
-        return folders;
-    }
-    
-    @Override
-    public Folder createNewFolder(Long wishlistId, Folder folder) throws WishlistNotFoundException {
+    public List<Folder> retrieveFolderWithCertainName(String search, Long userId) throws UserNotFoundException {
         try {
-            Wishlist wishlist = em.find(Wishlist.class, wishlistId);
-            em.persist(folder);
-            wishlist.getFolders().add(folder);
-            return folder;
+            User user = em.find(User.class, userId);
+            List<Folder> folders = em.createQuery("SELECT u.wishlistFolders FROM User u WHERE u.wishlistFolders.name LIKE CONCAT('%',:search ,'%')").setParameter("search", search).getResultList();
+            for (Folder folder : folders) {
+                folder.getTrips().size();
+            }
+
+            return folders;
+        } catch (Exception ex) {
+            throw new UserNotFoundException("User not found");
         }
-        catch(Exception ex) {
-            throw new WishlistNotFoundException("Wishlist does not exist");
+
+    }
+
+    @Override
+    public Folder createNewFolder(Long userId, Folder folder, String folderName) throws UserNotFoundException {
+        try {
+            User user = em.find(User.class, userId);
+            em.persist(folder);
+            user.getWishlistFolders().add(folder);
+            folder.setName(folderName);
+            return folder;
+        } catch (Exception ex) {
+            throw new UserNotFoundException("User does not exist");
         }
     }
-    
+
     @Override
     public void addTripToFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
         try {
@@ -105,16 +109,14 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
             try {
                 Trip trip = em.find(Trip.class, tripId);
                 folder.getTrips().add(trip);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new TripNotFoundException("Trip not found");
             }
-        }
-        catch( Exception ex) {
+        } catch (Exception ex) {
             throw new FolderNotFoundException("Folder not found");
         }
     }
-    
+
     @Override
     public void removeTripFromFolder(Long folderId, Long tripId) throws FolderNotFoundException, TripNotFoundException {
         try {
@@ -123,14 +125,12 @@ public class FolderSessionBean implements FolderSessionBeanLocal {
                 Trip trip = em.find(Trip.class, tripId);
                 folder.getTrips().remove(trip);
                 em.remove(trip);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new TripNotFoundException("Trip not found");
             }
-        }
-        catch( Exception ex) {
+        } catch (Exception ex) {
             throw new FolderNotFoundException("Folder not found");
         }
     }
-    
+
 }

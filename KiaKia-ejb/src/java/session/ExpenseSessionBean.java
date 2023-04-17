@@ -17,8 +17,6 @@ import error.TripNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -42,13 +40,18 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
     @Override
     public void addExpense(Long tripId, Expense expense) throws TripNotFoundException, CategoryNotFoundException
     {
+         if (tripId == null || expense.getCategory().getCategoryId() == null) 
+        {
+            throw new IllegalArgumentException("Trip ID or Category ID cannot be null.");
+        }
+        
         Trip trip = em.find(Trip.class, tripId);
         if (trip == null) 
         {
             throw new TripNotFoundException("Trip not found.");
         }
 
-        BudgetExpenseCategory category = expense.getCategory();
+        BudgetExpenseCategory category = em.find(BudgetExpenseCategory.class, expense.getCategory().getCategoryId());
         if (category == null) 
         {
             throw new CategoryNotFoundException("Category not found.");

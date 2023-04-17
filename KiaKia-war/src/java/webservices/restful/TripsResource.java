@@ -9,6 +9,7 @@ import entity.CheckList;
 import entity.Note;
 import entity.Poll;
 import entity.Trip;
+import enumeration.UserRoleEnum;
 import entity.User;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
@@ -19,6 +20,8 @@ import error.UnknownPersistenceException;
 import error.UserHasPolledException;
 import error.UserNotFoundException;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +36,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -64,21 +68,7 @@ public class TripsResource {
     private CheckListSessionBeanLocal checkListSessionBeanLocal;
 
     @EJB
-    private PlaceSessionBeanLocal placeSessionBeanLocal;
-
-    @EJB
     private UserSessionBeanLocal userSessionBeanLocal;
-
-    //to get all the trip
-    @GET
-    @Path("/AllTrip")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
 
     //just to try if the api works 
     @GET
@@ -87,23 +77,12 @@ public class TripsResource {
         return Response.status(204).build();
     }
 
-    //to get all the personal trips
+    //to get all sharedTrips
     @GET
-    @Path("/personal")
+    @Path("/allSharedTrips")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllPersonalTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllPersonalTrips();
-        GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
-
-    //to get all the group trips
-    @GET
-    @Path("/group")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllGroupTrips() {
-        List<Trip> trip = tripSessionBeanLocal.getAllGroupTrips();
+    public Response getAllSharedTrips() {
+        List<Trip> trip = tripSessionBeanLocal.getAllSharedTrips();
         GenericEntity<List<Trip>> entity = new GenericEntity<List<Trip>>(trip) {
         };
         return Response.status(200).entity(entity).build();
@@ -329,6 +308,21 @@ public class TripsResource {
     }
 
     @GET
+    @Path("{trip_id}/users/{userId}/userRole")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getUserRole(@PathParam("tripId") Long tripId, @PathParam("userId") Long userId) {
+        try {
+            UserRoleEnum userRoleEnum = tripSessionBeanLocal.getRole(tripId, userId);
+            return Response.status(200).entity(userRoleEnum).build();
+        } catch (UserNotFoundException | TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
     @Path("/{trip_id}/polls/{poll_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -365,7 +359,7 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-    
+
     @GET
     @Path("/{trip_id}/calculatePercentage/polls/{poll_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -454,6 +448,40 @@ public class TripsResource {
             tripSessionBeanLocal.addNewTrip(t, userId);
             return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createAndInviteUserToTrip(Trip t, @QueryParam("userId") Long userId, @QueryParam("userEmails") String userEmails, @QueryParam("userRoles") String userRoles) {
+        try {
+            System.out.println("Received request to create and invite users to trip.");
+            System.out.println("Trip: " + t);
+            System.out.println("UserId: " + userId);
+            System.out.println("UserEmails: " + userEmails);
+            System.out.println("UserRoles: " + userRoles);
+            List<String> userEmailsList = new ArrayList<>();
+            List<String> userRolesList = new ArrayList<>();
+            if (!userEmails.isEmpty()) {
+                String[] userEmailsArray = userEmails.split(",");
+                userEmailsList = Arrays.asList(userEmailsArray);
+                System.out.println(userEmailsList.size());
+                String[] userRolesArray = userRoles.split(",");
+                userRolesList = Arrays.asList(userRolesArray);
+            }
+
+            tripSessionBeanLocal.createAndInviteUsersToTrip(t, userId, userEmailsList, userRolesList);
+
+            System.out.println("Trip created and users invited successfully.");
+            System.out.println("Adding trip to response: " + t);
+            return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException ex) {
+            System.err.println("Failed to create and invite users to trip: " + ex.getMessage());
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();

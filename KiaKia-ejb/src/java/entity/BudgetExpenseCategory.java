@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -28,6 +29,7 @@ public class BudgetExpenseCategory implements Serializable {
     private String name;
     
     @OneToOne
+    @JoinColumn(name = "budget_id")
     private Budget budget;
     
     @OneToMany
