@@ -147,12 +147,11 @@ const Note = ({ tripId, note, userRole }) => {
   };
 
   return (
-    <div className="trip-component">
-      <Stack>
+    <>
+      <Stack className="trip-component">
         {note && (
           <>
             <TextField
-              className="note"
               variant="standard"
               fullWidth
               placeholder="Title of your note"
@@ -161,6 +160,7 @@ const Note = ({ tripId, note, userRole }) => {
               onChange={handleTitleChange}
               disabled={userRole === "VIEWER" ? true : false}
               sx={{
+                width: "500px",
                 "& .MuiInputBase-input.Mui-disabled": {
                   WebkitTextFillColor: "#000000",
                 },
@@ -179,12 +179,13 @@ const Note = ({ tripId, note, userRole }) => {
 
         {note && (
           <TextField
-            className="note"
             multiline
             placeholder="Write anything here: how to get around, reminder, tips, etc."
             disabled={userRole === "VIEWER" ? true : false}
             sx={{
-              width: "100%",
+              // width: "100%",
+              width: "500px",
+              backgroundColor: "#fff",
               "& .MuiInputBase-input.Mui-disabled": {
                 WebkitTextFillColor: "#000000",
               },
@@ -201,7 +202,7 @@ const Note = ({ tripId, note, userRole }) => {
           />
         )}
       </Stack>
-    </div>
+    </>
   );
 };
 
