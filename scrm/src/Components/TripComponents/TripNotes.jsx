@@ -2,7 +2,7 @@ import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
 import Note from "./Note";
 
-const TripNotes = ({ tripId }) => {
+const TripNotes = ({ tripId, userId, userRole }) => {
   // const {
   //   data: notes,
   //   isPending,
@@ -34,6 +34,15 @@ const TripNotes = ({ tripId }) => {
       .catch((err) => {
         console.log(err.message);
       });
+    // Api.getUserRole(userId, tripId)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log("USER ROLE" + data);
+    //     // setUserRole(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching user role:", error);
+    //   });
   };
 
   const handleDelete = (noteId) => {
@@ -54,22 +63,29 @@ const TripNotes = ({ tripId }) => {
       <h3>Notes</h3>
       {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
-      <div>
-        <button className="note btn container" onClick={handleCreateNote}>
-          Create Note
-        </button>
-      </div>
+      {userRole !== "VIEWER" && (
+        <div>
+          <button className="note btn container" onClick={handleCreateNote}>
+            Create Note
+          </button>
+        </div>
+      )}
       {notes &&
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">
             <div className="noteComponent">
-              <Note tripId={tripId} note={note} handleDelete={handleDelete} />
+              <Note tripId={tripId} note={note} userRole={userRole} />
             </div>
-            <div>
-              <button className="btn" onClick={() => handleDelete(note.noteId)}>
-                Delete
-              </button>
-            </div>
+            {userRole !== "VIEWER" && (
+              <div>
+                <button
+                  className="btn"
+                  onClick={() => handleDelete(note.noteId)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         ))}
     </div>

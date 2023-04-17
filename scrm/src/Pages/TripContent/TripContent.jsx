@@ -32,7 +32,9 @@ function TripContent() {
     moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
   );
   const [error, setError] = useState("");
+
   const [isTripShared, setIsTripShared] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
@@ -64,23 +66,29 @@ function TripContent() {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(tripId)
-      .then((res) => res.json())
-      .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
-        setName(name);
-        setItinerary(itinerary);
-        setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-        setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-        setIsTripShared(isShared);
-      });
-    console.log("the : " + startDate + " " + endDate);
+    console.log("reload data triggered");
+    Promise.all([
+      Api.getUserRole(userId, tripId)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("USER ROLE" + data);
+          setUserRole(data);
+        }),
+      Api.getTrip(tripId)
+        .then((res) => res.json())
+        .then((trip) => {
+          const { name, startDate, endDate, itinerary, isShared } = trip;
+          setName(name);
+          setItinerary(itinerary);
+          setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+          setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+          setIsTripShared(isShared);
+        }),
+    ]);
   }, []);
 
   useEffect(() => {
     reloadData();
-    console.log(tripId);
-    console.log(userId);
   }, [reloadData]);
 
   const handleShareButtonClick = () => {
@@ -130,10 +138,11 @@ function TripContent() {
                   </li>
                 </ul>
               </div>
-
-              <button onClick={handleShareButtonClick} className="btn">
-                {isTripShared ? "Unshare Trip" : "Share Trip"}
-              </button>
+              {userRole == "ADMIN" && (
+                <button onClick={handleShareButtonClick} className="btn">
+                  {isTripShared ? "Unshare Trip" : "Share Trip"}
+                </button>
+              )}
             </section>
           </Grid>
           <Grid item xs={3}>
@@ -217,8 +226,16 @@ function TripContent() {
                   <li>Relax on a nearby beach or lake</li>
                 </ul>
 
-                <TripNotes tripId={tripId} />
-                <TripPolls tripId={tripId} userId={userId} />
+                <TripNotes
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
+                <TripPolls
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
               </section>
               <span className="line"></span>
               <section

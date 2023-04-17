@@ -17,10 +17,6 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
-    getAllSharedTrips() {
-        return fetch(`${SERVER_PREFIX}/trips/allSharedTrips`);
-    },
-
     //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
@@ -240,7 +236,7 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     },
     getUserRole(userId, tripId) {
-        return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     },
 
 
@@ -404,7 +400,7 @@ const Api = {
     deleteBudget(tripId, budgetId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`);
     },
-    
+
     getBudgetByCategory(tripId, categoryId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/category/${categoryId}`);
     },
@@ -455,7 +451,7 @@ const Api = {
     payDebts(tripId, payerId, beneficiaryId, amt) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt?payerId=${payerId}&beneficiaryId=${beneficiaryId}&amt=${amt}`);
     },
-    
+
 };
 
 export default Api;
