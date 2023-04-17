@@ -97,7 +97,12 @@ const Itinerary = (props) => {
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
             <>
-              <DayContents item={item} index={index} tripId={tripId} />
+              <DayContents
+                item={item}
+                index={index}
+                tripId={tripId}
+                userRole={props.userRole}
+              />
             </>
           ))}
       </div>

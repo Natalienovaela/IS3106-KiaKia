@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./itinerarycard.css";
 import image from "../../../Assets/img.jpg";
 import Chip from "@mui/material/Chip";
-import Profile from "../../Profile/Profile";
+import { useNavigate } from "react-router-dom";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
@@ -30,7 +30,14 @@ const ItineraryCard = ({
   cityName,
   numOfDays,
   card,
+  userId,
+  ...props
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/TripContent/${userId}/${props.tripId}`);
+  };
   const placeHighlight = places?.map((place) => (
     <li className="place">{place}</li>
   ));
@@ -45,25 +52,25 @@ const ItineraryCard = ({
 
   const [userFolder, setUserFolder] = useState("");
 
-  const tagsin = tags?.map((tag) => <Chip label={tag}></Chip>);
-
   return (
     <div className="itinerary-card">
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          <Profile />
-
-          <IconButton
-            onClick={handleBookmarkClick}
-            size="large"
-            sx={{ color: "white" }}
-          >
-            {click ? <Bookmark /> : <BookmarkBorder />}
-          </IconButton>
+          {props.inTrip !== true || userId === undefined ? (
+            <IconButton
+              onClick={handleBookmarkClick}
+              size="large"
+              sx={{ color: "white" }}
+            >
+              {click ? <Bookmark /> : <BookmarkBorder />}
+            </IconButton>
+          ) : (
+            <></>
+          )}
         </div>
 
-        <div className="city-div">
+        <div className="city-div" onClick={handleClick}>
           <h2>{cityName}</h2>
           <p className="num-of-days">{numOfDays} days</p>
         </div>
@@ -72,7 +79,6 @@ const ItineraryCard = ({
       <div className="card-details">
         <ul className="place-highlight">{placeHighlight}</ul>
         <p className="card-desc">{desc}</p>
-        <div className="tags">{tagsin}</div>
       </div>
     </div>
   );
