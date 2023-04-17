@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
 import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 const { RangePicker } = DatePicker;
 
 function TripContent() {

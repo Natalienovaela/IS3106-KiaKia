@@ -31,13 +31,15 @@ const TripPolls = ({ userId, tripId, userRole }) => {
 
   return (
     <div className="trip-polls">
-      <h2>Polls</h2>
-      {userRole !== "VIEWER" && <CreatePoll setPolls={setPolls} />}
-      {/* <div>
+      <div className="rowComponent">
+        <h2>Polls</h2>
+        {userRole !== "VIEWER" && <CreatePoll setPolls={setPolls} />}
+        {/* <div>
         <button className="note btn container" onClick={handleCreateNote}>
           Create Note
         </button>
       </div> */}
+      </div>
       {polls &&
         polls.map((poll) => (
           <div key={poll.pollId} className="rowComponent">

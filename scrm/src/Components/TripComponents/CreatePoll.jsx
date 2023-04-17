@@ -9,7 +9,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Api from "../../Helpers/Api";
+import Box from "@mui/material/Box";
 
 // const CreatePoll = ({ tripId, userId }) => {
 const CreatePoll = ({ setPolls }) => {
@@ -81,10 +84,21 @@ const CreatePoll = ({ setPolls }) => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Box sx={{ paddingLeft: 2 }}>
+        <IconButton onClick={() => handleClickOpen}>
+          <AddRoundedIcon />
+        </IconButton>
+      </Box>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
         New Poll
-      </Button>
-      <Dialog open={open} onClose={handleClose} scroll="paper">
+      </Button> */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll="paper"
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle sx={{ display: "flex", alignItems: "center" }}>
           Create a Poll
           <IconButton sx={{ ml: "auto" }} onClick={handleClose}>
@@ -98,11 +112,13 @@ const CreatePoll = ({ setPolls }) => {
             margin="dense"
             id="question"
             fullWidth
+            maxWidth="md"
             required
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Type your question here"
           />
+          <Box sx={{ paddingTop: 2 }}></Box>
           <label htmlFor="option">Option(s)</label>
           {options.map((singleOption, index) => {
             return (
@@ -113,7 +129,7 @@ const CreatePoll = ({ setPolls }) => {
                     margin="dense"
                     id={`option-${index}`}
                     name="option"
-                    fullWidth
+                    width="300px"
                     placeholder="Type an option here"
                     required
                     value={singleOption.option}
@@ -121,11 +137,11 @@ const CreatePoll = ({ setPolls }) => {
                   />
                 </div>
                 {options.length > 1 && (
-                  <div>
+                  <Box sx={{ paddingLeft: 2 }}>
                     <IconButton onClick={() => handleOptionRemove(index)}>
-                      <DeleteIcon />
+                      <DeleteOutlineOutlinedIcon />
                     </IconButton>
-                  </div>
+                  </Box>
                 )}
               </div>
             );
