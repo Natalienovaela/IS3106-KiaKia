@@ -34,7 +34,7 @@ public interface PollSessionBeanLocal {
 
     public Long createNewPoll(Poll poll, Long tripId) throws UnknownPersistenceException, TripNotFoundException;
 
-    public boolean removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException;
+    public void removePoll(Long tripId, Long pollId) throws TripNotFoundException, PollNotFoundException;
 
     public List<Poll> retrieveAllPollsInTrip(Long tripId) throws TripNotFoundException;
 

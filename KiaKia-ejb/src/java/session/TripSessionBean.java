@@ -188,7 +188,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
         try {
             Trip trip = retrieveTripByTripId(tripId);
             User user = userSessionBeanLocal.retrieveUserByUserId(userId);
-            return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
+            return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip.tripId = :tripId AND t.user.userId = :userId").setParameter("userId", userId).setParameter("tripId", tripId).getSingleResult();
         } catch (TripNotFoundException | UserNotFoundException ex) {
             throw new TripNotFoundException(ex.getMessage());
         }

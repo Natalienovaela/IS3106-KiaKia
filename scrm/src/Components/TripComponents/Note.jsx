@@ -117,7 +117,7 @@ import { Stack } from "@mui/material";
 import Api from "../../Helpers/Api";
 import { debounce } from "lodash";
 
-const Note = ({ tripId, note }) => {
+const Note = ({ tripId, note, userRole }) => {
   const [title, setTitle] = React.useState(note.title);
   const [content, setContent] = React.useState(note.content);
 
@@ -147,8 +147,8 @@ const Note = ({ tripId, note }) => {
   };
 
   return (
-    <div className="trip-component">
-      <Stack>
+    <>
+      <Stack className="trip-component">
         {note && (
           <>
             <TextField
@@ -158,6 +158,13 @@ const Note = ({ tripId, note }) => {
               size="small"
               value={title}
               onChange={handleTitleChange}
+              disabled={userRole === "VIEWER" ? true : false}
+              sx={{
+                width: "500px",
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#000000",
+                },
+              }}
               style={{ width: " 100%" }}
               InputProps={{
                 style: {
@@ -174,19 +181,28 @@ const Note = ({ tripId, note }) => {
           <TextField
             multiline
             placeholder="Write anything here: how to get around, reminder, tips, etc."
+            disabled={userRole === "VIEWER" ? true : false}
             sx={{
-              width: "100%",
+              // width: "100%",
+              width: "500px",
+              backgroundColor: "#fff",
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "#000000",
+              },
             }}
             InputProps={{
               inputComponent: TextareaAutosize,
               rows: 3,
+              classes: {
+                disabled: "disabled-note",
+              },
             }}
             value={content}
             onChange={handleContentChange}
           />
         )}
       </Stack>
-    </div>
+    </>
   );
 };
 

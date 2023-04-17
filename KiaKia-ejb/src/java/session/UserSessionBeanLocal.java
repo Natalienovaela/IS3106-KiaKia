@@ -5,11 +5,15 @@
  */
 package session;
 
+import entity.Place;
+import entity.PlaceLineItem;
 import entity.Trip;
 import entity.User;
 import error.InvalidLoginException;
+import error.PlaceNotFoundException;
 import error.ResetPasswordException;
 import error.UserNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -44,5 +48,11 @@ public interface UserSessionBeanLocal {
     public void resetPassword(String token) throws UserNotFoundException, ResetPasswordException;
 
     public void createUserTemporary(User u, Trip trip);
+
+    public List<Place> getWishlistPlaces(Long userId) throws UserNotFoundException;
+
+    public void linkUserWithWishlistPlace(Long userId, Long placeId) throws UserNotFoundException, PlaceNotFoundException;
+
+    public void removeWishlistPlaceFromUser(Long userId, Long placeId) throws UserNotFoundException, PlaceNotFoundException;
     
 }
