@@ -14,7 +14,6 @@ import Api from "../../../Helpers/Api";
 import newyork from "../../../Assets/newyork.png";
 import japan from "../../../Assets/japan.png";
 import singapore from "../../../Assets/singapore.png";
-import { useNavigate } from "react-router-dom";
 
 const dummyData = [
   {
@@ -76,7 +75,7 @@ const ItineraryCard = (props) => {
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          {props.inTrip !== true || userId === undefined ? (
+          {/* {props.inTrip !== true || userId === undefined ? ( */}
             <IconButton
               onClick={handleBookmarkClick}
               size="large"
@@ -84,9 +83,9 @@ const ItineraryCard = (props) => {
             >
               {click ? <Bookmark /> : <BookmarkBorder />}
             </IconButton>
-          ) : (
-            <></>
-          )}
+          {/* // ) : (
+          //   <></>
+          // )} */}
         </div>
 
         <div className="city-div" onClick={handleClick}>
