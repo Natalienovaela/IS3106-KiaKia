@@ -223,10 +223,12 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                               height: 12,
                               borderRadius: 6,
                               overflow: "hidden",
+                            }}
+                            sx={{
                               backgroundColor: "var(--inputColor)",
-                              // "& .MuiLinearProgress-bar": {
-                              //   backgroundColor: "var(--PrimaryColor)",
-                              // },
+                              "& .MuiLinearProgress-bar": {
+                                backgroundColor: `var(--PrimaryColor)`,
+                              },
                             }}
                           />
                         </div>

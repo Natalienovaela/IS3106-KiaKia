@@ -73,6 +73,11 @@ li {
     cursor: pointer;
 }
 
+/* .btn:hover {
+    background-color: var(--PrimaryColor);
+    color: white;
+  } */
+
 .btn a{
     color: var(--whiteColor);
     font-weight: 500;

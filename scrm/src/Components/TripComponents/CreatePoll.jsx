@@ -85,7 +85,7 @@ const CreatePoll = ({ setPolls }) => {
   return (
     <div>
       <Box sx={{ paddingLeft: 2 }}>
-        <IconButton onClick={() => handleClickOpen}>
+        <IconButton onClick={handleClickOpen}>
           <AddRoundedIcon />
         </IconButton>
       </Box>
