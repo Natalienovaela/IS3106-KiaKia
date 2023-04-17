@@ -3,6 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Api from "../../Helpers/Api";
 import TextField from "@mui/material/TextField";
 import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
+import "./daycontent.css";
 
 const DayContents = ({ index, item, tripId }, { ...props }) => {
   const [itinerary, setItinerary] = useState([]);
@@ -102,14 +103,24 @@ const DayContents = ({ index, item, tripId }, { ...props }) => {
   return (
     <>
       <div className="itinerary-details" key={item.dayItineraryId}>
-        <h3>Day {index + 1}</h3>
+        <h2>Day {index + 1}</h2>
         <div className="placesLineItem">
-          {placeLineItem?.map((placeItem, index) => (
-            <h3 key={index}>{placeItem.name}</h3>
-          ))}
-          {placeList.map((placeItem, index) => (
-            <h3 key={index}>{placeItem}</h3>
-          ))}
+          <div className="place-ind">
+            {placeLineItem?.map((placeItem, index) => (
+              <h3 className="item" key={index}>
+                {index + 1} {placeItem.name}
+              </h3>
+            ))}
+            {placeList.map((placeItem, index) => (
+              <div className="places">
+                <h3>{index + 1} </h3>
+                <h3 className="item" key={index}>
+                  {placeItem}
+                </h3>
+              </div>
+            ))}
+          </div>
+
           {toggle && (
             <>
               <div className="add-place-div">
@@ -127,13 +138,19 @@ const DayContents = ({ index, item, tripId }, { ...props }) => {
                     <TextField {...params} placeholder="Enter a place" />
                   )}
                 />
-                <button onClick={handleSaveButton}>save</button>
-                <button onClick={handleCancelButton}>cancel</button>
+                <button onClick={handleSaveButton} className="btn">
+                  save
+                </button>
+                <button onClick={handleCancelButton} className="cancel">
+                  cancel
+                </button>
               </div>
             </>
           )}
 
-          <button onClick={handleAddPlace}>add place</button>
+          <button onClick={handleAddPlace} className="btn">
+            add place
+          </button>
         </div>
       </div>
     </>
