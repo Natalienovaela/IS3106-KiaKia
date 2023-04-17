@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const PlaceCard = (props) => {
   const [click, setclick] = useState(false);
-  const [img, setImg] = useState('');
+  const [img, setImg] = useState("");
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -20,6 +20,7 @@ const PlaceCard = (props) => {
   const handleBookmark = () => {
     setclick(!click);
     console.log("clicked");
+    props.onClick(props.card);
   };
 
   useEffect(() => {
@@ -31,11 +32,11 @@ const PlaceCard = (props) => {
       setImg(botanic);
     } else if (props.name === "Gardens by the Bay") {
       setImg(gardens);
-    };
+    }
   }, []);
 
   return (
-    <div className="place-card" onClick={handleClick}>
+    <div className="place-card">
       <div className="pc-image-div">
         <img src={img} alt="Card" />
         <IconButton
@@ -48,7 +49,7 @@ const PlaceCard = (props) => {
         </IconButton>
       </div>
 
-      <div className="card-content">
+      <div className="card-content" onClick={handleClick}>
         <h2 className="card-title">{props.name}</h2>
         <p className="country">{props.country}</p>
       </div>

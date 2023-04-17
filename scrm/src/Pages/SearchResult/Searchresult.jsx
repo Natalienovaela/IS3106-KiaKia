@@ -5,11 +5,20 @@ import Api from "../../Helpers/Api";
 
 const Searchresult = () => {
   const [placesData, setPlacesData] = useState([]);
+  const [sharedTrips, setSharedTrips] = useState([]);
   useEffect(() => {
     Api.getAllPlaces()
       .then((response) => response.json())
       .then((data) => {
         setPlacesData(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setSharedTrips(data);
       });
   }, []);
   const { query } = useParams();

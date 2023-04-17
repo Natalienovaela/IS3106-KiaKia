@@ -60,17 +60,6 @@ const Itineraries = ({ userId }) => {
     setUserId(userId);
   };
 
-  useEffect(() => {
-    Api.getCityList()
-      .then((response) => response.json())
-      .then((data) => {
-        setPlaces(data);
-      })
-      .catch((error) => {
-        console.log("Error while retrieving city list");
-      });
-  }, []);
-
   // // get all trips
   // useEffect(() => {
   //   Api.searchTripByCity(city);
@@ -189,7 +178,6 @@ const Itineraries = ({ userId }) => {
       <p className="page-content">
         Find itineraries created by fellow travelers <Emoji symbol="🧳" />
       </p>
-      <SearchBar label="Search city or country" options={places} />
 
       <div className="cards">{itineraryCards}</div>
       {selectedCard && (

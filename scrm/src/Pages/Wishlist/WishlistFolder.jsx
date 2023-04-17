@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { MdOutlineEdit } from "react-icons/md";
 import Api from "../../Helpers/Api";
+import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard";
 
 const WishlistFolder = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [selectedFolder, setSelectedFolder] = useState("");
-  const folderName = JSON.parse(props.folderName).folderName;
-  //const horizontalCards = props.trips?.map((cardData) => (
-  //<HorizontalCard {...cardData} />
-  //));
+  const folderName = props.folderName;
+  const horizontalCards = props.trips?.map((cardData) => (
+    <HorizontalCard {...cardData} />
+  ));
   const handleClick = () => {
     setEditMode(true);
     props.onClick(props.folder);
@@ -35,7 +36,11 @@ const WishlistFolder = (props) => {
   };
 
   const handleNewFolderInput = (event) => {
-    setNewFolderName(event.target.value);
+    const inputNewFolder = event.target.value.trim();
+    if (!inputNewFolder) {
+      return;
+    }
+    setNewFolderName(inputNewFolder);
   };
 
   return (
@@ -66,7 +71,7 @@ const WishlistFolder = (props) => {
           </>
         )}
       </div>
-      {/*<div className="list">{horizontalCards}</div>*/}
+      <div className="list">{horizontalCards}</div>
     </>
   );
 };
