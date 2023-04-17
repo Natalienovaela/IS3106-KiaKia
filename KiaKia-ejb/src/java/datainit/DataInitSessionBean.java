@@ -173,6 +173,17 @@ public class DataInitSessionBean {
             placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 2l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 3l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 4l);
+            
+//            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 25).getTime());
+//            em.persist(singapore);
+//            em.flush();
+//            itinerarySessionBeanLocal.createItineraries(singapore.getStartDate(), singapore.getEndDate(), singapore.getTripId());
+//            Note singaporeNote = new Note("Description", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
+//            noteSessionBeanLocal.createNewNote(singaporeNote, singapore.getTripId());
+//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 1l);
+//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 2l);
+//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 3l);
+//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 4l);
 
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
