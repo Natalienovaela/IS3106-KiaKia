@@ -5,6 +5,7 @@
  */
 package datainit;
 
+import entity.CheckList;
 import entity.Note;
 import entity.Place;
 import entity.Poll;
@@ -31,6 +32,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.CheckListSessionBeanLocal;
 import session.ItinerarySessionBeanLocal;
 import session.NoteSessionBeanLocal;
 import session.PlaceLineItemSessionBeanLocal;
@@ -67,6 +69,9 @@ public class DataInitSessionBean {
     
     @EJB
     private PlaceLineItemSessionBeanLocal placeLineItemSessionBeanLocal;
+    
+    @EJB
+    private CheckListSessionBeanLocal checkListSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
@@ -85,19 +90,41 @@ public class DataInitSessionBean {
     }
 
     public void initialiseUser() {
-//        try {
+        try {
         Trip trip = em.find(Trip.class, 1l);
         userSessionBeanLocal.createUserTemporary(new User("natasha", "natasha@gmail.com", "password", "Natasha Rafaela"), trip);
-        userSessionBeanLocal.createUser(new User("nat@gmail.com", "Password123", "nat"));
+        userSessionBeanLocal.createUser(new User("vinessa@gmail.com", "Password123", "Vinessa"));
+        userSessionBeanLocal.createUser(new User("michelle@gmail.com", "Password123", "Michelle"));
+        userSessionBeanLocal.createUser(new User("varrene@gmail.com", "Password123", "Varrene"));
+        List<String> emails = new ArrayList<String>();
+        List<String> roles = new ArrayList<String>();
+        emails.add("vinessa@gmail.com");
+        emails.add("varrene@gmail.com");
+        roles.add("VIEWER");
+        roles.add("EDITOR");
+        tripSessionBeanLocal.inviteUsersToTrip(trip, 1l, emails, roles);
+        Trip singapore = em.find(Trip.class, 2l);
+        List<String> userEmails = new ArrayList<String>();
+        List<String> userRoles = new ArrayList<String>();
+        tripSessionBeanLocal.createAndInviteUsersToTrip(singapore, 2l, userEmails, userRoles);
+        Trip newyork = em.find(Trip.class, 4l);
+        tripSessionBeanLocal.createAndInviteUsersToTrip(newyork, 4l, userEmails, userRoles);
+        userEmails.add("vinessa@gmail.com");
+        userEmails.add("varrene@gmail.com");
+        userRoles.add("ADMIN");
+        userRoles.add("EDITOR");
+        Trip japan = em.find(Trip.class, 3l);
+        tripSessionBeanLocal.createAndInviteUsersToTrip(japan, 3l, userEmails, userRoles);
+        
 //            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
 //            List<String> userEmails = new ArrayList<String>();
 //            List<String> userRoles = new ArrayList<String>();
 //            userEmails.add("shinolim22@gmail.com");
 //            userRoles.add("EDITOR");
 //            tripSessionBeanLocal.createAndInviteUserToTrip(trip, 2l, userEmails, userRoles);
-//        } catch (UserNotFoundException ex) {
-//            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -163,27 +190,35 @@ public class DataInitSessionBean {
 //            Note note9 = new Note("My 9th Note", "bla", false);
 //            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
 
-            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 25).getTime());
+            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 18).getTime());
             em.persist(singapore);
             em.flush();
             itinerarySessionBeanLocal.createItineraries(singapore.getStartDate(), singapore.getEndDate(), singapore.getTripId());
             Note singaporeNote = new Note("Description", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
             noteSessionBeanLocal.createNewNote(singaporeNote, singapore.getTripId());
-            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 1l);
-            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 2l);
-            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 3l);
-            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 4l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(6l, 1l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(7l, 2l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(8l, 3l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(9l, 4l);
+            List<String> items = new ArrayList<String>();
+            items.add("Passport");
+            items.add("Umbrella");
+            CheckList checklistSg1 = new CheckList("Packing List", items);
+            checkListSessionBeanLocal.createNewCheckList(2l, checklistSg1);
             
-//            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 25).getTime());
-//            em.persist(singapore);
-//            em.flush();
-//            itinerarySessionBeanLocal.createItineraries(singapore.getStartDate(), singapore.getEndDate(), singapore.getTripId());
-//            Note singaporeNote = new Note("Description", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
-//            noteSessionBeanLocal.createNewNote(singaporeNote, singapore.getTripId());
-//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 1l);
-//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 2l);
-//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 3l);
-//            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 4l);
+            Trip japan = new Trip("Japan", new GregorianCalendar(2023, Calendar.MAY, 1).getTime(), new GregorianCalendar(2023, Calendar.MAY, 20).getTime());
+            em.persist(japan);
+            em.flush();
+            itinerarySessionBeanLocal.createItineraries(japan.getStartDate(), japan.getEndDate(), japan.getTripId());
+            Note japanNote = new Note("Description", "Our graduation trip to Japan!", false);
+            noteSessionBeanLocal.createNewNote(japanNote, japan.getTripId());
+            
+            Trip newyork = new Trip("New York", new GregorianCalendar(2021, Calendar.DECEMBER, 5).getTime(), new GregorianCalendar(2021, Calendar.DECEMBER, 27).getTime());
+            em.persist(newyork);
+            em.flush();
+            itinerarySessionBeanLocal.createItineraries(newyork.getStartDate(), newyork.getEndDate(), newyork.getTripId());
+            Note newyorkNote = new Note("Description", "Mesmerising busy city, New York", false);
+            noteSessionBeanLocal.createNewNote(newyorkNote, newyork.getTripId());
 
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);

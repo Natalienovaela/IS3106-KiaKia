@@ -40,6 +40,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     @Override
     public void createUser(User u) {
+        u.setLoginToken(UUID.randomUUID().toString());
         em.persist(u);
         em.flush();
     }
@@ -125,6 +126,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             User user = retrieveUserByEmail(email);
 
             if (user.getPassword().equals(password)) {
+                user.setLoginToken(UUID.randomUUID().toString());
                 return user;
             } else {
                 throw new InvalidLoginException("Email does not exist or invalid password!");

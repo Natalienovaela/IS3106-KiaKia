@@ -4,9 +4,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import PropTypes from 'prop-types';
 import Api from "../../Helpers/Api";
 
-function Login({ handleLogin }) {
+function Login({ setToken, handleLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -60,11 +61,13 @@ function Login({ handleLogin }) {
           } else {
             navigate(`/Home/${userId}`);
             handleLogin(userId);
+            const token = data.loginToken;
+            setToken(token);
           }
         })
         .catch((error) => {
           console.log(email + " " + password);
-          setErrors({ submit: "Failed to login. Please try again."  });
+          setErrors({ submit: "Email does not exist or invalid password!" });
         });
     }
   };
@@ -179,4 +182,9 @@ function Login({ handleLogin }) {
     </Box>
   );
 }
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
+}
+
 export default Login;

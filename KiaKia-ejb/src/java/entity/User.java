@@ -41,6 +41,7 @@ public class User implements Serializable {
     private Date dob;
     private File photo;
     private String resetPasswordToken;
+    private String loginToken;
     @Temporal(TemporalType.DATE)
     private Date tokenExpiryDate;
     
@@ -197,5 +198,13 @@ public class User implements Serializable {
 //    public void setSalt(String salt) {
 //        this.salt = salt;
 //    }
+
+    public String getLoginToken() {
+        return loginToken;
+    }
+
+    public void setLoginToken(String loginToken) {
+        this.loginToken = loginToken;
+    }
 
 }

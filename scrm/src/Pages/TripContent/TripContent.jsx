@@ -201,7 +201,7 @@ function TripContent() {
                 title="Itinerary"
                 id="itinerary"
               >
-                <Itinerary />
+                <Itinerary tripId={tripId} />
                 {/*  itinerary component here }
                 <h2>Itinerary</h2>
 

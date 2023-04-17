@@ -22,12 +22,24 @@ import UploadFile from './Components/TripComponents/UploadFile';
 import PollTest from './Components/TripComponents/PollTest';
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import CreatePoll from './Components/TripComponents/CreatePoll';
+import Searchresult from "./Pages/SearchResult/Searchresult"
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState('');
     const [tripId, setTripId] = useState('');
     const [refreshData, setRefreshData] = useState(false);
+    // const [token, setToken] = getToken();
+
+    // function setToken(userToken) {
+    //     sessionStorage.setItem('token', JSON.stringify(userToken));
+    // }
+
+    // function getToken() {
+    //     const tokenString = sessionStorage.getItem('token');
+    //     const userToken = JSON.parse(tokenString);
+    //     return userToken?.token
+    // }
 
     const handleLogin = (userId) => {
         setIsLoggedIn(true);
@@ -46,6 +58,10 @@ const App = () => {
         setTripId(tripId);
     }
 
+    // if (!token) {
+    //     return <Login setToken={setToken} handleLogin={handleLogin} />
+    // }
+
     return (
         <>  <DndProvider backend={HTML5Backend}>
             <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userId={userId} refreshData={refreshData} />
@@ -55,20 +71,21 @@ const App = () => {
                     <Route path="/Home/:userId" element={<Home />} />
                     <Route path="/Signup" element={<Signup handleLogin={handleLogin} />} />
                     <Route path="/Login" element={<Login handleLogin={handleLogin} />} />
-                    <Route path="/ResetPassword" element={<ResetPassword userId={userId}/>} />
-                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip}/>} />
-                    <Route path="/TripContent/:userId/:tripId" element={<TripContent/>} /> {/*Need to change to /Trip/:id later on */}
-                    <Route path="/TripContent/:tripId" element={<TripContent/>} />
-                    <Route path="/PlacesContent/:placeId" element={<PlacesContent/>} />
-                    <Route path="/Trip/:userId" element={<Trip userId={userId}/>} />
-                    <Route path="/Wishlist/:userId" element={<Wishlist userId={userId}/>} />
-                    <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh}/>} />
-                    <Route path="/Explore" element={<Explore userId={userId}/>} />
+                    <Route path="/ResetPassword" element={<ResetPassword userId={userId} />} />
+                    <Route path="/CreateTrip/:userId" element={<CreateTrip userId={userId} handleTrip={handleTrip} />} />
+                    <Route path="/TripContent/:userId/:tripId" element={<TripContent />} /> {/*Need to change to /Trip/:id later on */}
+                    <Route path="/TripContent/:tripId" element={<TripContent />} />
+                    <Route path="/PlacesContent/:placeId" element={<PlacesContent />} />
+                    <Route path="/Trip/:userId" element={<Trip userId={userId} />} />
+                    <Route path="/Wishlist/:userId" element={<Wishlist userId={userId} />} />
+                    <Route path="/Profile/:userId" element={<Profile userId={userId} handleRefresh={handleRefresh} />} />
+                    <Route path="/Explore" element={<Explore userId={userId} />} />
                     <Route path="/TripNotes" element={<TripNotes />} />
                     <Route path="/PollTest" element={<PollTest />} />
                     <Route path="/TripPolls" element={<TripPolls />} />
                     <Route path="/UploadFile" element={<UploadFile />} />
                     <Route path="/CreatePoll" element={<CreatePoll />} />
+                    <Route path="/SearchResult/:query" element={<Searchresult />}/>
                 </Routes>
             </div>
             {/* Will change this component */}
