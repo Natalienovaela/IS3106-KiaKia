@@ -19,6 +19,7 @@ import TripNotes from './Components/TripComponents/TripNotes';
 import TripPolls from './Components/TripComponents/TripPolls';
 import UploadFile from './Components/TripComponents/UploadFile';
 import PollTest from './Components/TripComponents/PollTest';
+import CreatePoll from './Components/TripComponents/CreatePoll';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,11 +53,12 @@ const App = () => {
                     <Route path="/PollTest" element={<PollTest />} />
                     <Route path="/TripPolls" element={<TripPolls />} />
                     <Route path="/UploadFile" element={<UploadFile />} />
+                    <Route path="/CreatePoll" element={<CreatePoll />} />
                 </Routes>
             </div>
             {/* Will change this component */}
             <Footer />
-        </DndProvider>
+        </DndProvider >
         </>
     )
 }
