@@ -12,6 +12,7 @@ const PlaceCard = (props) => {
   const [click, setclick] = useState(false);
   const [img, setImg] = useState("");
   const navigate = useNavigate();
+  const user = props.userId;
 
   const handleClick = () => {
     navigate(`/PlacesContent/${props.placeId}`);
@@ -39,14 +40,18 @@ const PlaceCard = (props) => {
     <div className="place-card">
       <div className="pc-image-div">
         <img src={img} alt="Card" />
-        <IconButton
-          onClick={handleBookmark}
-          fontSize="large"
-          sx={{ color: "white" }}
-          className="bookmark-button"
-        >
-          {click ? <Bookmark /> : <BookmarkBorder />}
-        </IconButton>
+        {user ? (
+          <IconButton
+            onClick={handleBookmark}
+            fontSize="large"
+            sx={{ color: "white" }}
+            className="bookmark-button"
+          >
+            {click ? <Bookmark /> : <BookmarkBorder />}
+          </IconButton>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="card-content" onClick={handleClick}>
