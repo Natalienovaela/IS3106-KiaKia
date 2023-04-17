@@ -71,12 +71,12 @@ const App = () => {
                     <Route path="/Explore" element={<Explore userId={userId} />} />
                     <Route path="/SearchResult/:query" element={<Searchresult />} />
                     <Route path="/TripContent/:tripId" element={ <TripContent />}/>
+                    <Route path="/PlacesContent/:placeId" element={<PlacesContent />} />
 
                     <Route path="/Home/:userId" element={isLoggedIn ? <Home /> : <Navigate to="/Login" />} />
                     <Route path="/ResetPassword" element={isLoggedIn ?<ResetPassword userId={userId} /> : <Navigate to="/Login" />} />
                     <Route path="/CreateTrip/:userId" element={isLoggedIn ? <CreateTrip userId={userId} handleTrip={handleTrip} /> : <Navigate to="/Login" />} />
                     <Route path="/TripContent/:userId/:tripId" element={isLoggedIn ? <TripContent /> : <Navigate to="/Login" />} />
-                    <Route path="/PlacesContent/:placeId" element={isLoggedIn ? <PlacesContent /> : <Navigate to="/Login" />} />
                     <Route path="/Trip/:userId" element={isLoggedIn ? <Trip userId={userId} /> : <Navigate to="/Login" />} />
                     <Route path="/Wishlist/:userId" element={isLoggedIn ? <Wishlist userId={userId} /> : <Navigate to="/Login" />} />
                     <Route path="/Profile/:userId" element={isLoggedIn ? <Profile userId={userId} handleRefresh={handleRefresh} /> : <Navigate to="/Login" />} />

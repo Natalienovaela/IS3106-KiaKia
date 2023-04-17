@@ -69,6 +69,7 @@
   gap: 1rem;
   flex-direction: row;
   position: relative;
+  margin-left: 200px;
 }
 .top .secContent .contactDiv .inputDiv input {
   width: 100%;
@@ -79,6 +80,8 @@
   background-color: white;
   color: var(--blackColor);
   text-indent: 10px;
+  display: flex;
+  justify-content: center;
 }
 .top .secContent .contactDiv .inputDiv input::-moz-placeholder {
   color: var(--blackColor);
@@ -92,17 +95,14 @@
 }
 .top .secContent .contactDiv .inputDiv .button {
   width: 10%;
-  justify-content: center;
   color: var(--blackColor);
   font-weight: 500;
-  gap: 0.5rem;
   top: 50%;
-  right: 0.6rem;
+  left: 12rem;
   transform: translateY(-50%);
   position: absolute;
   background-color: transparent;
   border: none;
-  padding: 0;
 }
 .top .secContent .contactDiv .inputDiv .button .icon {
   font-size: 20px;
