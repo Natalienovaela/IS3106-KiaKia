@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import DayContent from "./DayContent";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { DragDropContext } from "react-beautiful-dnd";
+// import { DragDropContext } from "react-beautiful-dnd";
 
 const Itinerary = () => {
   const { RangePicker } = DatePicker;
