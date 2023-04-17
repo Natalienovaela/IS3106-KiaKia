@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -492,5 +493,24 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-
+    
+    @GET
+    @Path("/{tripId}/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsersInTrip(@PathParam("tripId") Long tripId) {
+        int noUsers = tripSessionBeanLocal.findNumberOfUsersInTrip(tripId);
+        Map<String, Integer> responseMap = new HashMap<>();
+            responseMap.put("noUsers", noUsers);
+        return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @GET
+    @Path("/{tripId}/days")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDaysInTrip(@PathParam("tripId") Long tripId) {
+        int noDays = tripSessionBeanLocal.getNumOfDaysInTrip(tripId);
+        Map<String, Integer> responseMap = new HashMap<>();
+            responseMap.put("noDays", noDays);
+        return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+    }
 }

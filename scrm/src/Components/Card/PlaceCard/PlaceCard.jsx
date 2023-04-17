@@ -20,7 +20,9 @@ const PlaceCard = (props) => {
   const handleBookmark = () => {
     setclick(!click);
     console.log("clicked");
-    props.onClick(props.card);
+    if (props.onClick) {
+      props.onClick(props.card);
+    }
   };
 
   useEffect(() => {
