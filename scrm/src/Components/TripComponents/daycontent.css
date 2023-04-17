@@ -1,0 +1,76 @@
+.itinerary-details {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 1px solid var(--greyText);
+  border-radius: 30px;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.itinerary-details .placesLineItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.itinerary-details .placesLineItem .btn {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 1rem;
+  color: white;
+}
+.itinerary-details .placesLineItem .place-ind {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem;
+}
+.itinerary-details .placesLineItem .place-ind .item {
+  border: 1px solid gray;
+  border-radius: 20px;
+  padding: 1rem;
+  width: 50%;
+  background-color: var(--whiteColorDeam);
+}
+.itinerary-details .placesLineItem .add-place-div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.itinerary-details .placesLineItem .add-place-div .cancel {
+  background-image: none;
+  color: var(--PrimaryColor);
+  padding: 1rem;
+  border-radius: 30px;
+  border-color: var(--PrimaryColor);
+}
+.itinerary-details .placesLineItem .add-place-div .cancel:hover {
+  background-image: var(--gradientColor);
+  color: white;
+}
+
+.date-range-picker {
+  display: flex;
+  flex-direction: column;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 1rem 2rem;
+  margin: 1rem 0;
+  border: 1px solid var(--PrimaryColor);
+  background-image: var(--gradientColor);
+  border-radius: 30px;
+}
+.date-range-picker .date {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.date-range-picker .date-num {
+  color: white !important;
+}
+
+.places {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}/*# sourceMappingURL=daycontent.css.map */

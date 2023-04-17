@@ -9,6 +9,8 @@ import Itineraries from "./Itineraries/Itineraries";
 import Places from "./Places/Places";
 import Emoji from "a11y-react-emoji";
 import Api from "../../Helpers/Api";
+import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const dummyData = [
   {
@@ -47,7 +49,14 @@ const dummyData = [
 
 const Explore = ({ userId }) => {
   const [sharedItineraries, setSharedItineraries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    navigate(`/Searchresult/${searchTerm}`);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,7 +92,19 @@ const Explore = ({ userId }) => {
           <h1>
             Explore <Emoji symbol="🌏" label="earth emoji" />
           </h1>
-          <button onClick={here}>check user id here</button>
+          <div>
+            <form onSubmit={handleSearch} className="search-bar">
+              <input
+                type="text"
+                placeholder="Seach here"
+                className="input-field"
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+              <button className="button flex" type="submit">
+                <FiSearch className="icon" />
+              </button>
+            </form>
+          </div>
         </div>
 
         <div className="sec">
