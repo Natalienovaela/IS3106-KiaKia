@@ -58,7 +58,7 @@
   color: var(--whiteColor);
 }
 .place-card .card-content .country {
-  color: var(--greyText);
+  color: var(--whiteColor);
   font-size: 15px;
 }
 

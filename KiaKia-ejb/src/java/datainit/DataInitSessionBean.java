@@ -12,6 +12,8 @@ import entity.Trip;
 import entity.User;
 import enumeration.CityEnum;
 import enumeration.CountryEnum;
+import error.DayItineraryNotFoundException;
+import error.PlaceNotFoundException;
 import error.TripNotFoundException;
 import error.UnknownPersistenceException;
 import error.UserNotFoundException;
@@ -31,6 +33,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import session.ItinerarySessionBeanLocal;
 import session.NoteSessionBeanLocal;
+import session.PlaceLineItemSessionBeanLocal;
 import session.PollSessionBeanLocal;
 import session.TripSessionBeanLocal;
 import session.UserSessionBeanLocal;
@@ -61,6 +64,9 @@ public class DataInitSessionBean {
 
     @EJB
     private ItinerarySessionBeanLocal itinerarySessionBeanLocal;
+    
+    @EJB
+    private PlaceLineItemSessionBeanLocal placeLineItemSessionBeanLocal;
 
     @PostConstruct
     public void PostConstruct() {
@@ -157,15 +163,24 @@ public class DataInitSessionBean {
 //            Note note9 = new Note("My 9th Note", "bla", false);
 //            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
 
-            Trip trip2 = new Trip("Second Trip", new GregorianCalendar(2024, Calendar.JUNE, 15).getTime(), new GregorianCalendar(2024, Calendar.JUNE, 28).getTime());
-            em.persist(trip2);
+            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 25).getTime());
+            em.persist(singapore);
             em.flush();
-            itinerarySessionBeanLocal.createItineraries(trip2.getStartDate(), trip2.getEndDate(), trip2.getTripId());
-            Note note10 = new Note("My 10 Note", "blablabla", false);
-            noteSessionBeanLocal.createNewNote(note10, trip2.getTripId());
+            itinerarySessionBeanLocal.createItineraries(singapore.getStartDate(), singapore.getEndDate(), singapore.getTripId());
+            Note singaporeNote = new Note("Description", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
+            noteSessionBeanLocal.createNewNote(singaporeNote, singapore.getTripId());
+            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 1l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 2l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 3l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(2l, 4l);
+
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TripNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PlaceNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DayItineraryNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
