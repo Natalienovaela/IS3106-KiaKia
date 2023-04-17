@@ -363,6 +363,15 @@ const Api = {
 
     getCountryList() {
         return fetch(`${SERVER_PREFIX}/cityOrCountry/country`);
+    },
+
+    //places
+    getPlace(placeId) {
+        return fetch(`${SERVER_PREFIX}/places/${placeId}`);
+    },
+
+    getAllPlaces() {
+        return fetch(`${SERVER_PREFIX}/places`);
     }
 
 };

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './PublicLanding.css';
-import HorizontalCard from '../../Components/Card/HorizontalCard/HorizontalCard';
+import Api from "../../Helpers/Api";
 import video2 from '../../Assets/video2.mp4';
-import {FiSearch} from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import image from '../../Assets/img.jpg';
 import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
 import singapore from "../../Assets/singapore.png";
@@ -91,17 +91,23 @@ const itineraryDummyData = [
 ];
 
 const PublicLanding = () => {
-  const horizontalCards = dummyData?.map((cardData) => (
-    <HorizontalCard {...cardData} />
-  ));
+  const [placesData, setPlacesData] = useState([]);
 
-  const placeCards = placesDummyData?.map((data) => (
+  const placeCards = placesData?.map((data) => (
     <PlaceCard key={data.id} {...data} />
   ));
 
   const itineraryCards = itineraryDummyData?.map((data) => (
     <ItineraryCard key={data.id} {...data} />
   ));
+
+  useEffect(() => {
+    Api.getAllPlaces()
+      .then((response) => response.json())
+      .then((data) => {
+        setPlacesData(data);
+      });
+  }, []);
 
   return (
     <>
@@ -125,7 +131,7 @@ const PublicLanding = () => {
           </div>
         </div>
       </section>
-      
+
       <div className="container">
         <div className="pageTitle">
           <h1>Start planning your trip with us!</h1>
@@ -137,9 +143,15 @@ const PublicLanding = () => {
           </div> */}
           <div className="subSec">
             <div className="subSecTitle">
-              <h3>Top Places</h3><p>see more...</p>
+              <h3>Top Places</h3>
             </div>
-            <div className="cards-horizontal">{placeCards}</div>
+            <div className="places-group">
+              {placesData.map((place) => (
+                <div key={place.id}>
+                </div>
+              ))}
+              <div className="cards-horizontal">{placeCards}</div>
+            </div>
           </div>
           <div className="subSec">
             <div className="subSecTitle">
