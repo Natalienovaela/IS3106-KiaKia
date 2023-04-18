@@ -179,12 +179,20 @@ const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
                           }}
                         />
                       ))}
+                      <Box sx={{ paddingTop: 2 }}></Box>
                       <Button
-                        className="btn"
+                        className="btn btnVin"
                         variant="contained"
                         onClick={handleSubmit}
                         style={{
                           maxWidth: "500px",
+                        }}
+                        sx={{
+                          bgcolor: "var(--PrimaryColor)",
+                          ":hover": {
+                            bgcolor: "var(--SecondaryColor)",
+                            color: "white",
+                          },
                         }}
                       >
                         Submit
