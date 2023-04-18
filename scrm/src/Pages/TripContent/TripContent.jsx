@@ -18,6 +18,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import newyork from "../../Assets/newyork.png";
+import japan from "../../Assets/japan.png";
+import singapore from "../../Assets/singapore.png";
 
 import utc from "dayjs/plugin/utc";
 
@@ -94,6 +97,13 @@ function TripContent() {
           setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
           console.log(endDate - startDate);
           setIsTripShared(isShared);
+          if (name === "Japan") {
+            setImg(japan);
+          } else if (name === "New York") {
+            setImg(newyork);
+          } else if (name === "Singapore") {
+            setImg(singapore);
+          }
         }),
     ]);
   }, []);
