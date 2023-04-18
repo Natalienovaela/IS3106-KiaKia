@@ -8,16 +8,18 @@ import Emoji from "a11y-react-emoji";
 function Trip({ userId }) {
   const [personalData, setPersonalData] = useState([]);
   const [groupData, setGroupData] = useState([]);
-  const personalTripCards = personalData?.map((cardData) => (
+  const [numOfDays, setNumOfDays] = useState([]);
+  const personalTripCards = personalData?.map((cardData, index) => (
     <TripCard
       key={cardData.id}
       userId={userId}
       {...cardData}
       cityName={cardData.city}
       inTrip={true}
+      numOfDays={numOfDays[index]}
     />
   ));
-  const groupTripCards = groupData?.map((cardData) => (
+  const groupTripCards = groupData?.map((cardData, index) => (
     <TripCard
       key={cardData.id}
       userId={userId}
@@ -25,6 +27,7 @@ function Trip({ userId }) {
       cityName={cardData.city}
       inTrip={true}
       {...cardData}
+      numOfDays={numOfDays[index]}
     />
   ));
 
@@ -37,28 +40,36 @@ function Trip({ userId }) {
     Api.getAllPersonalTrips(userId)
       .then((res) => res.json())
       .then((trips) => {
-        for (const trip of trips) {
-          const { startDate, endDate } = trip;
-          trip.startDate = moment(startDate);
-          trip.endDate = moment(endDate);
-        }
-        console.log(trips);
         setPersonalData(trips);
-      });
+        const promises = trips.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   };
 
   const reloadGroupData = () => {
     Api.getAllGroupTrips(userId)
       .then((res) => res.json())
       .then((trips) => {
-        for (const trip of trips) {
-          const { startDate, endDate } = trip;
-          trip.startDate = moment(startDate);
-          trip.endDate = moment(endDate);
-        }
-        console.log(trips);
         setGroupData(trips);
-      });
+        const promises = trips.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   };
 
   const tes = () => {
@@ -76,7 +87,7 @@ function Trip({ userId }) {
         <div className="secTitle">
           <h2 onClick={tes}>Personal</h2>
           <div className="trip-personal-group">
-            {personalData.map((trip) => (
+            {personalData.map((trip, index) => (
               <div key={trip.id}></div>
             ))}
             <div className="cards">{personalTripCards}</div>
@@ -87,9 +98,8 @@ function Trip({ userId }) {
         <div className="secTitle">
           <h2>Group</h2>
           <div>
-            {groupData.map((trip) => (
+            {groupData.map((trip, index) => (
               <div key={trip.id}>
-                <h2>{trip.name}</h2>
               </div>
             ))}
             <div className="cards">{groupTripCards}</div>

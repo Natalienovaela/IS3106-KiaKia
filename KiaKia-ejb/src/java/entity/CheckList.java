@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -25,12 +26,13 @@ public class CheckList implements Serializable {
     private Long checkListId;
     
     private String title;
-    private List<String> content;
+    
+    @OneToMany
+    private List<CheckListItem> checkListItem;
     private Boolean isShared = Boolean.FALSE;
 
-    public CheckList(String title, List<String> content) {
+    public CheckList(String title) {
         this.title = title;
-        this.content = content;
     }
 
     public CheckList() {
@@ -77,20 +79,20 @@ public class CheckList implements Serializable {
         this.title = title;
     }
 
-    public List<String> getContent() {
-        return content;
-    }
-
-    public void setContent(List<String> content) {
-        this.content = content;
-    }
-
     public Boolean getIsShared() {
         return isShared;
     }
 
     public void setIsShared(Boolean isShared) {
         this.isShared = isShared;
+    }
+
+    public List<CheckListItem> getCheckListItem() {
+        return checkListItem;
+    }
+
+    public void setCheckListItem(List<CheckListItem> checkListItem) {
+        this.checkListItem = checkListItem;
     }
     
 }

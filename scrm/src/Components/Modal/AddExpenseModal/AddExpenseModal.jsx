@@ -8,13 +8,13 @@ import {
   InputLabel,
   Input,
   Chip
-} from "@material-ui/core";
+} from "@mui/material";
 import Modal from "../Modal/Modal";
 import "./AddExpenseModal.scss";
 
 const AddExpenseModal = ({ open, onClose, categories, users, onSubmit }) => {
-  const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState(null);
+  const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
 

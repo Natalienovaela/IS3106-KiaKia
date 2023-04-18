@@ -50,6 +50,7 @@ const dummyData = [
 const Explore = ({ userId }) => {
   const [sharedItineraries, setSharedItineraries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [numOfDays, setNumOfDays] = useState([]);
   const navigate = useNavigate();
 
   const handleSearch = (event) => {
@@ -57,19 +58,6 @@ const Explore = ({ userId }) => {
 
     navigate(`/Searchresult/${searchTerm}`);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await Api.getAllSharedTrips();
-        const data = await response.json();
-        setSharedItineraries(data);
-        console.log(data);
-        console.log("Successfully retrieved shared itineraries");
-      } catch (error) {
-        console.log("Error while retrieving trips list");
-      }
-    };
-  });
 
   const itineraryCards = sharedItineraries?.map((cardData) => (
     <ItineraryCard key={cardData.id} {...cardData} />
@@ -115,10 +103,9 @@ const Explore = ({ userId }) => {
             TabIndicatorProps={{ sx: { backgroundColor: "#ff8f66" } }}
           >
             <Tab label="Places" className="tab-child" />
-            <Tab label="Itineraries" className="tab-child" />
+            <Tab label="Shared Trips" className="tab-child" />
           </Tabs>
           <div className="explore-content">
-            {itineraryCards}
             {selectedTab === 0 && <Places userId={userId} />}
             {selectedTab === 1 && <Itineraries userId={userId} />}
           </div>

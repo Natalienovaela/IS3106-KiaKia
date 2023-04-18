@@ -1,29 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import "./ChartModal.scss";
+import Modal from "../Modal/Modal";
+import Api from "../../../Helpers/Api";
 
-const ChartModal = ({ expenses, onClose }) => {
-  const chartRef = React.useRef();
+const ChartModal = ({ open, onClose, tripId }) => {
+  const chartRef = useRef();
+  const [expenses, setExpenses] = useState([]);
 
-  React.useEffect(() => {
-    const ctx = chartRef.current.getContext("2d");
+  useEffect(() => {
+    Api.getTotalExpenseByCategory(tripId)
+      .then((response) => response.json())
+      .then((data) => {
+        const expensesArr = Object.entries(data).map(([name, value]) => ({
+          name,
+          value,
+        }));
+        setExpenses(expensesArr);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving total expense by categories.");
+      });
+  }, [tripId])
 
-    // Group the expenses by category and sum up the amounts
-    const groupedExpenses = expenses.reduce((acc, curr) => {
-      const category = curr.category;
-      acc[category] = (acc[category] || 0) + curr.amount;
-      return acc;
-    }, {});
+  useEffect(() => {
+    const ctx = chartRef.current?.getContext("2d");   
 
     // Create an array of category labels and amounts
-    const labels = Object.keys(groupedExpenses);
-    const amounts = Object.values(groupedExpenses);
+    const categories = expenses.map(([category, amount]) => category);
+    const amounts = expenses.map(([category, amount]) => amount);
+
 
     // Create the chart
     const chart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: labels,
+        labels: categories,
         datasets: [
           {
             label: "Expenses by Category",
@@ -67,14 +79,16 @@ const ChartModal = ({ expenses, onClose }) => {
   }, [expenses]);
 
   return (
-    <div className="view-breakdown-modal">
-      <div className="modal-content">
-        <canvas ref={chartRef}></canvas>
-        <button className="close-button" onClick={onClose}>
-          Close
-        </button>
+    <Modal open={open} onClose={onClose}>
+      <div className="view-breakdown-modal">
+        <div className="modal-content">
+          <canvas ref={chartRef} />
+          <button className="close-button" onClick={onClose}>
+            Close
+          </button>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

@@ -100,14 +100,15 @@ const PublicLanding = () => {
   const [itinerariesData, setItinerariesData] = useState([]);
   const [numOfDays, setNumOfDays] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { userId } = useState(null);
   const navigate = useNavigate();
 
   const placeCards = placesData?.map((data) => (
-    <PlaceCard key={data.id} {...data} />
+    <PlaceCard key={data.id} userId={userId} {...data} />
   ));
 
   const itineraryCards = itinerariesData?.map((data, index) => (
-    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} {...data} />
+    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} userId={userId} {...data} />
   ));
 
 
@@ -199,7 +200,7 @@ const PublicLanding = () => {
           </div>
           <div className="subSec">
             <div className="subSecTitle">
-              <h3>Top Itineraries</h3>
+              <h3>Top SharedTrips</h3>
             </div>
             <div className="itineraries-group">
               {itinerariesData.map((itinerary, index) => (
