@@ -1,8 +1,12 @@
 import Api from "../../Helpers/Api";
 import { useEffect, useState } from "react";
 import Note from "./Note";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import Box from "@mui/material/Box";
 
-const TripNotes = ({ tripId }) => {
+const TripNotes = ({ tripId, userId, userRole }) => {
   // const {
   //   data: notes,
   //   isPending,
@@ -34,6 +38,15 @@ const TripNotes = ({ tripId }) => {
       .catch((err) => {
         console.log(err.message);
       });
+    // Api.getUserRole(userId, tripId)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log("USER ROLE" + data);
+    //     // setUserRole(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching user role:", error);
+    //   });
   };
 
   const handleDelete = (noteId) => {
@@ -51,24 +64,28 @@ const TripNotes = ({ tripId }) => {
 
   return (
     <div className="trip-notes">
-      <h3>Notes</h3>
-      {/* {error && <div> {error} </div>}
+      <div className="rowComponent">
+        <h2>Notes</h2>
+        {/* {error && <div> {error} </div>}
       {isPending && <div> Loading... </div>} */}
-      <div>
-        <button className="note btn container" onClick={handleCreateNote}>
-          Create Note
-        </button>
+        {userRole !== "VIEWER" && (
+          <Box sx={{ paddingLeft: 2 }}>
+            <IconButton onClick={handleCreateNote}>
+              <AddRoundedIcon />
+            </IconButton>
+          </Box>
+        )}
       </div>
       {notes &&
         notes.map((note) => (
           <div key={note.noteId} className="rowComponent">
             <div className="noteComponent">
-              <Note tripId={tripId} note={note} handleDelete={handleDelete} />
-            </div>
-            <div>
-              <button className="btn" onClick={() => handleDelete(note.noteId)}>
-                Delete
-              </button>
+              <Note
+                tripId={tripId}
+                note={note}
+                userRole={userRole}
+                handleDelete={handleDelete}
+              />
             </div>
           </div>
         ))}

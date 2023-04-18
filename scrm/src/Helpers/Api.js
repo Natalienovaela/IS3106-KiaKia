@@ -17,6 +17,18 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
+    getNumberUsersinTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/users`);
+    },
+
+    getAllSharedTrips() {
+        return fetch(`${SERVER_PREFIX}/trips/allSharedTrips`);
+    },
+
+    getNumOfDaysTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/days`);
+    },
+
     //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
@@ -101,6 +113,11 @@ const Api = {
                 "Content-Type": "application/json",
             },
             method: "PUT",
+        });
+    },
+    deletePoll(tripId, pollId, userId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/polls/${pollId}/user/${userId}`, {
+            method: "DELETE",
         });
     },
 
@@ -236,7 +253,7 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     },
     getUserRole(userId, tripId) {
-        return fetch(`{SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/users/${userId}/userRole`);
     },
 
 
@@ -356,6 +373,27 @@ const Api = {
         });
     },
 
+    // places wishlist
+    getWishlistPlaces(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace`);
+    },
+
+    linkUserWithWishlistPlace(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}/link`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
+    removeWishlistPlaceFromUser(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+            method: "DELETE",
+        })
+    },
+
     //cityorcountry
     getCityList() {
         return fetch(`${SERVER_PREFIX}/cityOrCountry/city`);
@@ -393,7 +431,7 @@ const Api = {
     deleteBudget(tripId, budgetId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`);
     },
-    
+
     getBudgetByCategory(tripId, categoryId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/category/${categoryId}`);
     },
@@ -456,7 +494,7 @@ const Api = {
     payDebts(tripId, payerId, beneficiaryId, amt) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt?payerId=${payerId}&beneficiaryId=${beneficiaryId}&amt=${amt}`);
     },
-    
+
 };
 
 export default Api;

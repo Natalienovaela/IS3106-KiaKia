@@ -10,9 +10,12 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Api from "../../Helpers/Api";
 
-const Poll = ({ userId, tripId, pollId }) => {
+const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
   const [poll, setPoll] = useState(null);
 
   const [options, setOptions] = useState(null);
@@ -41,7 +44,7 @@ const Poll = ({ userId, tripId, pollId }) => {
           id: key,
           value: value,
         }));
-        console.log("options " + options);
+        // console.log("options " + options);
         setOptions(options);
         return options;
       })
@@ -61,7 +64,7 @@ const Poll = ({ userId, tripId, pollId }) => {
         return res.json(); //return another promise of data
       })
       .then((data) => {
-        console.log("participation " + data);
+        // console.log("participation " + data);
         setSubmitted(data);
         return data;
       })
@@ -81,7 +84,7 @@ const Poll = ({ userId, tripId, pollId }) => {
         return res.json(); //return another promise of data
       })
       .then((data) => {
-        console.log("percentage " + data);
+        // console.log("percentage " + data);
         setPercentage(data);
       })
       .catch((err) => {
@@ -99,7 +102,7 @@ const Poll = ({ userId, tripId, pollId }) => {
   }, [submitted]);
 
   const handleOptionChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setSelectedOption(event.target.value);
   };
 
@@ -112,6 +115,25 @@ const Poll = ({ userId, tripId, pollId }) => {
     } else {
       //throw error here
     }
+  };
+
+  const handleDelete = () => {
+    Api.deletePoll(tripId, pollId, userId)
+      .then((res) => {
+        if (!res.ok) {
+          //http OK from server
+          console.log("error");
+          throw Error("could not fetch data");
+        }
+        return res.json(); //return another promise of data
+      })
+      .then((data) => {
+        // console.log("percentage " + data);
+        setPolls(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   // const handleSubmit = () => {
@@ -131,68 +153,107 @@ const Poll = ({ userId, tripId, pollId }) => {
         options &&
         submitted != null &&
         (!submitted || (submitted && percentage)) && (
-          <Card className="pollCard">
-            <CardContent>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="h6" gutterBottom>
-                  {poll.description}
-                </Typography>
-              </Box>
-              {!submitted && (
-                <RadioGroup
-                  value={selectedOption}
-                  onChange={handleOptionChange}
-                >
-                  {options.map((option) => (
-                    <FormControlLabel
-                      key={option.id}
-                      value={option.id}
-                      control={<Radio />}
-                      label={option.value}
-                    />
-                  ))}
-                  <Button
-                    className="btn"
-                    variant="contained"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </Button>
-                </RadioGroup>
-              )}
-              {submitted && (
-                <div>
-                  {options.map((option) => (
-                    <div key={option.id}>
-                      <div
+          <>
+            <div className="rowComponent" key={pollId}>
+              <Card className="pollCard" elevation={0} sx={{ borderRadius: 5 }}>
+                <CardContent>
+                  <Box sx={{ mb: 2, maxWidth: "500px" }}>
+                    <Typography variant="h6" gutterBottom>
+                      {poll.description}
+                    </Typography>
+                  </Box>
+                  {!submitted && userRole !== "VIEWER" && (
+                    <RadioGroup
+                      value={selectedOption}
+                      onChange={handleOptionChange}
+                    >
+                      {options.map((option) => (
+                        <FormControlLabel
+                          key={option.id}
+                          value={option.id}
+                          control={<Radio />}
+                          label={option.value}
+                          style={{
+                            maxWidth: "500px",
+                            wordBreak: "break-all",
+                          }}
+                        />
+                      ))}
+                      <Box sx={{ paddingTop: 2 }}></Box>
+                      <Button
+                        className="btn btnVin"
+                        variant="contained"
+                        onClick={handleSubmit}
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          marginBottom: 4,
+                          maxWidth: "500px",
+                        }}
+                        sx={{
+                          bgcolor: "var(--PrimaryColor)",
+                          ":hover": {
+                            bgcolor: "var(--SecondaryColor)",
+                            color: "white",
+                          },
                         }}
                       >
-                        <Typography variant="body1">{option.value}</Typography>
-                        <Typography variant="body1">
-                          {Math.round(percentage[option.id] * 100)}%
-                        </Typography>
-                      </div>
-                      <LinearProgress
-                        variant="determinate"
-                        value={percentage[option.id] * 100}
-                        color="primary"
-                        style={{
-                          height: 12,
-                          borderRadius: 6,
-                          overflow: "hidden",
-                        }}
-                      />
+                        Submit
+                      </Button>
+                    </RadioGroup>
+                  )}
+                  {(submitted || userRole === "VIEWER") && (
+                    <div>
+                      {options.map((option) => (
+                        <div key={option.id}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              marginBottom: 4,
+                            }}
+                          >
+                            <Typography
+                              variant="body1"
+                              style={{ wordBreak: "break-word" }}
+                            >
+                              {option.value}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              style={{ wordBreak: "break-word" }}
+                            >
+                              {Math.round(percentage[option.id] * 100)}%
+                            </Typography>
+                          </div>
+                          <LinearProgress
+                            variant="determinate"
+                            value={percentage[option.id] * 100}
+                            style={{
+                              height: 12,
+                              borderRadius: 6,
+                              overflow: "hidden",
+                            }}
+                            sx={{
+                              backgroundColor: "var(--inputColor)",
+                              "& .MuiLinearProgress-bar": {
+                                backgroundColor: `var(--PrimaryColor)`,
+                              },
+                            }}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  )}
+                </CardContent>
+              </Card>
+              {userRole !== "VIEWER" && (
+                <Box sx={{ paddingLeft: 2 }}>
+                  <IconButton onClick={handleDelete}>
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>
+                </Box>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </>
         )}
     </>
   );

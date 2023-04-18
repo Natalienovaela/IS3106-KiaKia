@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -121,7 +122,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
         }
 
     }
-    
+
     @Override
     public List<Trip> getAllSharedTrips() {
         return em.createQuery("SELECT t FROM Trip t WHERE t.isShared = TRUE").getResultList();
@@ -188,15 +189,11 @@ public class TripSessionBean implements TripSessionBeanLocal {
     @Override
     public UserRoleEnum getRole(Long tripId, Long userId) throws UserNotFoundException, TripNotFoundException {
         try {
-            Trip trip = em.find(Trip.class, tripId);
-            try {
-                User user = em.find(User.class, userId);
-                return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip = :trip AND t.user = :user").setParameter("user", user).setParameter("trip", trip).getSingleResult();
-            } catch (Exception ex) {
-                throw new UserNotFoundException("User not found");
-            }
-        } catch (Exception ex) {
-            throw new TripNotFoundException("Trip not found");
+            Trip trip = retrieveTripByTripId(tripId);
+            User user = userSessionBeanLocal.retrieveUserByUserId(userId);
+            return (UserRoleEnum) em.createQuery("SELECT t.userRoleEnum FROM TripAssignment t WHERE t.trip.tripId = :tripId AND t.user.userId = :userId").setParameter("userId", userId).setParameter("tripId", tripId).getSingleResult();
+        } catch (TripNotFoundException | UserNotFoundException ex) {
+            throw new TripNotFoundException(ex.getMessage());
         }
     }
 
@@ -318,6 +315,42 @@ public class TripSessionBean implements TripSessionBeanLocal {
             TripAssignment tripAssignment = new TripAssignment(admin, trip, UserRoleEnum.ADMIN);
             em.persist(tripAssignment);
             System.out.println("add assignment");
+
+            for (int i = 0; i < userEmails.size(); i++) {
+                String email = userEmails.get(i);
+                System.out.println(email);
+
+                System.out.println(userRoles.get(i));
+                UserRoleEnum userRole = UserRoleEnum.valueOf(userRoles.get(i));
+                User user = userSessionBeanLocal.retrieveUserByEmail(email);
+
+                switch (userRole) {
+                    case ADMIN:
+                        TripAssignment tripAssignment2 = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                        em.persist(tripAssignment2);
+                        break;
+                    case EDITOR:
+                        TripAssignment tripAssignment3 = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
+                        em.persist(tripAssignment3);
+                        break;
+                    case VIEWER:
+                        TripAssignment tripAssignment4 = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
+                        em.persist(tripAssignment4);
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println("add assignments");
+            }
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void inviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException {
+        try {
+            User admin = userSessionBeanLocal.retrieveUserByUserId(userId);
 
             for (int i = 0; i < userEmails.size(); i++) {
                 String email = userEmails.get(i);
@@ -533,6 +566,24 @@ public class TripSessionBean implements TripSessionBeanLocal {
         } else {
             throw new CityOrCountryNotSelected("City or Country is not specified");
         }
+    }
+    
+    @Override
+    public int findNumberOfUsersInTrip(Long tripId) {
+        Query query = em.createQuery("SELECT COUNT(DISTINCT ta.tripAssignmentId.userId) FROM TripAssignment ta WHERE ta.tripAssignmentId.tripId = :tripId");
+        query.setParameter("tripId", tripId);
+        int numberOfUsers = ((Long) query.getSingleResult()).intValue();
+
+        return numberOfUsers;
+    }
+    
+    @Override
+    public int getNumOfDaysInTrip(Long tripId) {
+        Trip trip  = em.find(Trip.class, tripId);
+        int day = (int) TimeUnit.DAYS.convert((trip.getEndDate().getTime() - trip.getStartDate().getTime()), TimeUnit.MILLISECONDS);
+        day++;
+        
+        return day;
     }
 
 }

@@ -4,13 +4,15 @@ import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
 import DayContent from "./DayContent";
+import DayContents from "./DayContents";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { DragDropContext } from "react-beautiful-dnd";
+import "./daycontent.css";
+// import { DragDropContext } from "react-beautiful-dnd";
 
-const Itinerary = () => {
+const Itinerary = (props) => {
   const { RangePicker } = DatePicker;
-  const id = 1;
+  const tripId = props.tripId;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState(
@@ -52,10 +54,11 @@ const Itinerary = () => {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(id)
+    Api.getTrip(tripId) // later change to trip id
       .then((res) => res.json())
       .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
+        const { name, startDate, endDate, itinerary, isShared, country } = trip;
+        console.log(itinerary);
         setName(name);
         setItinerary(itinerary);
         setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
@@ -64,44 +67,22 @@ const Itinerary = () => {
       });
     console.log("the : " + startDate + " " + endDate);
   }, []);
-
-  const [places, setPlaces] = useState([]);
-
-  // to get country list for search bar value
   useEffect(() => {
-    Api.getCountryList()
-      .then((response) => response.json())
-      .then((data) => {
-        setPlaces(data);
-      })
-      .catch((error) => {
-        console.log("Error while retrieving country list");
-      });
-  }, []);
-  const [inputValue, setInputValue] = React.useState("");
-  const [value, setValue] = React.useState(places[0]);
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
-  const handleDayChange = useCallback(
-    (index) => {
-      setSelectedDayIndex(index);
-      setValue(itinerary[index]?.place || null);
-      setInputValue(inputValue[index] || "");
-    },
-    [itinerary]
-  );
-
-  useEffect(() => {
-    handleDayChange(0);
-  }, [itinerary, handleDayChange]);
+    reloadData();
+    console.log(tripId);
+  }, [reloadData]);
 
   return (
     <>
       <h2>Itinerary</h2>
 
       <div className="date-range-picker">
-        <h3>
-          {startDate.toLocaleDateString()} to {endDate.toLocaleDateString()}
-        </h3>
+        <div className="date">
+          <h2 className="date-num">{startDate.toLocaleDateString()}</h2>
+          <h2>to </h2>
+          <h2 className="date-num">{endDate.toLocaleDateString()}</h2>
+        </div>
+
         <RangePicker
           onChange={handleDateRangeChange}
           value={[dayjs(startDate.toString()), dayjs(endDate.toString())]}
@@ -114,7 +95,14 @@ const Itinerary = () => {
           .map((item) => ({ ...item, date: new Date(item.date) })) // convert date strings to date objects
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
-            <DayContent item={item} index={index} />
+            <>
+              <DayContents
+                item={item}
+                index={index}
+                tripId={tripId}
+                userRole={props.userRole}
+              />
+            </>
           ))}
       </div>
 

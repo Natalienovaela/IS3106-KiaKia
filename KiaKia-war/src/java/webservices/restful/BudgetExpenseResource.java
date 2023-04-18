@@ -7,7 +7,6 @@ package webservices.restful;
 
 import entity.Budget;
 import entity.BudgetExpenseCategory;
-import static entity.BudgetExpenseCategory_.budget;
 import entity.Debt;
 import entity.Expense;
 import error.BudgetNotFoundException;
@@ -445,7 +444,7 @@ public class BudgetExpenseResource
     {
         try 
         {
-            debtSessionBeanLocal.payDebt(tripId, debt, amt);
+            debtSessionBeanLocal.payDebt(tripId, debtId, amt);
             return Response.status(204).build();
         } 
         catch (TripNotFoundException ex) 

@@ -105,6 +105,14 @@ public class Trip implements Serializable {
         this.endDate = endDate;
         this.country = country;
     }
+
+    public Trip(Date startDate, Date endDate, String name, String description, CountryEnum country) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.name = name;
+        this.description = description;
+        this.country = country;
+    }
     
     public Long getTripId() {
         return tripId;

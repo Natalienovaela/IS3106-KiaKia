@@ -1,44 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import './PublicLanding.css';
+import React, { useState, useEffect } from "react";
+import "./PublicLanding.css";
 import Api from "../../Helpers/Api";
-import video2 from '../../Assets/video2.mp4';
-import { FiSearch } from 'react-icons/fi';
-import image from '../../Assets/img.jpg';
+import video2 from "../../Assets/video2.mp4";
+import { FiSearch } from "react-icons/fi";
+import image from "../../Assets/img.jpg";
 import PlaceCard from "../../Components/Card/PlaceCard/PlaceCard";
 import singapore from "../../Assets/singapore.png";
 import tokyo from "../../Assets/tokyo.jpg";
 import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
 import newyork from "../../Assets/newyork.png";
 import japan from "../../Assets/japan.png";
+import { useNavigate } from "react-router-dom";
 
 const dummyData = [
   {
     img: image,
-    tripTag: 'Summer 2023 - 14 days trip',
-    cardTitle: 'Japan',
+    tripTag: "Summer 2023 - 14 days trip",
+    cardTitle: "Japan",
     places: ["Tokyo", "Osaka", "Kyoto"],
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
   },
   {
     img: image,
-    tripTag: 'Winter 2023 - 14 days trip',
-    cardTitle: 'East Coast',
+    tripTag: "Winter 2023 - 14 days trip",
+    cardTitle: "East Coast",
     places: ["New York", "Bronx", "Washington D.C."],
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
   },
   {
     img: image,
-    tripTag: 'Winter 2023 - 14 days trip',
-    cardTitle: 'East Coast',
+    tripTag: "Winter 2023 - 14 days trip",
+    cardTitle: "East Coast",
     places: ["New York", "Bronx", "Washington D.C."],
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
   },
   {
     img: image,
-    tripTag: 'Winter 2023 - 14 days trip',
-    cardTitle: 'East Coast',
+    tripTag: "Winter 2023 - 14 days trip",
+    cardTitle: "East Coast",
     places: ["New York", "Bronx", "Washington D.C."],
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.'
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus a, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
   },
 ];
 
@@ -92,26 +97,60 @@ const itineraryDummyData = [
 
 const PublicLanding = () => {
   const [placesData, setPlacesData] = useState([]);
+  const [itinerariesData, setItinerariesData] = useState([]);
+  const [numOfDays, setNumOfDays] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const placeCards = placesData?.map((data) => (
     <PlaceCard key={data.id} {...data} />
   ));
 
-  const itineraryCards = itineraryDummyData?.map((data) => (
-    <ItineraryCard key={data.id} {...data} />
+  const itineraryCards = itinerariesData?.map((data, index) => (
+    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} {...data} />
   ));
 
-  useEffect(() => {
+
+  const getPlaces = () => {
     Api.getAllPlaces()
       .then((response) => response.json())
       .then((data) => {
         setPlacesData(data);
       });
+  };
+
+  const getItineraries = () => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setItinerariesData(data);
+        const promises = data.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    getPlaces();
+    getItineraries();
   }, []);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    navigate(`/Searchresult/${searchTerm}`);
+  };
 
   return (
     <>
-      <section className='top'>
+      <section className="top">
         <div className="videoDiv">
           <video src={video2} loop autoPlay muted type="video/mp4"></video>
         </div>
@@ -123,10 +162,16 @@ const PublicLanding = () => {
             </div>
 
             <div className="inputDiv flex">
-              <input type="text" placeholder='Barcelona' />
-              <button className='button flex' type='submit'>
-                <FiSearch className='icon' />
-              </button>
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Barcelona"
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                />
+                <button className="button flex" type="submit">
+                  <FiSearch className="icon" />
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -147,8 +192,7 @@ const PublicLanding = () => {
             </div>
             <div className="places-group">
               {placesData.map((place) => (
-                <div key={place.id}>
-                </div>
+                <div key={place.id}></div>
               ))}
               <div className="cards-horizontal">{placeCards}</div>
             </div>
@@ -157,17 +201,17 @@ const PublicLanding = () => {
             <div className="subSecTitle">
               <h3>Top Itineraries</h3>
             </div>
-            <div className="cards-horizontal">{itineraryCards}</div>
+            <div className="itineraries-group">
+              {itinerariesData.map((itinerary, index) => (
+                <div key={itinerary.id}></div>
+              ))}
+              <div className="cards-horizontal">{itineraryCards}</div>
+            </div>
           </div>
-
         </div>
-
-
-
       </div>
-
     </>
-  )
-}
+  );
+};
 
 export default PublicLanding;

@@ -6,10 +6,12 @@
 package webservices.restful;
 
 import entity.Folder;
+import entity.Place;
 import entity.Trip;
 import entity.User;
 import error.FolderNotFoundException;
 import error.InvalidLoginException;
+import error.PlaceNotFoundException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.math.BigDecimal;
@@ -229,7 +231,7 @@ public class UsersResource {
             return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
@@ -247,7 +249,7 @@ public class UsersResource {
             return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
@@ -263,7 +265,7 @@ public class UsersResource {
             return Response.status(200).entity(folder).type(MediaType.APPLICATION_JSON).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
@@ -280,7 +282,7 @@ public class UsersResource {
         return Response.status(204).build();
       } catch (FolderNotFoundException ex) {
         JsonObject exception = Json.createObjectBuilder()
-          .add("error", "Not found")
+          .add("error", ex.getMessage())
           .build();
         return Response.status(404).entity(exception)
           .type(MediaType.APPLICATION_JSON).build();
@@ -296,7 +298,7 @@ public class UsersResource {
             return Response.status(204).build();
         } catch (UserNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
@@ -312,7 +314,7 @@ public class UsersResource {
             return Response.status(204).build();
         } catch (FolderNotFoundException | TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
@@ -328,11 +330,61 @@ public class UsersResource {
             return Response.status(204).build();
         } catch (FolderNotFoundException | TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", ex.getMessage())
                     .build();
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
         }
     }
+    
+    @GET
+    @Path("{user_id}/wishlistPlace")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWishlistPlaces(@PathParam("user_id") Long userId) {
+        try {
+            List<Place> place = userSessionBeanLocal.getWishlistPlaces(userId);
+            return Response.status(200).entity(place).type(MediaType.APPLICATION_JSON).build();
+        } catch (UserNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @PUT
+    @Path("/{user_id}/wishlistPlace/{wishlistPlace_id}/link")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response linkUserWithWishlistPlace(@PathParam("user_id") Long userId, @PathParam("wishlistPlace_id") Long wishlistPlaceId) {
+        try {
+            userSessionBeanLocal.linkUserWithWishlistPlace(userId, wishlistPlaceId);
+            return Response.status(204).build();
+        } catch (UserNotFoundException | PlaceNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @DELETE
+    @Path("/{user_id}/wishlistPlace/{wishlistPlace_id}/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeWishlistPlaceFromUser(@PathParam("user_id") Long userId, @PathParam("wishlistPlace_id") Long wishlistPlaceId) {
+        try {
+            userSessionBeanLocal.removeWishlistPlaceFromUser(userId, wishlistPlaceId);
+            return Response.status(204).build();
+        } catch (UserNotFoundException | PlaceNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    
 
 }

@@ -9,6 +9,8 @@ import Itineraries from "./Itineraries/Itineraries";
 import Places from "./Places/Places";
 import Emoji from "a11y-react-emoji";
 import Api from "../../Helpers/Api";
+import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const dummyData = [
   {
@@ -47,14 +49,21 @@ const dummyData = [
 
 const Explore = ({ userId }) => {
   const [sharedItineraries, setSharedItineraries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    navigate(`/Searchresult/${searchTerm}`);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await Api.getAllTrips(userId);
+        const response = await Api.getAllSharedTrips();
         const data = await response.json();
-        const sharedTrips = data.filter((trip) => trip.isShared);
-        setSharedItineraries(sharedTrips);
+        setSharedItineraries(data);
+        console.log(data);
         console.log("Successfully retrieved shared itineraries");
       } catch (error) {
         console.log("Error while retrieving trips list");
@@ -83,7 +92,19 @@ const Explore = ({ userId }) => {
           <h1>
             Explore <Emoji symbol="🌏" label="earth emoji" />
           </h1>
-          <button onClick={here}>check user id here</button>
+          <div>
+            <form onSubmit={handleSearch} className="search-bar">
+              <input
+                type="text"
+                placeholder="Seach here"
+                className="input-field"
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+              <button className="button flex" type="submit">
+                <FiSearch className="icon" />
+              </button>
+            </form>
+          </div>
         </div>
 
         <div className="sec">
@@ -93,10 +114,12 @@ const Explore = ({ userId }) => {
             className="tabs"
             TabIndicatorProps={{ sx: { backgroundColor: "#ff8f66" } }}
           >
+            <Tab label="Places" className="tab-child" />
             <Tab label="Itineraries" className="tab-child" />
           </Tabs>
           <div className="explore-content">
             {itineraryCards}
+            {selectedTab === 0 && <Places userId={userId} />}
             {selectedTab === 1 && <Itineraries userId={userId} />}
           </div>
         </div>

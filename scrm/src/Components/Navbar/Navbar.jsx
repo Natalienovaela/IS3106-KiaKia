@@ -62,7 +62,7 @@ function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
           `Error retrieving user data for user with ID ${userId}: ${error}`
         );
       });
-  }, [userId]);
+  }, [userId, refreshData]);
 
   return (
     <section className="navBarSection">
@@ -175,12 +175,6 @@ function Navbar({ isLoggedIn, handleLogout, userId, refreshData }) {
           <div className={active}>
             <nav>
               <ul className="navLists flex">
-                <li className="navItem">
-                  <CustomLink to="/Trip" className="navLink">
-                    Trip
-                  </CustomLink>
-                </li>
-
                 <li className="navItem">
                   <CustomLink to="/Explore" className="navLink">
                     Explore

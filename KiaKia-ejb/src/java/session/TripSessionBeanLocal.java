@@ -75,5 +75,11 @@ public interface TripSessionBeanLocal {
     public void createAndInviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException;
 
     public List<Trip> getAllSharedTrips();
+
+    public void inviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException;
+
+    public int findNumberOfUsersInTrip(Long tripId);
+
+    public int getNumOfDaysInTrip(Long tripId);
     
 }

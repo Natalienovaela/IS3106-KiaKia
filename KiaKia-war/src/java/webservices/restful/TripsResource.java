@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -308,11 +309,13 @@ public class TripsResource {
     }
 
     @GET
-    @Path("{trip_id}/users/{userId}/userRole")
+    @Path("{trip_id}/users/{user_id}/userRole")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getUserRole(@PathParam("tripId") Long tripId, @PathParam("userId") Long userId) {
+    public Response getUserRole(@PathParam("trip_id") Long tripId, @PathParam("user_id") Long userId) {
         try {
+            System.out.println("get user role triggered" + tripId + userId);
+            
             UserRoleEnum userRoleEnum = tripSessionBeanLocal.getRole(tripId, userId);
             return Response.status(200).entity(userRoleEnum).build();
         } catch (UserNotFoundException | TripNotFoundException ex) {
@@ -424,22 +427,23 @@ public class TripsResource {
         }
     }
 
-//    @DELETE
-//    @Path("/{trip_id}/polls/{poll_id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response deletePoll(@PathParam("trip_id") Long tripId,
-//            @PathParam("poll_id") Long pollId) {
-//        try {
-//            System.out.println("Delete poll triggered");
-//            Boolean res = pollSessionBeanLocal.removePoll(tripId, pollId);
-//            return Response.status(204).entity(res).build();
-//        } catch (TripNotFoundException | PollNotFoundException ex) {
-//            JsonObject exception = Json.createObjectBuilder()
-//                    .add("error", ex.getMessage())
-//                    .build();
-//            return Response.status(404).entity(exception).build();
-//        }
-//    }
+    @DELETE
+    @Path("/{trip_id}/polls/{poll_id}/user/{user_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletePoll(@PathParam("trip_id") Long tripId,
+            @PathParam("poll_id") Long pollId, @PathParam("user_id") Long userId) {
+        try {
+            System.out.println("Delete poll triggered");
+            pollSessionBeanLocal.removePoll(tripId, pollId);
+            return Response.status(200).entity(pollSessionBeanLocal.retrieveAllPollsInTrip(tripId)).build();
+        } catch (TripNotFoundException | PollNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
     @POST
     @Path("/{user_id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -489,5 +493,24 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
-
+    
+    @GET
+    @Path("/{tripId}/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsersInTrip(@PathParam("tripId") Long tripId) {
+        int noUsers = tripSessionBeanLocal.findNumberOfUsersInTrip(tripId);
+        Map<String, Integer> responseMap = new HashMap<>();
+            responseMap.put("noUsers", noUsers);
+        return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @GET
+    @Path("/{tripId}/days")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDaysInTrip(@PathParam("tripId") Long tripId) {
+        int noDays = tripSessionBeanLocal.getNumOfDaysInTrip(tripId);
+        Map<String, Integer> responseMap = new HashMap<>();
+            responseMap.put("noDays", noDays);
+        return Response.status(200).entity(responseMap).type(MediaType.APPLICATION_JSON).build();
+    }
 }

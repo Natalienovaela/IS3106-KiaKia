@@ -5,15 +5,18 @@
  */
 package session;
 
+import entity.Place;
 import entity.Trip;
 import entity.TripAssignment;
 import entity.User;
 import enumeration.UserRoleEnum;
 import error.InvalidLoginException;
+import error.PlaceNotFoundException;
 import error.ResetPasswordException;
 import error.UserNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -34,16 +37,17 @@ public class UserSessionBean implements UserSessionBeanLocal {
     // "Insert Code > Add Business Method")
     @PersistenceContext
     private EntityManager em;
-    
+
     @EJB
     private EmailSessionBeanLocal emailSessionBeanLocal;
 
     @Override
     public void createUser(User u) {
+        u.setLoginToken(UUID.randomUUID().toString());
         em.persist(u);
         em.flush();
     }
-    
+
     @Override
     public void createUserTemporary(User user, Trip trip) {
         em.persist(user);
@@ -75,7 +79,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException("User Email " + email + " does not exist!");
         }
     }
-    
+
     @Override
     public User retrieveUserByUsername(String username) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = :inUsername");
@@ -87,7 +91,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException("Username " + username + " does not exist!");
         }
     }
-    
+
     @Override
     public User retrieveUserByPasswordToken(String token) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.resetPasswordToken = :inToken");
@@ -99,7 +103,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException("Invalid password reset token!");
         }
     }
-    
+
     @Override
     public boolean usernameExists(String username) throws UserNotFoundException {
         try {
@@ -125,6 +129,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             User user = retrieveUserByEmail(email);
 
             if (user.getPassword().equals(password)) {
+                user.setLoginToken(UUID.randomUUID().toString());
                 return user;
             } else {
                 throw new InvalidLoginException("Email does not exist or invalid password!");
@@ -148,7 +153,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
-    
+
     @Override
     public void resetPassword(User u) throws UserNotFoundException {
         try {
@@ -176,19 +181,71 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
-    
+
     //Reset from email link
     @Override
     public void resetPassword(String token) throws UserNotFoundException, ResetPasswordException {
         try {
             User user = retrieveUserByPasswordToken(token);
-            
+
             if (token == null || user.getTokenExpiryDate().before(java.sql.Timestamp.valueOf(LocalDateTime.now()))) {
                 throw new ResetPasswordException("Invalid or expired password reset token");
             }
-                resetPassword(user);
+            resetPassword(user);
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
+
+    //get wishlist places
+    @Override
+    public List<Place> getWishlistPlaces(Long userId) throws UserNotFoundException {
+        try {
+            User user = em.find(User.class, userId);
+            return user.getWishlistPlaces();
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    @Override
+    public void linkUserWithWishlistPlace(Long userId, Long placeId) throws UserNotFoundException, PlaceNotFoundException{
+        try {
+            User user = em.find(User.class, userId);
+            try {
+                Place place = em.find(Place.class, placeId);
+                if (place != null) {
+                    user.getWishlistPlaces().add(place);
+                } else {
+                    throw new PlaceNotFoundException("Place does not exist");
+                }
+
+            } catch (Exception ex) {
+                throw new PlaceNotFoundException("Place does not exist");
+            }
+        } catch (Exception ex) {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+    
+    @Override
+    public void removeWishlistPlaceFromUser(Long userId, Long placeId) throws UserNotFoundException, PlaceNotFoundException{
+        try {
+            User user = em.find(User.class, userId);
+            try {
+                Place place = em.find(Place.class, placeId);
+                if (place != null) {
+                    user.getWishlistPlaces().remove(place);
+                } else {
+                    throw new PlaceNotFoundException("Place does not exist");
+                }
+
+            } catch (Exception ex) {
+                throw new PlaceNotFoundException("Place does not exist");
+            }
+        } catch (Exception ex) {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
 }

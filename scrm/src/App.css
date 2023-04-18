@@ -64,6 +64,8 @@ li {
     align-items: center;
 }
 
+
+
 .btn {
     padding: .6rem 1.5rem;
     background: var(--gradientColor);
@@ -72,6 +74,11 @@ li {
     outline: none;
     cursor: pointer;
 }
+
+/* .btn:hover {
+    background-color: var(--PrimaryColor);
+    color: white;
+  } */
 
 .btn a{
     color: var(--whiteColor);
@@ -85,17 +92,39 @@ li {
     transform: translate(5%);
 }
 
-.btn:hover {
+.btn:hover, .btn:hover.btnVin {
+    background: var(--SecondaryColor);
+  }
+
+.btnVin {
+    background: var(--PrimaryColor);
+}
+
+.btnVin:hover {
     background: var(--SecondaryColor);
 }
 
+.banner {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .btn-banner {
+    color: var(--whiteColor);
+    font-weight: 600;
+    font-size:medium;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
 .trip-component {
-    width: 400px;
-    flex: 1;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
+    width: 600px;
+    padding-right: 1.7rem;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .component-title {
@@ -108,15 +137,43 @@ li {
     align-items: center;
   }
 
+  /* .disabled-note {
+    opacity: 1 !important;
+  } */
+
   .pollCard {
-    width: 100%;
-    max-width: 600px;
+    /* width: 100%; */
+    width: 500px;
     margin: 10px auto;
     padding: 20px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    box-shadow: none;
   }
+
+  .note {
+    width: 520px;
+    margin: 10px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+
+  .trip-main-content {
+    padding-left: 20px;
+  }
+
+  
+  @media screen and (max-width: 1000px) {
+    .hide-grid {
+        display: none;
+    }
+  }
+
+  
   
 img, video {
     width: 100%;

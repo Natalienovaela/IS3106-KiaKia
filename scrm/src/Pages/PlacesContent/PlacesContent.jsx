@@ -1,7 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Api from "../../Helpers/Api";
 import "./PlacesContent.css";
-import japan from "../../Assets/japan2.jpg";
+import marina from "../../Assets/marina.png";
+import merlion from "../../Assets/merlion.png";
+import botanic from "../../Assets/botanic.png";
+import gardens from "../../Assets/gardens.png";
+import louvre from "../../Assets/louvre.png";
+import eiffel from "../../Assets/eiffel.png";
+import bigben from "../../Assets/bigben.png";
 import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +17,7 @@ function PlacesContent() {
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
     const [country, setCountry] = useState("");
+    const [img, setImg] = useState('');
     const [city, setCity] = useState("");
 
     const reloadData = useCallback(() => {
@@ -23,8 +30,35 @@ function PlacesContent() {
                 setDescription(description);
                 setCountry(country);
                 setCity(city);
+                if (name === "Marina Bay Sands") {
+                    setImg(marina);
+                } else if (name === "Merlion Park") {
+                    setImg(merlion);
+                } else if (name === "Singapore Botanic Gardens") {
+                    setImg(botanic);
+                } else if (name === "Gardens by the Bay") {
+                    setImg(gardens);
+                } else if (name === "Louvre Museum") {
+                    setImg(louvre);
+                } else if (name === "Eiffel Tower") {
+                    setImg(eiffel);
+                } else if (name === "Big Ben") {
+                    setImg(bigben);
+                };
             });
     }, []);
+
+    // const reloadImg = useCallback(() => {
+    //     if (name === "Marina Bay Sands") {
+    //         setImg(marina);
+    //     } else if (name === "Merlion Park") {
+    //         setImg(merlion);
+    //     } else if (name === "Singapore Botanic Gardens") {
+    //         setImg(botanic);
+    //     } else if (name === "Gardens by the Bay") {
+    //         setImg(gardens);
+    //     };
+    // }, []);
 
     useEffect(() => {
         reloadData();
@@ -37,7 +71,7 @@ function PlacesContent() {
                 <Grid item xs={12}>
                     <section className="places-header">
                         <div className="banner">
-                            <img src={japan} alt="japan" className="banner-img" />
+                            <img src={img} alt="japan" className="banner-img" />
                             <div className="banner-details">
                                 <h2>{name}</h2>
                                 <div className="banner-details-2">

@@ -4,6 +4,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import PropTypes from 'prop-types';
 import Api from "../../Helpers/Api";
 
 function Login({ handleLogin }) {
@@ -59,12 +60,13 @@ function Login({ handleLogin }) {
             setErrors({ submit: "Failed to login. Please try again." });
           } else {
             navigate(`/Home/${userId}`);
-            handleLogin(userId);
+            const token = data.loginToken;
+            handleLogin(userId, token);
           }
         })
         .catch((error) => {
           console.log(email + " " + password);
-          setErrors({ submit: "Failed to login. Please try again."  });
+          setErrors({ submit: "Email does not exist or invalid password!" });
         });
     }
   };
@@ -179,4 +181,9 @@ function Login({ handleLogin }) {
     </Box>
   );
 }
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
+}
+
 export default Login;
