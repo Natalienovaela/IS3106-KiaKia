@@ -12,13 +12,12 @@
   justify-content: space-between;
   align-items: flex-end;
   flex-direction: row;
-  margin-bottom: 30px;
 }
 
 .spent {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   line-height: 1%;
 }
@@ -27,13 +26,12 @@
   font-size: 40px;
   font-weight: bold;
   color: #f37e30;
-  margin-top: 35px;
 }
 
 .budget {
   display: flex;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
   line-height: 10%;
 }
 
@@ -48,4 +46,4 @@
   height: 100%;
   background-color: #f37e30;
   border-radius: 5px;
-}
+}/*# sourceMappingURL=ProgressBar.css.map */

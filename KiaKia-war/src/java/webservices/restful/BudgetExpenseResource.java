@@ -7,6 +7,7 @@ package webservices.restful;
 
 import entity.Budget;
 import entity.BudgetExpenseCategory;
+import static entity.BudgetExpenseCategory_.budget;
 import entity.Debt;
 import entity.Expense;
 import error.BudgetNotFoundException;
@@ -17,6 +18,7 @@ import error.UnableToSetBudgetException;
 import error.UserNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -57,10 +59,11 @@ public class BudgetExpenseResource
     @Path("/{tripId}/budget/{categoryId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response setBudget(@PathParam("tripId") Long tripId, Budget newB, @PathParam("categoryId") Long categoryId) 
+    public Response setBudget(@PathParam("tripId") Long tripId, Long amt, @PathParam("categoryId") Long categoryId) 
     {
         try 
         {
+            Budget newB = new Budget(new BigDecimal(amt), false);
             budgetSessionBeanLocal.setBudget(tripId, newB, categoryId);
             return Response.status(204).build();
         } 
@@ -84,11 +87,11 @@ public class BudgetExpenseResource
     @Path("/updateBudget/{budgetId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBudget( @PathParam("budgetId") Long budgetId, Budget newB) 
+    public Response updateBudget( @PathParam("budgetId") Long budgetId, @QueryParam("budgetAmt") Long budgetAmt) 
     {
         try 
         {
-            budgetSessionBeanLocal.updateBudget(budgetId, newB);
+            budgetSessionBeanLocal.updateBudget(budgetId, budgetAmt);
             return Response.status(204).build();
         } 
         catch (BudgetNotFoundException ex) 
@@ -126,8 +129,8 @@ public class BudgetExpenseResource
     {
         try 
         {
-            BigDecimal budgetAmt = budgetSessionBeanLocal.getBudgetByCategory(tripId, categoryId);
-            return Response.status(200).entity(budgetAmt).build();
+            Map<Long, BigDecimal> budget = budgetSessionBeanLocal.getBudgetByCategory(tripId, categoryId);
+            return Response.status(200).entity(budget).build();
         } 
         catch (BudgetNotFoundException | TripNotFoundException | CategoryNotFoundException ex) 
         {
@@ -146,6 +149,32 @@ public class BudgetExpenseResource
         try 
         {
             List<BudgetExpenseCategory> availableCategories = budgetSessionBeanLocal.getAvailableBudgetCategory(tripId);
+            return Response.status(200).entity(availableCategories).build();
+        } 
+        catch (TripNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        } 
+        catch (IllegalArgumentException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("{tripId}/associatedCategories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssociatedCategory(@PathParam("tripId") Long tripId) 
+    {
+        try 
+        {
+            List<BudgetExpenseCategory> availableCategories = budgetSessionBeanLocal.getAssociatedCategory(tripId);
             return Response.status(200).entity(availableCategories).build();
         } 
         catch (TripNotFoundException ex) 
@@ -230,13 +259,32 @@ public class BudgetExpenseResource
     }
 
     @GET
-    @Path("/{tripId}/totalExpense/category/{categoryId}")
+    @Path("/{tripId}/totalExpenseByCategory")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTotalExpenseByCategory(@PathParam("categoryId") Long categoryId, @PathParam("tripId") Long tripId) 
+    public Response getTotalExpenseByCategories(@PathParam("tripId") Long tripId) 
     {
         try 
         {
-            BigDecimal totalExpense = expenseSessionBeanLocal.getTotalExpenseByCategory(categoryId, tripId);
+            Map<String, BigDecimal> totalExpense = expenseSessionBeanLocal.getTotalExpenseByCategories(tripId);
+            return Response.status(200).entity(totalExpense).build();
+        } 
+        catch (TripNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("/{tripId}/totalExpenseByCategory/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTotalExpenseByCategory(@PathParam("tripId") Long tripId, @PathParam("categoryId") Long categoryId) 
+    {
+        try 
+        {
+            BigDecimal totalExpense = expenseSessionBeanLocal.getTotalExpenseByCategory(tripId, categoryId);
             return Response.status(200).entity(totalExpense).build();
         } 
         catch (TripNotFoundException | CategoryNotFoundException ex) 
@@ -246,7 +294,14 @@ public class BudgetExpenseResource
                     .build();
             return Response.status(404).entity(exception).build();
         }
-    }
+        catch (IllegalArgumentException ex)
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(400).entity(exception).build();
+        }
+    }    
     
     @GET
     @Path("/{tripId}/totalExpense")
@@ -328,6 +383,33 @@ public class BudgetExpenseResource
     }
     
     @GET
+    @Path("/{tripId}/owedDebts/user/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDebtsOwedByUser(@PathParam("userId") Long userId, @PathParam("tripId") Long tripId) 
+    {
+        try 
+        {
+            List<Debt> debts = debtSessionBeanLocal.getDebtsOwedByUser(userId, tripId);
+            GenericEntity<List<Debt>> entity = new GenericEntity<List<Debt>>(debts) {};
+            return Response.status(200).entity(entity).build();
+        } 
+        catch (TripNotFoundException | UserNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+        catch (IllegalArgumentException ex)
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+    
+    @GET
     @Path("/{tripId}/debts")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOverallDebts(@PathParam("tripId") Long tripId) 
@@ -355,16 +437,15 @@ public class BudgetExpenseResource
     }
     
     @PUT
-    @Path("/{tripId}/payDebt")
+    @Path("/{tripId}/payDebt/{debtId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response payDebt(@PathParam("tripId") Long tripId,
-                            @QueryParam("payerId") Long payerId,
-                            @QueryParam("beneficiaryId") Long beneficiaryId,
+                            @PathParam("debtId") Long debtId,
                             @QueryParam("amt") Long amt) 
     {
         try 
         {
-            debtSessionBeanLocal.payDebt(tripId, payerId, beneficiaryId, amt);
+            debtSessionBeanLocal.payDebt(tripId, debt, amt);
             return Response.status(204).build();
         } 
         catch (TripNotFoundException ex) 

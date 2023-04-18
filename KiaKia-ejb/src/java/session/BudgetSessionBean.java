@@ -14,7 +14,9 @@ import error.TripNotFoundException;
 import error.UnableToSetBudgetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -53,6 +55,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         if (category.getBudget() == null)
         {
             category.setBudget(newB);
+            newB.setCategory(category);
             trip.getBudgets().add(newB);
             em.persist(newB);
         }
@@ -64,7 +67,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public void updateBudget(Long budgetId, Budget newB) throws BudgetNotFoundException
+    public void updateBudget(Long budgetId, Long budgetAmt) throws BudgetNotFoundException
     {
         Budget oldB = em.find(Budget.class, budgetId);
         
@@ -73,7 +76,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
             throw new BudgetNotFoundException("Budget not found.");
         }
         
-        oldB.setBudgetAmt(newB.getBudgetAmt());
+        oldB.setBudgetAmt(new BigDecimal(budgetAmt));
         
         em.merge(oldB);
     }
@@ -104,7 +107,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
     }
 
     @Override
-    public BigDecimal getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException
+    public Map<Long, BigDecimal> getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException
     {   
         if (tripId == null || categoryId == null) 
         {
@@ -131,7 +134,9 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
 
         if (budget != null) 
         {
-            return budget.getBudgetAmt();
+            Map<Long, BigDecimal> budgetAmt = new HashMap<>();
+            budgetAmt.put(budget.getBudgetId(), budget.getBudgetAmt());
+            return budgetAmt;
         } 
         else 
         {
@@ -161,6 +166,52 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         });
         
         return availableCategories;
+    }
+    
+    @Override
+    public List<BudgetExpenseCategory> getAssociatedCategory(Long tripId) throws TripNotFoundException
+    {
+        if (tripId == null) 
+        {
+            throw new IllegalArgumentException("Trip ID cannot be null.");
+        }
+        
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip == null) 
+        {
+            throw new TripNotFoundException("Trip not found.");
+        }
+        
+        List<BudgetExpenseCategory> categories = trip.getCategories();
+        List<BudgetExpenseCategory> associatedCategories = new ArrayList<>();
+        categories.stream().filter(c -> (c.getBudget() != null || !c.getExpenses().isEmpty())).forEachOrdered(c -> {
+            associatedCategories.add(c);
+        });
+        
+        return associatedCategories;
+    }
+    
+    @Override
+    public List<BudgetExpenseCategory> getAssociatedBudgetCategory(Long tripId) throws TripNotFoundException
+    {
+        if (tripId == null) 
+        {
+            throw new IllegalArgumentException("Trip ID cannot be null.");
+        }
+        
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip == null) 
+        {
+            throw new TripNotFoundException("Trip not found.");
+        }
+        
+        List<BudgetExpenseCategory> categories = trip.getCategories();
+        List<BudgetExpenseCategory> associatedCategories = new ArrayList<>();
+        categories.stream().filter(c -> (c.getBudget() != null)).forEachOrdered(c -> {
+            associatedCategories.add(c);
+        });
+        
+        return associatedCategories;
     }
 
     @Override

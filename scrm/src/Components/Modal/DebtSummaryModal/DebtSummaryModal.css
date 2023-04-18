@@ -1,0 +1,51 @@
+.view-debt-summary-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.view-debt-summary-modal h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.view-debt-summary-modal .debt-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.view-debt-summary-modal .debt-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.view-debt-summary-modal .debt-list li span {
+  flex: 1;
+  margin-right: 10px;
+}
+.view-debt-summary-modal .debt-list li span:last-child {
+  margin-right: 0;
+}
+.view-debt-summary-modal .close-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #FB923C;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: normal;
+  transition: background-color 0.2s ease-in-out;
+}
+.view-debt-summary-modal .close-button:hover {
+  background-color: #F97316;
+}/*# sourceMappingURL=DebtSummaryModal.css.map */

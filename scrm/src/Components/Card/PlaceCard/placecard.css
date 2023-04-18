@@ -54,12 +54,11 @@
 }
 .place-card .card-content .card-title {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 24px;
   color: var(--whiteColor);
 }
 .place-card .card-content .country {
   color: var(--greyText);
-  font-size: 15px;
 }
 
 .MuiIcon-fontSizeLarge {
