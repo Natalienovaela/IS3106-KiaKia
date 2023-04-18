@@ -6,6 +6,7 @@
 package datainit;
 
 import entity.CheckList;
+import entity.CheckListItem;
 import entity.Note;
 import entity.Place;
 import entity.Poll;
@@ -205,11 +206,21 @@ public class DataInitSessionBean {
             placeLineItemSessionBeanLocal.createPlaceLineItem(7l, 2l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(8l, 3l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(9l, 4l);
-            List<String> items = new ArrayList<String>();
-            items.add("Passport");
-            items.add("Umbrella");
-            CheckList checklistSg1 = new CheckList("Packing List", items);
-            checkListSessionBeanLocal.createNewCheckList(2l, checklistSg1);
+
+            /*
+            CheckListItem checkListItem = new CheckListItem();
+            checkListItem.setDescription("Passport");
+            em.persist(checkListItem);
+            em.flush();
+            CheckListItem items2 = new CheckListItem();
+            items2.setDescription("Umbrella");
+            em.persist(items2);
+            em.flush();
+
+            CheckList checklistSg1 = checkListSessionBeanLocal.createNewCheckList(2l, "Packing List");
+            checklistSg1.getCheckListItem().add(checkListItem);
+            checklistSg1.getCheckListItem().add(items2);
+           */
             
             Trip japan = new Trip(new GregorianCalendar(2023, Calendar.MAY, 1).getTime(), new GregorianCalendar(2023, Calendar.MAY, 20).getTime(), "Japan", "Our graduation trip to Japan!", CountryEnum.JAPAN);
             em.persist(japan);

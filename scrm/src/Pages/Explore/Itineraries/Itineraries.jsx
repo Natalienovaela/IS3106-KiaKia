@@ -48,6 +48,8 @@ const dummyData = [
 ];
 
 const Itineraries = ({ userId }) => {
+  const [numOfDays, setNumOfDays] = useState([]);
+  const [sharedItineraries, setSharedItineraries] = useState([]);
   const [places, setPlaces] = useState([]);
   const [trips, setTrips] = useState([]);
   const [folders, setFolders] = useState([]);
@@ -58,6 +60,28 @@ const Itineraries = ({ userId }) => {
 
   const handleUserId = () => {
     setUserId(userId);
+  };
+
+  useEffect(() => {
+    getItineraries();
+  });
+
+  const getItineraries = () => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setSharedItineraries(data);
+        const promises = data.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   };
 
   const [selectedCard, setSelectedCard] = useState(null);
@@ -158,11 +182,13 @@ const Itineraries = ({ userId }) => {
     }
   };
 
-  const itineraryCards = dummyData?.map((cardData) => (
+  const itineraryCards = sharedItineraries?.map((cardData, index) => (
     <ItineraryCard
       key={cardData.id}
-      {...cardData}
+      userId={userId}
       onClick={() => handleCardClick(cardData)}
+      numOfDays={numOfDays[index]}
+      {...cardData}
     />
   ));
   const here = () => {
@@ -174,7 +200,15 @@ const Itineraries = ({ userId }) => {
         Find itineraries created by fellow travelers <Emoji symbol="🧳" />
       </p>
 
-      <div className="cards">{itineraryCards}</div>
+      <div className="cards">
+        {itineraryCards.length < 1 ? (
+          <h2>
+            There's no shared trips currently <Emoji symbol="🙁" />
+          </h2>
+        ) : (
+          <>{itineraryCards}</>
+        )}
+      </div>
       {selectedCard && (
         <Popup
           selectedCard={selectedCard}

@@ -13,6 +13,8 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Api from "../../Helpers/Api";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 // const CreatePoll = ({ tripId, userId }) => {
 const CreatePoll = ({ setPolls }) => {
@@ -21,6 +23,7 @@ const CreatePoll = ({ setPolls }) => {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([{ option: "" }]);
+  const [error, setError] = useState(null);
 
   const handleClickOpen = () => {
     console.log(options);
@@ -32,6 +35,7 @@ const CreatePoll = ({ setPolls }) => {
     setOpen(false);
     setQuestion("");
     setOptions([{ option: "" }]);
+    setError(null);
   };
 
   const handleOptionAdd = () => {
@@ -52,6 +56,7 @@ const CreatePoll = ({ setPolls }) => {
   };
 
   const handleSubmit = () => {
+    setError(null);
     const nonEmptyOptions = options.filter((o) => o.option !== "");
     if (question != "" && nonEmptyOptions.length > 1) {
       const details = nonEmptyOptions.map((o) => o.option);
@@ -76,9 +81,15 @@ const CreatePoll = ({ setPolls }) => {
           console.log(err.message);
         });
     } else if (question == "") {
-      throw Error("Question cannot be empty");
+      setError("Question cannot be empty");
+      // setTimeout(() => {
+      //   setError(null);
+      // }, 3000);
     } else {
-      throw Error("There must be more than 1 option");
+      setError("There must be more than 1 non-empty option");
+      // setTimeout(() => {
+      //   setError(null);
+      // }, 3000);
     }
   };
 
@@ -147,6 +158,11 @@ const CreatePoll = ({ setPolls }) => {
             );
           })}
           <Button onClick={handleOptionAdd}>Add another option</Button>
+          {error && (
+            <Alert severity="error">
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>Create</Button>

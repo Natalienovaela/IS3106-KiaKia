@@ -8,6 +8,7 @@ package session;
 import entity.Budget;
 import entity.BudgetExpenseCategory;
 import entity.CheckList;
+import entity.CheckListItem;
 import entity.DayItinerary;
 import entity.Expense;
 import entity.Folder;
@@ -202,23 +203,28 @@ public class TripSessionBean implements TripSessionBeanLocal {
         try {
             Trip trip = em.find(Trip.class, tripId);
             try {
-                CheckList checkList = em.find(CheckList.class, checkListId);
-
-                if (trip != null && checkList != null) {
-                    trip.getCheckLists().remove(checkList);
+                CheckList checklist = em.find(CheckList.class, checkListId);
+                if (trip != null && checklist != null) {
+                    trip.getCheckLists().remove(checklist);
+                    trip.getCheckLists().remove(checklist);
+                    List<CheckListItem> checkListItems = checklist.getCheckListItem();
+                    for (CheckListItem checkListItem : checkListItems) {
+                        em.remove(checkListItem);
+                    }
+                    em.remove(checklist);
                 } else {
                     if (trip == null) {
                         throw new TripNotFoundException("Trip not found in the database");
                     }
-                    if (checkList == null) {
+                    if (checklist == null) {
                         throw new CheckListNotFoundException("Checklist not found in the database");
                     }
                 }
-            } catch (Exception ex) {
+            } catch (IllegalArgumentException ex) {
                 throw new CheckListNotFoundException("Checklist not found in the database");
             }
-        } catch (Exception ex) {
-            throw new TripNotFoundException("Trip not found in the database");
+        } catch (IllegalArgumentException ex) {
+            throw new TripNotFoundException("Trip not found");
         }
     }
 

@@ -58,7 +58,7 @@ const PlaceCard = (props) => {
             sx={{ color: "white" }}
             className="bookmark-button"
           >
-            {click ? <Bookmark /> : <BookmarkBorder />}
+            {click || props.wishlist ? <Bookmark /> : <BookmarkBorder />}
           </IconButton>
         ) : (
           <></>
