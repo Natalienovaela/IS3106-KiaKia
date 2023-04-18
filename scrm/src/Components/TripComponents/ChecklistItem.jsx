@@ -1,6 +1,7 @@
 import React from "react";
 
-const ChecklistItem = ({ item, onCheck }) => {
+const ChecklistItem = ({tripId, checklist, userRole, handleDelete}) => {
+  const [onChecked, setOnChecked] = useState([]);
   return (
     <div>
       <input
