@@ -11,6 +11,13 @@ import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
 import Checklist from "../../Components/TripComponents/Checklist";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import utc from "dayjs/plugin/utc";
 
@@ -96,15 +103,28 @@ function TripContent() {
   }, [reloadData]);
 
   const handleShareButtonClick = () => {
+    // confirmAlert({
+    //   title: isTripShared? 'Are you sure you want to unshare this trip?' : 'Are you sure you want to share this trip?',
+    //   message: 'Sharing trip means your trip will be visible to the public and they can refer to your trip to plan their future trip.'
+    //   buttons: [
+    //     {label:'Yes',
+    //     onClick: () => {
     if (!isTripShared) {
       Api.shareTrip(tripId).then(() => {
         reloadData();
+        setOpen(false);
       });
     } else {
       Api.unshareTrip(tripId).then(() => {
         reloadData();
+        setOpen(false);
       });
     }
+    //     }
+    //   },
+    //   {label: 'No'}
+    //   ]
+    // })
   };
 
   const sharedStyles = {
@@ -123,6 +143,17 @@ function TripContent() {
     },
   };
 
+  //for sharing trip
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       {isTripShared != null && (
@@ -131,9 +162,9 @@ function TripContent() {
             <section className="trip-header">
               <div className="banner">
                 <img src={japan} alt="japan" className="banner-img" />
-                {userRole == "ADMIN" && (
+                {userRole === "ADMIN" && (
                   <button
-                    onClick={handleShareButtonClick}
+                    onClick={handleClickOpen}
                     className="btn btn-banner"
                     // sx={isTripShared ? sharedStyles : unsharedStyles}
                   >
@@ -239,11 +270,12 @@ function TripContent() {
                 title="Checklist"
                 id="checklists"
               >
+                {/*}
                 <Checklist
                   tripId={tripId}
                   userRole={userRole}
                   userId={userId}
-                />
+                />*/}
               </section>
               <span className="line"></span>
               <section
@@ -266,6 +298,32 @@ function TripContent() {
           </Grid>
         </Grid>
       )}
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {!isTripShared ? "Share your trip to public?" : "Unshare your trip?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {!isTripShared
+              ? "Sharing your trip makes your trip including notes, itineraries, and expenses visible to public in the Explore page. This will help others in planning their trip!"
+              : "Unsharing your trip will remove your trip from the Explore page."}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleShareButtonClick}>
+            {isTripShared ? "Unshare" : "Share"}
+          </Button>
+          <Button onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

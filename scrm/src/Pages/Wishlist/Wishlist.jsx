@@ -98,27 +98,40 @@ const placesFolderDummyData = [
   },
 ];
 
-const Wishlist = ({ userId, ...props }) => {
+const Wishlist = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [selectedFolder, setSelectedFolder] = useState("");
   const [wishlistPlaces, setWishlistPlaces] = useState([]);
   const [name, setName] = useState("");
+  const [selectedCard, setSelectedCard] = useState(null);
 
-  // get all wishlist places for this user
   useEffect(() => {
-    Api.getWishlistPlaces(userId)
-      .then((response) => response.json())
-      .then((data) => setWishlistPlaces(data))
+    reloadPlaces();
+    console.log("yes");
+  }, []);
+  const reloadPlaces = () => {
+    Api.getWishlistPlaces(props.userId)
+      .then((response) => {
+        if (!response.ok) {
+          console.log("error");
+          throw Error("could not fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setWishlistPlaces(data);
+        console.log(data);
+      })
       .catch((error) => {
         console.log(error.message);
       });
     console.log(wishlistPlaces);
-  }, []);
+  };
 
   // get user
   useEffect(() => {
-    Api.getUser(userId)
+    Api.getUser(props.userId)
       .then((response) => response.json())
       .then((data) => {
         const name = data.name;
@@ -126,17 +139,17 @@ const Wishlist = ({ userId, ...props }) => {
       })
       .catch((error) => {
         console.log(
-          `Error retrieving user data for user with ID ${userId}: ${error}`
+          `Error retrieving user data for user with ID ${props.userId}: ${error}`
         );
       });
-  }, [userId]);
+  }, [props.userId]);
 
   // retrieve all saved folders
   const [folders, setFolders] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await Api.retrieveAllFolder(userId);
+        const response = await Api.retrieveAllFolder(props.userId);
         const data = await response.json();
         setFolders(data);
       } catch (error) {
@@ -145,7 +158,7 @@ const Wishlist = ({ userId, ...props }) => {
     };
 
     fetchData();
-  }, [userId, folders, folders.folderName]);
+  }, [props.userId, folders, folders.folderName]);
 
   const handleSaveFolderName = async () => {
     // check if new folder name is there
@@ -161,6 +174,29 @@ const Wishlist = ({ userId, ...props }) => {
     setNewFolderName(event.target.value);
   };
 
+  const handlePlaceCardClick = async (data) => {
+    setSelectedCard(data);
+
+    if (!selectedCard) {
+      alert("No card has been selected");
+      return;
+    }
+
+    try {
+      await Api.removeWishlistPlaceFromUser(
+        props.userId,
+        selectedCard.placeId
+      ).then(() => {
+        reloadPlaces();
+      });
+      alert("Removed from Wishlist");
+
+      setSelectedCard(null);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const WishlistFolders = folders.map((data) => (
     <WishlistFolder
       saveFolderNameOnClick={handleSaveFolderName}
@@ -170,12 +206,20 @@ const Wishlist = ({ userId, ...props }) => {
       folderName={data.name}
       folderId={data.folderId}
       folder={data}
-      userId={userId}
+      userId={props.userId}
       {...data}
     />
   ));
   const placeCards = wishlistPlaces?.map((cardData) => (
-    <PlaceCard key={cardData.id} {...cardData} />
+    <PlaceCard
+      key={cardData.id}
+      {...cardData}
+      userId={props.userId}
+      wishlist={true}
+      onClick={() => {
+        handlePlaceCardClick(cardData);
+      }}
+    />
   ));
 
   return (
