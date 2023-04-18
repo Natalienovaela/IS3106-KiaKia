@@ -57,17 +57,17 @@ const Api = {
             }
         )
     },
-    inviteUserToTrip(tripId, userId, userEmail, userRole) {
-        return fetch(`${SERVER_PREFIX}/trips?tripId=${tripId}&userId=${userId}&userEmail=${userEmail}&userRole=${userRole}`,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-            }
-        )
-    },
+    // inviteUserToTrip(tripId, userId, userEmail, userRole) {
+    //     return fetch(`${SERVER_PREFIX}/trips?tripId=${tripId}&userId=${userId}&userEmail=${userEmail}&userRole=${userRole}`,
+    //         {
+    //             headers: {
+    //                 Accept: "application/json",
+    //                 "Content-Type": "application/json",
+    //             },
+    //             method: "POST",
+    //         }
+    //     )
+    // },
     //notes
     createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {

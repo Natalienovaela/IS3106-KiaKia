@@ -28,7 +28,6 @@ import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import InviteTripmates from './InviteTripmates/InviteTripmates';
 import newyork from "../../Assets/newyork.png";
 import japan from "../../Assets/japan.png";
 import singapore from "../../Assets/singapore.png";
@@ -37,7 +36,6 @@ const { RangePicker } = DatePicker;
 function TripContent() {
   //TO DO: change back to useParams and delete the hardcoded id
   const { userId, tripId } = useParams();
-  const [open, setOpen] = useState(false);
   // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
