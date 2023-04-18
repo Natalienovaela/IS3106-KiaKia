@@ -25,7 +25,8 @@ function EditBudgetModal( categories, tripId, open, onClose ) {
     setAmount(event.target.value);
   };
 
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     if (amount === 0)
     {
       Api.deleteBudget(tripId, budgetId)
