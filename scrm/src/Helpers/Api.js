@@ -211,7 +211,7 @@ const Api = {
     },
 
     removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}`, {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}/remove`, {
             method: "DELETE",
         })
     },
