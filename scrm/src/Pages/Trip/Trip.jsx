@@ -89,7 +89,6 @@ function Trip({ userId }) {
           <div>
             {groupData.map((trip) => (
               <div key={trip.id}>
-                <h2>{trip.name}</h2>
               </div>
             ))}
             <div className="cards">{groupTripCards}</div>

@@ -75,7 +75,7 @@ const ItineraryCard = (props) => {
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          {props.inTrip !== true || props.userId ? (
+          {props.userId || (props.userId && props.inTrip !== true) ? (
             <IconButton
               onClick={handleBookmarkClick}
               size="large"

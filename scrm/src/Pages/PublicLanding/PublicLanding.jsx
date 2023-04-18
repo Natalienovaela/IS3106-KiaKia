@@ -100,6 +100,7 @@ const PublicLanding = () => {
   const [itinerariesData, setItinerariesData] = useState([]);
   const [numOfDays, setNumOfDays] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { userId } = useState(null);
   const navigate = useNavigate();
 
   const placeCards = placesData?.map((data) => (
@@ -107,7 +108,7 @@ const PublicLanding = () => {
   ));
 
   const itineraryCards = itinerariesData?.map((data, index) => (
-    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} {...data} />
+    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} userId={userId} {...data} />
   ));
 
 
