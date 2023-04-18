@@ -283,6 +283,17 @@ public class TripSessionBean implements TripSessionBeanLocal {
                 em.persist(trip);
                 em.flush();
             }
+            
+            String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
+            List<BudgetExpenseCategory> categories = new ArrayList<>();
+            for (String name : categoryNames) {
+                BudgetExpenseCategory c = new BudgetExpenseCategory(name);
+                em.persist(c);
+                categories.add(c);
+            }
+
+            trip.setCategories(categories);
+            
             TripAssignment tripAssignment = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
             em.persist(tripAssignment);
 
@@ -318,6 +329,17 @@ public class TripSessionBean implements TripSessionBeanLocal {
                 em.flush();
                 System.out.println("add trip");
             }
+            
+            String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
+            List<BudgetExpenseCategory> categories = new ArrayList<>();
+            for (String name : categoryNames) {
+                BudgetExpenseCategory c = new BudgetExpenseCategory(name);
+                em.persist(c);
+                categories.add(c);
+            }
+
+            trip.setCategories(categories);
+            
             TripAssignment tripAssignment = new TripAssignment(admin, trip, UserRoleEnum.ADMIN);
             em.persist(tripAssignment);
             System.out.println("add assignment");

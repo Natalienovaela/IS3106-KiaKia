@@ -11,19 +11,20 @@ import {
 } from "@mui/material";
 import Modal from "../Modal/Modal";
 import "./AddExpenseModal.scss";
+import Api from "../../../Helpers/Api";
 
-const AddExpenseModal = ({ open, onClose, categories, users, onSubmit }) => {
+const AddExpenseModal = ({ open, onClose, categories, users, tripId }) => {
   const [category, setCategory] = useState(null);
-  const [amount, setAmount] = useState(0);
+  const [expenseAmt, setExpenseAmt] = useState(0);
   const [description, setDescription] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [payees, setPayees] = useState([]);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
 
   const handleAmountChange = (e) => {
-    setAmount(e.target.value);
+    setExpenseAmt(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
@@ -31,16 +32,20 @@ const AddExpenseModal = ({ open, onClose, categories, users, onSubmit }) => {
   };
 
   const handleUserChange = (e) => {
-    setSelectedUsers(e.target.value);
+    setPayees(e.target.value);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ category, amount, description, selectedUsers });
-    setCategory("");
-    setAmount("");
-    setDescription("");
-    setSelectedUsers([]);
+    Api.addExpense(tripId, {
+      category,
+      expenseAmt,
+      description,
+      payees
+    })
+    .then(() => console.log('Budget updated successfully'))
+    .catch((error) => console.log(error));
+    onClose();
   };
 
   return (
@@ -60,7 +65,7 @@ const AddExpenseModal = ({ open, onClose, categories, users, onSubmit }) => {
           <TextField
             label="Amount"
             type="number"
-            value={amount}
+            value={expenseAmt}
             onChange={handleAmountChange}
             inputProps={{ min: 0 }}
           />
@@ -76,7 +81,7 @@ const AddExpenseModal = ({ open, onClose, categories, users, onSubmit }) => {
           <InputLabel shrink>Users</InputLabel>
           <Select
             multiple
-            value={selectedUsers}
+            value={payees}
             onChange={handleUserChange}
             input={<Input />}
             placeholder="Users"

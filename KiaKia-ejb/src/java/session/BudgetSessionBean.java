@@ -213,6 +213,23 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         
         return associatedCategories;
     }
+    
+    @Override
+    public List<BudgetExpenseCategory> getAllCategories(Long tripId) throws TripNotFoundException
+    {
+        if (tripId == null) 
+        {
+            throw new IllegalArgumentException("Trip ID cannot be null.");
+        }
+        
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip == null) 
+        {
+            throw new TripNotFoundException("Trip not found.");
+        }
+        
+        return trip.getCategories();
+    }
 
     @Override
     public BigDecimal getTotalBudget(Long tripId) throws TripNotFoundException
