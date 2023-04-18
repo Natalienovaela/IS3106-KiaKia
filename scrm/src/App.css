@@ -64,6 +64,8 @@ li {
     align-items: center;
 }
 
+
+
 .btn {
     padding: .6rem 1.5rem;
     background: var(--gradientColor);
@@ -90,9 +92,33 @@ li {
     transform: translate(5%);
 }
 
-.btn:hover {
+.btn:hover, .btn:hover.btnVin {
+    background: var(--SecondaryColor);
+  }
+
+.btnVin {
+    background: var(--PrimaryColor);
+}
+
+.btnVin:hover {
     background: var(--SecondaryColor);
 }
+
+.banner {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .btn-banner {
+    color: var(--whiteColor);
+    font-weight: 600;
+    font-size:medium;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
 
 .trip-component {
     width: 600px;
@@ -135,6 +161,19 @@ li {
     border: 1px solid #ccc;
     border-radius: 10px;
   }
+
+  .trip-main-content {
+    padding-left: 20px;
+  }
+
+  
+  @media screen and (max-width: 1000px) {
+    .hide-grid {
+        display: none;
+    }
+  }
+
+  
   
 img, video {
     width: 100%;

@@ -60,11 +60,6 @@ const Itineraries = ({ userId }) => {
     setUserId(userId);
   };
 
-  // // get all trips
-  // useEffect(() => {
-  //   Api.searchTripByCity(city);
-  // });
-
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
