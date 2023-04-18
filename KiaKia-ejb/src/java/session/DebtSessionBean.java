@@ -78,9 +78,9 @@ public class DebtSessionBean implements DebtSessionBeanLocal
     }
 
     @Override
-    public void payDebt(Long tripId, Long payerId, Long beneficiaryId, Long amt) throws TripNotFoundException
+    public void payDebt(Long tripId, Long debtId, Long amt) throws TripNotFoundException
     {
-        if (tripId == null || payerId == null || beneficiaryId == null) 
+        if (tripId == null || debtId == null) 
         {
             throw new IllegalArgumentException("Trip ID, Payer ID, and Beneficiary ID cannot be null.");
         }
@@ -91,7 +91,7 @@ public class DebtSessionBean implements DebtSessionBeanLocal
             throw new TripNotFoundException("Trip not found");
         }
         
-        Debt d = getDebtByPayerAndBeneficiary(trip.getDebts(), payerId, beneficiaryId);
+        Debt d = em.find(Debt.class, debtId);
         
         BigDecimal amtToBePaid = new BigDecimal(amt);
         if (amtToBePaid.compareTo(BigDecimal.ZERO) == -1 || amtToBePaid.compareTo(d.getAmtOwed()) == 1)
@@ -99,14 +99,7 @@ public class DebtSessionBean implements DebtSessionBeanLocal
             throw new IllegalArgumentException("Amount to be paid cannot be negative or more than the amount owed.");
         }
         
-        if (d.getCreditor().getUserId() == payerId)
-        {
-            d.setAmtOwed(d.getAmtOwed().subtract(amtToBePaid));
-        }
-        else
-        {
-            d.setAmtOwed(d.getAmtOwed().add(amtToBePaid));
-        }
+        d.setAmtOwed(d.getAmtOwed().subtract(amtToBePaid));
     }
     
     public Debt getDebtByPayerAndBeneficiary(List<Debt> debts, Long payerId, Long beneficiaryId)
@@ -153,6 +146,24 @@ public class DebtSessionBean implements DebtSessionBeanLocal
         }
         
         return debtsByUser;
+    }
+    
+    @Override
+    public List<Debt> getDebtsOwedByUser(Long userId, Long tripId) throws TripNotFoundException, UserNotFoundException
+    {
+        List<Debt> debtsByUser = getDebtsByUser(userId, tripId);
+        
+        List<Debt> debtsOwedByUser = new ArrayList<>();
+        for (Debt d: debtsByUser)
+        {
+            if ((d.getDebtor().getUserId() == userId && d.getAmtOwed().compareTo(BigDecimal.ZERO) > 0) || 
+                (d.getCreditor().getUserId() == userId && d.getAmtOwed().compareTo(BigDecimal.ZERO) < 0))
+            {
+                debtsOwedByUser.add(d);
+            }
+        }
+        
+        return debtsOwedByUser;
     }
 
     @Override

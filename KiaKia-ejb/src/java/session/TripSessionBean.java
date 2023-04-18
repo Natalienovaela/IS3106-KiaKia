@@ -71,7 +71,9 @@ public class TripSessionBean implements TripSessionBeanLocal {
         String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
         List<BudgetExpenseCategory> categories = new ArrayList<>();
         for (String name : categoryNames) {
-            categories.add(new BudgetExpenseCategory(name));
+            BudgetExpenseCategory c = new BudgetExpenseCategory(name);
+            em.persist(c);
+            categories.add(c);
         }
 
         trip.setCategories(categories);

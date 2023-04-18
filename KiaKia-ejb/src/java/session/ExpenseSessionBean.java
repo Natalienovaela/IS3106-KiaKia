@@ -16,7 +16,9 @@ import error.ExpenseNotFoundException;
 import error.TripNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -131,13 +133,47 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
         
         em.remove(e);
     }
-
+    
     @Override
-    public BigDecimal getTotalExpenseByCategory(Long categoryId, Long tripId) throws TripNotFoundException, CategoryNotFoundException
+    public Map<String, BigDecimal> getTotalExpenseByCategories(Long tripId) throws TripNotFoundException
+    {
+        if (tripId == null)
+        {
+            throw new IllegalArgumentException("Trip ID cannot be null.");
+        }
+        
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip == null)
+        {
+            throw new TripNotFoundException("Trip not found.");
+        }
+        
+        List<Expense> expenses = trip.getExpenses();
+        
+        Map<String, BigDecimal> expenseByCategory = new HashMap<>();
+        
+        for (Expense expense : expenses) 
+        {
+            BudgetExpenseCategory category = expense.getCategory();
+            String categoryName = category.getName();
+            
+            expenseByCategory.putIfAbsent(categoryName, BigDecimal.ZERO);
+            
+            BigDecimal currentExpense = expenseByCategory.get(categoryName);
+            BigDecimal newExpense = currentExpense.add(expense.getExpenseAmt());
+
+            expenseByCategory.put(categoryName, newExpense);
+        }
+        
+        return expenseByCategory;
+    }
+    
+    @Override
+    public BigDecimal getTotalExpenseByCategory(Long tripId, Long categoryId) throws TripNotFoundException, CategoryNotFoundException
     {
         if (tripId == null || categoryId == null)
         {
-            throw new IllegalArgumentException("Trip ID or Category ID cannot be null.");
+            throw new IllegalArgumentException("Trip ID and Category ID cannot be null.");
         }
         
         Trip trip = em.find(Trip.class, tripId);
@@ -152,12 +188,18 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
             throw new CategoryNotFoundException("Category not found.");
         }
         
-        List<Expense> expenses = new ArrayList<>();
-        trip.getExpenses().stream().filter(e -> (e.getCategory() == category)).forEachOrdered(e -> {
-            expenses.add(e);
-        });
+        List<Expense> expenses = trip.getExpenses();
         
-        return calculateTotalExpense(expenses);
+        BigDecimal totalExpenseByCategory = BigDecimal.ZERO;
+        for (Expense e: expenses)
+        {
+            if (e.getCategory().equals(category))
+            {
+                totalExpenseByCategory = totalExpenseByCategory.add(e.getExpenseAmt());
+            }
+        }
+        
+        return totalExpenseByCategory;
     }
 
     @Override

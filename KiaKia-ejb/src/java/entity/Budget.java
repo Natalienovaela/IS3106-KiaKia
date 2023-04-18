@@ -33,6 +33,11 @@ public class Budget implements Serializable {
     public Budget() {
     }
 
+    public Budget(BigDecimal budgetAmt, boolean isShared) {
+        this.budgetAmt = budgetAmt;
+        this.isShared = isShared;
+    }
+
     public Long getBudgetId() {
         return budgetId;
     }
