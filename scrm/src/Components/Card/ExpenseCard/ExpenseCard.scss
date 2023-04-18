@@ -4,6 +4,8 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 15px;
+  height: 65px;
+  box-shadow: 0 0px 0px;
 
   .card-content {
     flex-shrink: 0;
@@ -25,7 +27,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 17px;
+      margin-left: 5px;
+      margin-right: 15px;
     }
 
     .expense-detail {

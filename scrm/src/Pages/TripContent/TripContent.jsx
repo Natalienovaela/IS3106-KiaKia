@@ -18,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
 import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
+import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 const { RangePicker } = DatePicker;
 
@@ -259,7 +260,7 @@ function TripContent() {
                 id="expenses"
               >
                 <h2>Expenses</h2>
-                <p>insert expense component here</p>
+                <Expenses tripId={tripId} userId={userId} />
               </section>
             </div>
           </Grid>

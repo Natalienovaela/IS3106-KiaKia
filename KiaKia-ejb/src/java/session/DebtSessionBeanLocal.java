@@ -24,9 +24,11 @@ public interface DebtSessionBeanLocal
     
     public void handleDebt(Trip trip, Expense e, boolean isAddExpense) throws TripNotFoundException, DebtNotFoundException;
         
-    public void payDebt(Long tripId, Long payer, Long beneficiaryId, Long amt) throws TripNotFoundException;
+    public void payDebt(Long tripId, Long debtId, Long amt) throws TripNotFoundException;
         
     public List<Debt> getDebtsByUser(Long userId, Long tripID) throws TripNotFoundException, UserNotFoundException;
+    
+    public List<Debt> getDebtsOwedByUser(Long userId, Long tripId) throws TripNotFoundException, UserNotFoundException;
 
     public List<Debt> getOverallDebts(Long tripId) throws TripNotFoundException;
     

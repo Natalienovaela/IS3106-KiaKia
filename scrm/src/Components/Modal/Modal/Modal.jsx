@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent } from "@material-ui/core";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 
 const Modal = ({ title, open, onClose, children }) => {
   return (
