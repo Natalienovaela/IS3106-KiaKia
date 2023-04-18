@@ -63,7 +63,7 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
       .catch((error) => {
         console.log("Error while retrieving debts owed by user.");
       })
-  })
+  }, [tripId, userId])
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value)
@@ -185,6 +185,14 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
         categories={associatedCategories}
         tripId={tripId}
       /> */}
+
+      <SettleDebtModal
+        open={showSettleDebtModal}
+        onClose={() => setShowSettleDebtModal(false)}
+        tripId={tripId}
+        userId={userId}
+        debts={debtsOwed}
+      />
 
     </div>
   );

@@ -249,6 +249,10 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
     },
 
+    getUsers(tripId) {
+        return fetch(`${SERVER_PREFIX}/users/${tripId}//allUsers`);
+    },
+
     emailExists(email) {
         return fetch(`${SERVER_PREFIX}/users/query?email=${email}`);
     },
@@ -444,6 +448,10 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/associatedCategories`);
     },
 
+    getAllCategory(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/allCategories`);
+    },
+
     getTotalBudget(tripId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalBudget`);
     },
@@ -491,8 +499,8 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/debts`);
     },
 
-    payDebts(tripId, payerId, beneficiaryId, amt) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt?payerId=${payerId}&beneficiaryId=${beneficiaryId}&amt=${amt}`);
+    payDebts(tripId, debtId, amt) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt/${debtId}?amt=${amt}`);
     },
 
 };
