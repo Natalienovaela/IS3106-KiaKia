@@ -217,17 +217,6 @@ function TripContent() {
                       Polls
                     </Link>
                   </li>
-                  <li className="trip-sidebar-list-item">
-                    <Link
-                      activeClass="active"
-                      to="checklists"
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                    >
-                      Checklists
-                    </Link>
-                  </li>
 
                   <li className="trip-sidebar-list-item">
                     <Link
