@@ -265,18 +265,18 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section
+              {/* <section
                 className="trip-main-content-item"
                 title="Checklist"
                 id="checklists"
               >
-                {/*}
+                }
                 <Checklist
                   tripId={tripId}
                   userRole={userRole}
                   userId={userId}
-                />*/}
-              </section>
+                />
+              </section> */}
               <span className="line"></span>
               <section
                 className="trip-main-content-item"
