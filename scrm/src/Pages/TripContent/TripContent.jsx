@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { useCallback, useState, useEffect } from "react";
 import { Link, animateScroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
+import { Add } from '@mui/icons-material';
 import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
@@ -20,11 +21,16 @@ import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import InviteTripmates from './InviteTripmates/InviteTripmates';
+import newyork from "../../Assets/newyork.png";
+import japan from "../../Assets/japan.png";
+import singapore from "../../Assets/singapore.png";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
   //TO DO: change back to useParams and delete the hardcoded id
   const { userId, tripId } = useParams();
+  const [open, setOpen] = useState(false);
   // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
@@ -87,6 +93,13 @@ function TripContent() {
           setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
           console.log(endDate - startDate);
           setIsTripShared(isShared);
+          if (name === "Japan") {
+            setImg(japan);
+          } else if (name === "New York") {
+            setImg(newyork);
+          } else if (name === "Singapore") {
+            setImg(singapore);
+          }
         }),
     ]);
   }, []);
@@ -135,7 +148,7 @@ function TripContent() {
                   <button
                     onClick={handleShareButtonClick}
                     className="btn btn-banner"
-                    // sx={isTripShared ? sharedStyles : unsharedStyles}
+                  // sx={isTripShared ? sharedStyles : unsharedStyles}
                   >
                     {isTripShared ? "Unshare Trip" : "Share Trip"}
                   </button>
