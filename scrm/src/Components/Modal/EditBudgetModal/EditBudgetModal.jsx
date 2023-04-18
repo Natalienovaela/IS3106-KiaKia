@@ -26,13 +26,26 @@ function EditBudgetModal( categories, tripId, open, onClose ) {
   };
 
   const handleSave = () => {
-    Api.updateBudget(budgetId, amount)
-      .then(() => console.log('Budget updated successfully'))
-      .catch((error) => console.log(error));
+    if (amount === 0)
+    {
+      Api.deleteBudget(tripId, budgetId)
+        .then(() => console.log('Budget removed successfully'))
+        .catch((error) => console.log(error));
+    }
+    else 
+    {
+      Api.updateBudget(budgetId, amount)
+        .then(() => console.log('Budget updated successfully'))
+        .catch((error) => console.log(error));
+    }
+    onClose();
   };
 
   return (
     <Modal title="Edit Budget" open={open} onClose={onClose}>
+    {Array.isArray(categories) && categories.length === 0 ? (
+      <p>You have not set any budgets.</p>
+    ) : (
       <div>
         <Select value={selectedCategory} onChange={handleCategoryChange}>
           <MenuItem value="" disabled>
@@ -57,8 +70,8 @@ function EditBudgetModal( categories, tripId, open, onClose ) {
           </>
         )}
       </div>
-    </Modal>
-    
+    )}
+  </Modal>
   );
 }
 
