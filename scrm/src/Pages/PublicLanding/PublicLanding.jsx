@@ -104,7 +104,7 @@ const PublicLanding = () => {
   const navigate = useNavigate();
 
   const placeCards = placesData?.map((data) => (
-    <PlaceCard key={data.id} {...data} />
+    <PlaceCard key={data.id} userId={userId} {...data} />
   ));
 
   const itineraryCards = itinerariesData?.map((data, index) => (
