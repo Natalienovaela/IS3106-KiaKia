@@ -51,7 +51,7 @@ function TripContent() {
         console.log(endDate);
       });
 
-      Api.createItinerary(1, {
+      Api.createItinerary(tripId, {
         startDate: start,
         endDate: end,
       })
@@ -83,6 +83,7 @@ function TripContent() {
           setItinerary(itinerary);
           setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
           setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+          console.log(endDate - startDate);
           setIsTripShared(isShared);
         }),
     ]);
@@ -113,7 +114,7 @@ function TripContent() {
               <div className="banner">
                 <img src={japan} alt="japan" className="banner-img" />
                 <div className="banner-details">
-                  <h2>Japan</h2>
+                  <h2>{name}</h2>
                   <div className="banner-details-2">
                     <p className="trip-num-of-days">1 day</p>
                     <p>5 people</p>
@@ -143,18 +144,7 @@ function TripContent() {
                     Overview
                   </Link>
                 </li>
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
-                    to="ideaBucket"
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={500}
-                  >
-                    Idea Bucket
-                  </Link>
-                </li>
+
                 <li className="trip-sidebar-list-item">
                   <Link
                     activeClass="active"
