@@ -3,12 +3,10 @@ import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
-import DayContent from "./DayContent";
 import DayContents from "./DayContents";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import "./daycontent.css";
-// import { DragDropContext } from "react-beautiful-dnd";
 
 const Itinerary = (props) => {
   const { RangePicker } = DatePicker;

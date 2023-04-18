@@ -10,6 +10,7 @@ import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
+import Checklist from "../../Components/TripComponents/Checklist";
 
 import utc from "dayjs/plugin/utc";
 
@@ -135,13 +136,37 @@ function TripContent() {
                 <li className="trip-sidebar-list-item">
                   <Link
                     activeClass="active"
-                    to="overview"
+                    to="notes"
                     spy={true}
                     smooth={true}
                     offset={-70}
                     duration={500}
                   >
-                    Overview
+                    Notes
+                  </Link>
+                </li>
+                <li className="trip-sidebar-list-item">
+                  <Link
+                    activeClass="active"
+                    to="polls"
+                    spy={true}
+                    smooth={true}
+                    offset={-70}
+                    duration={500}
+                  >
+                    Polls
+                  </Link>
+                </li>
+                <li className="trip-sidebar-list-item">
+                  <Link
+                    activeClass="active"
+                    to="checklist"
+                    spy={true}
+                    smooth={true}
+                    offset={-70}
+                    duration={500}
+                  >
+                    Checklist
                   </Link>
                 </li>
 
@@ -157,6 +182,7 @@ function TripContent() {
                     Itinerary
                   </Link>
                 </li>
+
                 <li className="trip-sidebar-list-item">
                   <Link
                     activeClass="active"
@@ -182,7 +208,6 @@ function TripContent() {
                 />
               </section>
               <span className="line"></span>
-
               <section className="trip-main-content-item">
                 <TripPolls
                   tripId={tripId}
@@ -190,18 +215,19 @@ function TripContent() {
                   userRole={userRole}
                 />
               </section>
-
               <span className="line"></span>
-              {/*
+
               <section
                 className="trip-main-content-item"
-                title="Idea Bucket"
-                id="ideaBucket"
+                title="Checklist"
+                id="checklists"
               >
-                <h2>Idea Bucket</h2>
-                <p>Insert Idea Bucket component here</p>
+                <Checklist
+                  tripId={tripId}
+                  userRole={userRole}
+                  userId={userId}
+                />
               </section>
-              */}
               <span className="line"></span>
               <section
                 className="trip-main-content-item"
