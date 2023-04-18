@@ -15,7 +15,8 @@ const SetBudgetModal = ({ open, onClose, options, tripId }) => {
     setAmount(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     Api.setBudget(tripId, category, amount)
       .then(() => console.log('Budget updated successfully'))
       .catch((error) => console.log(error));
