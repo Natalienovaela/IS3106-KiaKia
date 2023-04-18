@@ -44,7 +44,7 @@ const ItineraryCard = (props) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/TripContent/${props.tripId}`);
+    navigate(`/TripContent/${props.userId}/${props.tripId}`);
   };
 
   const handleBookmarkClick = () => {
