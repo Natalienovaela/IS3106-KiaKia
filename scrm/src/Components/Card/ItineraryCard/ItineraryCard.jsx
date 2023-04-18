@@ -14,6 +14,7 @@ import Api from "../../../Helpers/Api";
 import newyork from "../../../Assets/newyork.png";
 import japan from "../../../Assets/japan.png";
 import singapore from "../../../Assets/singapore.png";
+import { AiFillPropertySafety } from "react-icons/ai";
 
 const dummyData = [
   {
@@ -44,7 +45,11 @@ const ItineraryCard = (props) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/TripContent/${props.userId}/${props.tripId}`);
+    if (props.userId) {
+      navigate(`/TripContent/${props.userId}/${props.tripId}`);
+    } else {
+      navigate(`/TripContent/${props.tripId}`);
+    }
   };
 
   const handleBookmarkClick = () => {
@@ -75,7 +80,7 @@ const ItineraryCard = (props) => {
       <div className="itinerary-imageDiv">
         <img src={img} alt="City" className="itinerary-card-image" />
         <div className="img-overlay">
-          {props.inTrip !== true || props.userId ? (
+          {props.userId || (props.userId && props.inTrip !== true) ? (
             <IconButton
               onClick={handleBookmarkClick}
               size="large"
