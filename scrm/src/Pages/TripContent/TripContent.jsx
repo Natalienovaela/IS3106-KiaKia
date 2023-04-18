@@ -36,7 +36,7 @@ function TripContent() {
 
   const [isTripShared, setIsTripShared] = useState(null);
   const [userRole, setUserRole] = useState(null);
-
+  // console.log(isTripShared);
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
     console.log(start);
@@ -105,6 +105,22 @@ function TripContent() {
     }
   };
 
+  const sharedStyles = {
+    bgcolor: "var(--PrimaryColor)",
+    ":hover": {
+      bgcolor: "var(--SecondaryColor)",
+      color: "white",
+    },
+  };
+
+  const unsharedStyles = {
+    bgcolor: "var(--SecondaryColor)",
+    ":hover": {
+      bgcolor: "var(--PrimaryColor)",
+      color: "white",
+    },
+  };
+
   return (
     <>
       {isTripShared != null && (
@@ -113,6 +129,15 @@ function TripContent() {
             <section className="trip-header">
               <div className="banner">
                 <img src={japan} alt="japan" className="banner-img" />
+                {userRole == "ADMIN" && (
+                  <button
+                    onClick={handleShareButtonClick}
+                    className="btn btn-banner"
+                    // sx={isTripShared ? sharedStyles : unsharedStyles}
+                  >
+                    {isTripShared ? "Unshare Trip" : "Share Trip"}
+                  </button>
+                )}
                 <div className="banner-details">
                   <h2>{name}</h2>
                   <div className="banner-details-2">
@@ -121,60 +146,85 @@ function TripContent() {
                   </div>
                 </div>
               </div>
-
-              {userRole == "ADMIN" && (
-                <button onClick={handleShareButtonClick} className="btn">
-                  {isTripShared ? "Unshare Trip" : "Share Trip"}
-                </button>
-              )}
             </section>
           </Grid>
-          <Grid item xs={3}>
-            <aside className="trip-sidebar">
-              <ul className="trip-sidebar-list">
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
-                    to="overview"
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={500}
-                  >
-                    Overview
-                  </Link>
-                </li>
-
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
-                    to="itinerary"
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={500}
-                  >
-                    Itinerary
-                  </Link>
-                </li>
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
-                    to="expenses"
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={500}
-                  >
-                    Expenses
-                  </Link>
-                </li>
-              </ul>
-            </aside>
-          </Grid>
+          <div className="hide-grid">
+            <Grid item>
+              <aside className="trip-sidebar">
+                <ul className="trip-sidebar-list">
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="notes"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Notes
+                    </Link>
+                  </li>
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="polls"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Polls
+                    </Link>
+                  </li>
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="checklists"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Checklists
+                    </Link>
+                  </li>
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="ideaBucket"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Idea Bucket
+                    </Link>
+                  </li>
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="itinerary"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Itinerary
+                    </Link>
+                  </li>
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
+                      to="expenses"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
+                      Expenses
+                    </Link>
+                  </li>
+                </ul>
+              </aside>
+            </Grid>
+          </div>
           <Grid item xs>
             <div className="trip-main-content">
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="notes">
                 <TripNotes
                   tripId={tripId}
                   userId={userId}
@@ -183,7 +233,7 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="polls">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
