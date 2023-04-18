@@ -183,10 +183,7 @@ function TripContent() {
                 )}
                 <div className="banner-details">
                   <h2>{name}</h2>
-                  <div className="banner-details-2">
-                    <p className="trip-num-of-days">1 day</p>
-                    <p>5 people</p>
-                  </div>
+                  <div className="banner-details-2"></div>
                 </div>
               </div>
             </section>
@@ -255,7 +252,7 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="polls">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
@@ -276,7 +273,7 @@ function TripContent() {
                   userId={userId}
                 />
               </section> */}
-              <span className="line"></span>
+
               <section
                 className="trip-main-content-item"
                 title="Itinerary"

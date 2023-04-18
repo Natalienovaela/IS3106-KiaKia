@@ -3,14 +3,14 @@ import "./ExpenseCard.scss";
 import FoodIcon from "@mui/icons-material/Restaurant";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Api from "../../../Helpers/Api";
+import Button from "@mui/material/Button";
 
 const ExpenseCard = (props, tripId) => {
-
   const handleDelete = () => {
     Api.deleteExpense(tripId, props.key)
-      .then(() => console.log('Expense deleted successfully'))
+      .then(() => console.log("Expense deleted successfully"))
       .catch((error) => console.log(error));
-  }
+  };
 
   return (
     <div className="card">
@@ -22,15 +22,13 @@ const ExpenseCard = (props, tripId) => {
           <p className="expense-description">{props.description}</p>
           <div>
             <small className="category">{props.category}</small>
-            {props.date && (
-              <span className="date">{props.date}</span>
-            )}
+            {props.date && <span className="date">{props.date}</span>}
           </div>
         </div>
         <p className="expense-amount">${props.amount}</p>
       </div>
 
-      <DeleteIcon onClick={handleDelete} />
+      <Button startIcon={<DeleteIcon />} onClick={handleDelete} />
     </div>
   );
 };
