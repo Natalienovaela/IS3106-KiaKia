@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 
 const ChecklistItem = ({ tripId, checklist, userRole, handleDelete }) => {
   //const [onChecked, setOnChecked] = useState([]);
@@ -6,3 +6,4 @@ const ChecklistItem = ({ tripId, checklist, userRole, handleDelete }) => {
 };
 
 export default ChecklistItem;
+ */
