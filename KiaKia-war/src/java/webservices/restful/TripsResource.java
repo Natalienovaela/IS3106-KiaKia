@@ -11,6 +11,8 @@ import entity.Poll;
 import entity.Trip;
 import enumeration.UserRoleEnum;
 import entity.User;
+import entity.CheckListItem;
+import error.CheckListItemNotFoundException;
 import error.CheckListNotFoundException;
 import error.NoteNotFoundException;
 import error.PollClosedException;
@@ -171,10 +173,10 @@ public class TripsResource {
     @Path("/{trip_id}/checkLists")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCheckList(@PathParam("trip_id") Long tripId, CheckList checkList) {
+    public Response createCheckList(@PathParam("trip_id") Long tripId, String name) {
         try {
-            checkListSessionBeanLocal.createNewCheckList(tripId, checkList);
-            return Response.status(200).entity(tripSessionBeanLocal.retrieveTripByTripId(tripId)).build();
+            CheckList checklist = checkListSessionBeanLocal.createNewCheckList(tripId, name);
+            return Response.status(200).entity(checklist).build();
         } catch (UnknownPersistenceException | TripNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
@@ -230,6 +232,39 @@ public class TripsResource {
                     .build();
             return Response.status(404).entity(exception).build();
         } catch (TripNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @POST
+    @Path("/checklists/{checklist_id}/checkListItems")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createChecklistItem(@PathParam("checklist_id")Long checkListId, String content) {
+        try {
+            CheckList checklist = checkListSessionBeanLocal.createCheckListItem(checkListId, content);
+            return Response.status(200).entity(checklist).type(MediaType.APPLICATION_JSON).build();
+        }
+        catch(CheckListNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
+    
+    @DELETE
+    @Path("/checklists/{checklist_id}/checkListItems/{checkListItem_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeCheckListItem(@PathParam("checklist_id") Long checkListId, @PathParam("checkListItem_id") Long checkListItemId) {
+        try {
+            checkListSessionBeanLocal.removeCheckListItem(checkListId, checkListItemId);
+            return Response.status(204).build();
+        }
+        catch(CheckListNotFoundException | CheckListItemNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();
