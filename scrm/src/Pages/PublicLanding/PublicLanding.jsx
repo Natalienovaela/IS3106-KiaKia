@@ -199,7 +199,7 @@ const PublicLanding = () => {
           </div>
           <div className="subSec">
             <div className="subSecTitle">
-              <h3>Top Itineraries</h3>
+              <h3>Top SharedTrips</h3>
             </div>
             <div className="itineraries-group">
               {itinerariesData.map((itinerary, index) => (

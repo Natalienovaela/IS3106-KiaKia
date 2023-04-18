@@ -146,18 +146,6 @@ function TripContent() {
                 <li className="trip-sidebar-list-item">
                   <Link
                     activeClass="active"
-                    to="ideaBucket"
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={500}
-                  >
-                    Idea Bucket
-                  </Link>
-                </li>
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
                     to="itinerary"
                     spy={true}
                     smooth={true}

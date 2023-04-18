@@ -78,7 +78,6 @@ public class PlaceLineItemSessionBean implements PlaceLineItemSessionBeanLocal {
                 em.persist(placeLineItem);
                 placeLineItem.setPlace(place);
                 trip.getBucketList().add(placeLineItem);
-
                 return placeLineItem;
             } catch (Exception ex) {
                 throw new TripNotFoundException("Trip does not exist");
