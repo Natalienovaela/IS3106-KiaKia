@@ -5,6 +5,9 @@ import marina from "../../../Assets/marina.png";
 import merlion from "../../../Assets/merlion.png";
 import botanic from "../../../Assets/botanic.png";
 import gardens from "../../../Assets/gardens.png";
+import louvre from "../../../Assets/louvre.png";
+import eiffel from "../../../Assets/eiffel.png";
+import bigben from "../../../Assets/bigben.png";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +15,7 @@ const PlaceCard = (props) => {
   const [click, setclick] = useState(false);
   const [img, setImg] = useState("");
   const navigate = useNavigate();
+  const user = props.userId;
 
   const handleClick = () => {
     navigate(`/PlacesContent/${props.placeId}`);
@@ -20,7 +24,9 @@ const PlaceCard = (props) => {
   const handleBookmark = () => {
     setclick(!click);
     console.log("clicked");
-    props.onClick(props.card);
+    if (props.onClick) {
+      props.onClick(props.card);
+    }
   };
 
   useEffect(() => {
@@ -32,6 +38,12 @@ const PlaceCard = (props) => {
       setImg(botanic);
     } else if (props.name === "Gardens by the Bay") {
       setImg(gardens);
+    } else if (props.name === "Louvre Museum") {
+      setImg(louvre);
+    } else if (props.name === "Eiffel Tower") {
+      setImg(eiffel);
+    } else if (props.name === "Big Ben") {
+      setImg(bigben);
     }
   }, []);
 
@@ -39,14 +51,18 @@ const PlaceCard = (props) => {
     <div className="place-card">
       <div className="pc-image-div">
         <img src={img} alt="Card" />
-        <IconButton
-          onClick={handleBookmark}
-          fontSize="large"
-          sx={{ color: "white" }}
-          className="bookmark-button"
-        >
-          {click ? <Bookmark /> : <BookmarkBorder />}
-        </IconButton>
+        {user ? (
+          <IconButton
+            onClick={handleBookmark}
+            fontSize="large"
+            sx={{ color: "white" }}
+            className="bookmark-button"
+          >
+            {click ? <Bookmark /> : <BookmarkBorder />}
+          </IconButton>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="card-content" onClick={handleClick}>

@@ -100,17 +100,20 @@ const Home = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [placesData, setPlacesData] = useState([]);
+  const [itinerariesData, setItinerariesData] = useState([]);
+  const [numOfDays, setNumOfDays] = useState([]);
 
   const placeCards = placesData?.map((data) => (
     <PlaceCard key={data.id} {...data} />
   ));
 
-  const itineraryCards = itineraryDummyData?.map((data) => (
-    <ItineraryCard key={data.id} {...data} />
+  const itineraryCards = itinerariesData?.map((data, index) => (
+    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} {...data} />
   ));
 
   useEffect(() => {
     getPlaces();
+    getItineraries();
     getUser();
   }, []);
 
@@ -120,6 +123,24 @@ const Home = () => {
       .then((data) => {
         setPlacesData(data);
       });
+  };
+
+  const getItineraries = () => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setItinerariesData(data);
+        const promises = data.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   };
 
   const getUser = () => {
@@ -154,7 +175,7 @@ const Home = () => {
           </div>
           <div className="subSec">
             <div className="subSecTitle">
-              <h3>Top Places</h3>
+              <h3>Places You Won't Miss</h3>
             </div>
             <div className="places-group">
               {placesData.map((place) => (
@@ -168,7 +189,12 @@ const Home = () => {
             <div className="subSecTitle">
               <h3>Top Itineraries</h3>
             </div>
-            <div className="cards-horizontal">{itineraryCards}</div>
+            <div className="itineraries-group">
+              {itinerariesData.map((itinerary, index) => (
+                <div key={itinerary.id}></div>
+              ))}
+              <div className="cards-horizontal">{itineraryCards}</div>
+            </div>
           </div>
         </div>
       </div>

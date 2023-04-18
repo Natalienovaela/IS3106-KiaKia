@@ -107,14 +107,17 @@ public class DataInitSessionBean {
         List<String> userEmails = new ArrayList<String>();
         List<String> userRoles = new ArrayList<String>();
         tripSessionBeanLocal.createAndInviteUsersToTrip(singapore, 2l, userEmails, userRoles);
+        tripSessionBeanLocal.shareWholeTrip(2l);
         Trip newyork = em.find(Trip.class, 4l);
         tripSessionBeanLocal.createAndInviteUsersToTrip(newyork, 4l, userEmails, userRoles);
+        tripSessionBeanLocal.shareWholeTrip(4l);
         userEmails.add("vinessa@gmail.com");
         userEmails.add("varrene@gmail.com");
         userRoles.add("ADMIN");
         userRoles.add("EDITOR");
         Trip japan = em.find(Trip.class, 3l);
         tripSessionBeanLocal.createAndInviteUsersToTrip(japan, 3l, userEmails, userRoles);
+        tripSessionBeanLocal.shareWholeTrip(3l);
         
 //            userSessionBeanLocal.createUser(new User("shinolim22@gmail.com", "Password123", "nat"));
 //            List<String> userEmails = new ArrayList<String>();
@@ -123,6 +126,8 @@ public class DataInitSessionBean {
 //            userRoles.add("EDITOR");
 //            tripSessionBeanLocal.createAndInviteUserToTrip(trip, 2l, userEmails, userRoles);
         } catch (UserNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TripNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -190,11 +195,11 @@ public class DataInitSessionBean {
 //            Note note9 = new Note("My 9th Note", "bla", false);
 //            noteSessionBeanLocal.createNewNote(note9, trip.getTripId());
 
-            Trip singapore = new Trip("Singapore", new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 18).getTime());
+            Trip singapore = new Trip(new GregorianCalendar(2022, Calendar.JANUARY, 15).getTime(), new GregorianCalendar(2022, Calendar.JANUARY, 18).getTime(), "Singapore", "Must visit places in Singapore", CountryEnum.SINGAPORE);
             em.persist(singapore);
             em.flush();
             itinerarySessionBeanLocal.createItineraries(singapore.getStartDate(), singapore.getEndDate(), singapore.getTripId());
-            Note singaporeNote = new Note("Description", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
+            Note singaporeNote = new Note("Note", "An amazing trip to the most expensive city in Asia. Feel free to download this itinerary if you wish to explore the top tourist attractions in Singapore!", false);
             noteSessionBeanLocal.createNewNote(singaporeNote, singapore.getTripId());
             placeLineItemSessionBeanLocal.createPlaceLineItem(6l, 1l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(7l, 2l);
@@ -206,19 +211,23 @@ public class DataInitSessionBean {
             CheckList checklistSg1 = new CheckList("Packing List", items);
             checkListSessionBeanLocal.createNewCheckList(2l, checklistSg1);
             
-            Trip japan = new Trip("Japan", new GregorianCalendar(2023, Calendar.MAY, 1).getTime(), new GregorianCalendar(2023, Calendar.MAY, 20).getTime());
+            Trip japan = new Trip(new GregorianCalendar(2023, Calendar.MAY, 1).getTime(), new GregorianCalendar(2023, Calendar.MAY, 20).getTime(), "Japan", "Our graduation trip to Japan!", CountryEnum.JAPAN);
             em.persist(japan);
             em.flush();
             itinerarySessionBeanLocal.createItineraries(japan.getStartDate(), japan.getEndDate(), japan.getTripId());
-            Note japanNote = new Note("Description", "Our graduation trip to Japan!", false);
+            Note japanNote = new Note("Tips", "Japanese culture places a high emphasis on politeness and respect!", false);
             noteSessionBeanLocal.createNewNote(japanNote, japan.getTripId());
+            placeLineItemSessionBeanLocal.createPlaceLineItem(10l, 9l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(11l, 11l);
+            placeLineItemSessionBeanLocal.createPlaceLineItem(18l, 10l);
             
-            Trip newyork = new Trip("New York", new GregorianCalendar(2021, Calendar.DECEMBER, 5).getTime(), new GregorianCalendar(2021, Calendar.DECEMBER, 27).getTime());
+            Trip newyork = new Trip(new GregorianCalendar(2021, Calendar.DECEMBER, 5).getTime(), new GregorianCalendar(2021, Calendar.DECEMBER, 27).getTime(), "New York", "Mesmerizing busy city New York.", CountryEnum.UNITEDSTATES );
             em.persist(newyork);
             em.flush();
             itinerarySessionBeanLocal.createItineraries(newyork.getStartDate(), newyork.getEndDate(), newyork.getTripId());
-            Note newyorkNote = new Note("Description", "Mesmerising busy city, New York", false);
+            Note newyorkNote = new Note("Note", "From street food to Michelin-starred restaurants, there are endless dining options.", false);
             noteSessionBeanLocal.createNewNote(newyorkNote, newyork.getTripId());
+            placeLineItemSessionBeanLocal.createPlaceLineItem(30l, 15l);
 
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);

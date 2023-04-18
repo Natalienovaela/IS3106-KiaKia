@@ -5,6 +5,9 @@ import marina from "../../Assets/marina.png";
 import merlion from "../../Assets/merlion.png";
 import botanic from "../../Assets/botanic.png";
 import gardens from "../../Assets/gardens.png";
+import louvre from "../../Assets/louvre.png";
+import eiffel from "../../Assets/eiffel.png";
+import bigben from "../../Assets/bigben.png";
 import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 
@@ -35,6 +38,12 @@ function PlacesContent() {
                     setImg(botanic);
                 } else if (name === "Gardens by the Bay") {
                     setImg(gardens);
+                } else if (name === "Louvre Museum") {
+                    setImg(louvre);
+                } else if (name === "Eiffel Tower") {
+                    setImg(eiffel);
+                } else if (name === "Big Ben") {
+                    setImg(bigben);
                 };
             });
     }, []);

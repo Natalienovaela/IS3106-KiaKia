@@ -97,6 +97,8 @@ const itineraryDummyData = [
 
 const PublicLanding = () => {
   const [placesData, setPlacesData] = useState([]);
+  const [itinerariesData, setItinerariesData] = useState([]);
+  const [numOfDays, setNumOfDays] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -104,16 +106,40 @@ const PublicLanding = () => {
     <PlaceCard key={data.id} {...data} />
   ));
 
-  const itineraryCards = itineraryDummyData?.map((data) => (
-    <ItineraryCard key={data.id} {...data} />
+  const itineraryCards = itinerariesData?.map((data, index) => (
+    <ItineraryCard key={data.id} numOfDays={numOfDays[index]} {...data} />
   ));
 
-  useEffect(() => {
+
+  const getPlaces = () => {
     Api.getAllPlaces()
       .then((response) => response.json())
       .then((data) => {
         setPlacesData(data);
       });
+  };
+
+  const getItineraries = () => {
+    Api.getAllSharedTrips()
+      .then((response) => response.json())
+      .then((data) => {
+        setItinerariesData(data);
+        const promises = data.map((trip) => {
+          const tripId = trip.tripId;
+          return Api.getNumOfDaysTrip(tripId)
+            .then((response) => response.json())
+            .then((trip) => trip.noDays);
+        });
+        Promise.all(promises)
+          .then((numOfDaysArray) => setNumOfDays(numOfDaysArray))
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    getPlaces();
+    getItineraries();
   }, []);
 
   const handleSearch = (event) => {
@@ -175,7 +201,12 @@ const PublicLanding = () => {
             <div className="subSecTitle">
               <h3>Top Itineraries</h3>
             </div>
-            <div className="cards-horizontal">{itineraryCards}</div>
+            <div className="itineraries-group">
+              {itinerariesData.map((itinerary, index) => (
+                <div key={itinerary.id}></div>
+              ))}
+              <div className="cards-horizontal">{itineraryCards}</div>
+            </div>
           </div>
         </div>
       </div>

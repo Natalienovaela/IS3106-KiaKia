@@ -12,7 +12,6 @@ import "./daycontent.css";
 
 const Itinerary = (props) => {
   const { RangePicker } = DatePicker;
-  const id = 1;
   const tripId = props.tripId;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
@@ -55,7 +54,7 @@ const Itinerary = (props) => {
     }
   };
   const reloadData = useCallback(() => {
-    Api.getTrip(id) // later change to trip id
+    Api.getTrip(tripId) // later change to trip id
       .then((res) => res.json())
       .then((trip) => {
         const { name, startDate, endDate, itinerary, isShared, country } = trip;
@@ -97,7 +96,12 @@ const Itinerary = (props) => {
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
             <>
-              <DayContents item={item} index={index} tripId={tripId} />
+              <DayContents
+                item={item}
+                index={index}
+                tripId={tripId}
+                userRole={props.userRole}
+              />
             </>
           ))}
       </div>

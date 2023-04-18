@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -343,7 +344,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
-    
+
     @Override
     public void inviteUsersToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException {
         try {
@@ -563,6 +564,24 @@ public class TripSessionBean implements TripSessionBeanLocal {
         } else {
             throw new CityOrCountryNotSelected("City or Country is not specified");
         }
+    }
+    
+    @Override
+    public int findNumberOfUsersInTrip(Long tripId) {
+        Query query = em.createQuery("SELECT COUNT(DISTINCT ta.tripAssignmentId.userId) FROM TripAssignment ta WHERE ta.tripAssignmentId.tripId = :tripId");
+        query.setParameter("tripId", tripId);
+        int numberOfUsers = ((Long) query.getSingleResult()).intValue();
+
+        return numberOfUsers;
+    }
+    
+    @Override
+    public int getNumOfDaysInTrip(Long tripId) {
+        Trip trip  = em.find(Trip.class, tripId);
+        int day = (int) TimeUnit.DAYS.convert((trip.getEndDate().getTime() - trip.getStartDate().getTime()), TimeUnit.MILLISECONDS);
+        day++;
+        
+        return day;
     }
 
 }

@@ -10,18 +10,6 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import SavePlaceToWishlist from "./SavePlaceToWishlist";
 
-const dummyData = [
-  {
-    city: "Singapore",
-    country: "Singapore",
-    img: singapore,
-  },
-  {
-    city: "Tokyo",
-    country: "Japan",
-    img: tokyo,
-  },
-];
 const Places = ({ userId }) => {
   const [inputValue, setInputValue] = React.useState("");
   const [thisUserId, setUserId] = useState("");
@@ -75,7 +63,12 @@ const Places = ({ userId }) => {
     getPlaces();
   }, []);
   const placeCards = placesData?.map((data) => (
-    <PlaceCard key={data.id} {...data} onClick={() => handleCardClick(data)} />
+    <PlaceCard
+      key={data.id}
+      {...data}
+      onClick={() => handleCardClick(data)}
+      userId={userId}
+    />
   ));
 
   return (
