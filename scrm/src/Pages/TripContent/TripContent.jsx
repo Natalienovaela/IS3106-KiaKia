@@ -160,7 +160,7 @@ function TripContent() {
             <section className="trip-header">
               <div className="banner">
                 <img src={japan} alt="japan" className="banner-img" />
-                {userRole == "ADMIN" && (
+                {userRole === "ADMIN" && (
                   <button
                     onClick={handleClickOpen}
                     className="btn btn-banner"
