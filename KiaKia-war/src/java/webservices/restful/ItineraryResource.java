@@ -110,8 +110,10 @@ public class ItineraryResource {
     @DELETE
     @Path("{itinerary_id}/placeLineItems/{placeLineItem_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removePlaceLineItem(@PathParam("tripId") Long tripId, @PathParam("itinerary_id") Long itineraryId, @PathParam("plaeLineItem_id") Long placeLineItemId) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response removePlaceLineItem(@PathParam("tripId") Long tripId, @PathParam("itinerary_id") Long itineraryId, @PathParam("placeLineItem_id") Long placeLineItemId) {
         try {
+            System.out.println(placeLineItemId);
             placeLineItemSessionBeanLocal.removePlaceLineItem(itineraryId, placeLineItemId);
             return Response.status(204).build();
         }
