@@ -94,6 +94,12 @@ function TripContent() {
   }, [reloadData]);
 
   const handleShareButtonClick = () => {
+    // confirmAlert({
+    //   title: isTripShared? 'Are you sure you want to unshare this trip?' : 'Are you sure you want to share this trip?',
+    //   message: 'Sharing trip means your trip will be visible to the public and they can refer to your trip to plan their future trip.'
+    //   buttons: [
+    //     {label:'Yes',
+    //     onClick: () => {
     if (!isTripShared) {
       Api.shareTrip(tripId).then(() => {
         reloadData();
@@ -103,6 +109,11 @@ function TripContent() {
         reloadData();
       });
     }
+    //     }
+    //   },
+    //   {label: 'No'}
+    //   ]
+    // })
   };
 
   const sharedStyles = {
