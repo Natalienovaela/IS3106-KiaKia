@@ -10,6 +10,7 @@ import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
+import Checklist from "../../Components/TripComponents/Checklist";
 
 import utc from "dayjs/plugin/utc";
 
@@ -17,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
 import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
+import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 const { RangePicker } = DatePicker;
 
@@ -185,17 +187,7 @@ function TripContent() {
                       Checklists
                     </Link>
                   </li>
-                  <li className="trip-sidebar-list-item">
-                    <Link
-                      activeClass="active"
-                      to="ideaBucket"
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                    >
-                      Idea Bucket
-                    </Link>
-                  </li>
+
                   <li className="trip-sidebar-list-item">
                     <Link
                       activeClass="active"
@@ -233,25 +225,26 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item" id="polls">
+              <section className="trip-main-content-item">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
                   userRole={userRole}
                 />
               </section>
-
               <span className="line"></span>
-              {/*
+
               <section
                 className="trip-main-content-item"
-                title="Idea Bucket"
-                id="ideaBucket"
+                title="Checklist"
+                id="checklists"
               >
-                <h2>Idea Bucket</h2>
-                <p>Insert Idea Bucket component here</p>
+                <Checklist
+                  tripId={tripId}
+                  userRole={userRole}
+                  userId={userId}
+                />
               </section>
-              */}
               <span className="line"></span>
               <section
                 className="trip-main-content-item"
@@ -267,7 +260,7 @@ function TripContent() {
                 id="expenses"
               >
                 <h2>Expenses</h2>
-                <p>insert expense component here</p>
+                <Expenses tripId={tripId} userId={userId} />
               </section>
             </div>
           </Grid>

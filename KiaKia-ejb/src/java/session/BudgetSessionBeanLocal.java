@@ -13,6 +13,7 @@ import error.TripNotFoundException;
 import error.UnableToSetBudgetException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -25,13 +26,17 @@ public interface BudgetSessionBeanLocal
     
     public void setBudget(Long tripId, Budget newB, Long categoryId) throws UnableToSetBudgetException, TripNotFoundException, CategoryNotFoundException;
     
-    public void updateBudget(Long budgetId, Budget newB) throws BudgetNotFoundException;
+    public void updateBudget(Long budgetId, Long budgetAmt) throws BudgetNotFoundException;
     
     public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException;
     
-    public BigDecimal getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException;
+    public Map<Long, BigDecimal> getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException;
     
     public List<BudgetExpenseCategory> getAvailableBudgetCategory(Long tripId) throws TripNotFoundException;
+    
+    public List<BudgetExpenseCategory> getAssociatedCategory(Long tripId) throws TripNotFoundException;
+    
+    public List<BudgetExpenseCategory> getAssociatedBudgetCategory(Long tripId) throws TripNotFoundException;
     
     public BigDecimal getTotalBudget(Long tripId) throws TripNotFoundException;
         

@@ -424,15 +424,8 @@ const Api = {
         });
     },
 
-    updateBudget(budgetId, data) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/updateBudget/${budgetId}`, {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify(data),
-        });
+    updateBudget(budgetId, budgetAmt) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/updateBudget/${budgetId}?budgetAmt=${budgetAmt}`);
     },
 
     deleteBudget(tripId, budgetId) {
@@ -445,6 +438,10 @@ const Api = {
 
     getAvailableCategory(tripId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/availableCategories`);
+    },
+
+    getAssociatedCategory(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/associatedCategories`);
     },
 
     getTotalBudget(tripId) {
@@ -466,8 +463,12 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense/${expenseId}`);
     },
 
+    getTotalExpenseByCategories(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpenseByCategory`);
+    },
+
     getTotalExpenseByCategory(tripId, categoryId) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpense/category/${categoryId}`);
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalExpenseByCategory/${categoryId}`);
     },
 
     getTotalExpense(tripId) {
@@ -480,6 +481,10 @@ const Api = {
 
     getDebtsByUser(tripId, userId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/debts/user/${userId}`);
+    },
+
+    getDebtsOwedByUser(tripId, userId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/owedDebts/user/${userId}`);
     },
 
     getOverallDebts(tripId) {
