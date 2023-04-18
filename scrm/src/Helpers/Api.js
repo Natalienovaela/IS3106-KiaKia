@@ -389,7 +389,7 @@ const Api = {
     },
 
     removeWishlistPlaceFromUser(userId, wishlistPlaceId) {
-        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}/remove`, {
             method: "DELETE",
         })
     },

@@ -239,11 +239,12 @@ function TripContent() {
                 title="Checklist"
                 id="checklists"
               >
+                {/*}
                 <Checklist
                   tripId={tripId}
                   userRole={userRole}
                   userId={userId}
-                />
+                />*/}
               </section>
               <span className="line"></span>
               <section
