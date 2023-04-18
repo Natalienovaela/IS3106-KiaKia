@@ -7,6 +7,7 @@ import DayContent from "./DayContent";
 import DayContents from "./DayContents";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import "./daycontent.css";
 // import { DragDropContext } from "react-beautiful-dnd";
 
 const Itinerary = (props) => {
@@ -57,7 +58,8 @@ const Itinerary = (props) => {
     Api.getTrip(id) // later change to trip id
       .then((res) => res.json())
       .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
+        const { name, startDate, endDate, itinerary, isShared, country } = trip;
+        console.log(itinerary);
         setName(name);
         setItinerary(itinerary);
         setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
@@ -76,9 +78,12 @@ const Itinerary = (props) => {
       <h2>Itinerary</h2>
 
       <div className="date-range-picker">
-        <h3>
-          {startDate.toLocaleDateString()} to {endDate.toLocaleDateString()}
-        </h3>
+        <div className="date">
+          <h2 className="date-num">{startDate.toLocaleDateString()}</h2>
+          <h2>to </h2>
+          <h2 className="date-num">{endDate.toLocaleDateString()}</h2>
+        </div>
+
         <RangePicker
           onChange={handleDateRangeChange}
           value={[dayjs(startDate.toString()), dayjs(endDate.toString())]}
@@ -92,7 +97,12 @@ const Itinerary = (props) => {
           .sort((a, b) => a.date - b.date)
           .map((item, index) => (
             <>
-              <DayContents item={item} index={index} />
+              <DayContents
+                item={item}
+                index={index}
+                tripId={tripId}
+                userRole={props.userRole}
+              />
             </>
           ))}
       </div>

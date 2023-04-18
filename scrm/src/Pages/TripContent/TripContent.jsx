@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TripNotes from "../../Components/TripComponents/TripNotes";
 import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
@@ -183,10 +184,25 @@ function TripContent() {
           </Grid>
           <Grid item xs>
             <div className="trip-main-content">
-              <TripNotes tripId={tripId} userId={userId} userRole={userRole} />
-              <TripPolls tripId={tripId} userId={userId} userRole={userRole} />
+              <section className="trip-main-content-item">
+                <TripNotes
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
+              </section>
+              <span className="line"></span>
+
+              <section className="trip-main-content-item">
+                <TripPolls
+                  tripId={tripId}
+                  userId={userId}
+                  userRole={userRole}
+                />
+              </section>
 
               <span className="line"></span>
+              {/*
               <section
                 className="trip-main-content-item"
                 title="Idea Bucket"
@@ -195,68 +211,14 @@ function TripContent() {
                 <h2>Idea Bucket</h2>
                 <p>Insert Idea Bucket component here</p>
               </section>
+              */}
               <span className="line"></span>
               <section
                 className="trip-main-content-item"
                 title="Itinerary"
                 id="itinerary"
               >
-                <Itinerary tripId={tripId} />
-                {/*  itinerary component here }
-                <h2>Itinerary</h2>
-
-                <div className="date-range-picker">
-                  <h3>
-                    {startDate.toLocaleDateString()} to{" "}
-                    {endDate.toLocaleDateString()}
-                  </h3>
-                  <RangePicker
-                    onChange={handleDateRangeChange}
-                    value={[
-                      dayjs(startDate.toString()),
-                      dayjs(endDate.toString()),
-                    ]}
-                  />
-
-                  {/*{error && <Error error={error} />}} 
-                </div>
-                <div>
-                  {itinerary
-                    .map((item) => ({ ...item, date: new Date(item.date) })) // convert date strings to date objects
-                    .sort((a, b) => a.date - b.date)
-                    .map((item) => (
-                      <div className="itinerary-details" key={item.id}>
-                        <h3>{item.description}</h3>
-                      </div>
-                    ))}
-                </div>
-                <p>Here's a rough outline of what your trip might look like:</p>
-                <ul className="itinerary-details">
-                  <li>
-                    Day 1: Arrive at your destination and check in to your
-                    accommodations
-                  </li>
-                  <li>Day 2: Explore the local area and try some new foods</li>
-                  <li>
-                    Day 3: Take a guided tour of the city and learn about its
-                    history
-                  </li>
-                  <li>
-                    Day 4: Relax at a nearby beach or go on a hike in the
-                    mountains
-                  </li>
-                  <li>Day 5: Take a day trip to a nearby town or attraction</li>
-                </ul>
-                <p>Here are some ideas for things to do on your trip:</p>
-                <ul>
-                  <li>Hike to the top of the nearest mountain</li>
-                  <li>
-                    Take a cooking class and learn how to make local cuisine
-                  </li>
-                  <li>Visit a museum or historical site</li>
-                  <li>Relax on a nearby beach or lake</li>
-                </ul>
-                    */}
+                <Itinerary tripId={tripId} userRole={userRole} />
               </section>
               <span className="line"></span>
               <section

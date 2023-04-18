@@ -17,6 +17,18 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/users/${userId}/groupTrips`);
     },
 
+    getNumberUsersinTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/users`);
+    },
+
+    getAllSharedTrips() {
+        return fetch(`${SERVER_PREFIX}/trips/allSharedTrips`);
+    },
+
+    getNumOfDaysTrip(tripId) {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/days`);
+    },
+
     //notes
     getAllNotesInTrip(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`);
@@ -359,6 +371,27 @@ const Api = {
             },
             method: "PUT",
         });
+    },
+
+    // places wishlist
+    getWishlistPlaces(userId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace`);
+    },
+
+    linkUserWithWishlistPlace(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}/link`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+        });
+    },
+
+    removeWishlistPlaceFromUser(userId, wishlistPlaceId) {
+        return fetch(`${SERVER_PREFIX}/users/${userId}/wishlistPlace/${wishlistPlaceId}`, {
+            method: "DELETE",
+        })
     },
 
     //cityorcountry

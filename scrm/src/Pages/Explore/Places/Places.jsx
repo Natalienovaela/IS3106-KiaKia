@@ -31,6 +31,7 @@ const Places = ({ userId }) => {
   const [placesData, setPlacesData] = useState([]);
 
   const handleCloseButton = () => {
+    console.log(selectedCard);
     setShowPopup(false);
     setSelectedCard(false);
   };
@@ -43,6 +44,21 @@ const Places = ({ userId }) => {
   useEffect(() => {
     setUserId(userId);
   }, [userId]);
+
+  const handleSaveButton = async () => {
+    if (!selectedCard) {
+      alert("No card has been selected");
+      return;
+    }
+
+    try {
+      await Api.linkUserWithWishlistPlace(userId, selectedCard.placeId);
+      setShowPopup(false);
+      setSelectedCard(null);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   //const placeCards = dummyData?.map((cardData) => (
   //<PlaceCard key={cardData.id} {...cardData} />
   //));
@@ -59,7 +75,12 @@ const Places = ({ userId }) => {
     getPlaces();
   }, []);
   const placeCards = placesData?.map((data) => (
-    <PlaceCard key={data.id} {...data} onClick={() => handleCardClick(data)} />
+    <PlaceCard
+      key={data.id}
+      {...data}
+      onClick={() => handleCardClick(data)}
+      userId={userId}
+    />
   ));
 
   return (
@@ -74,6 +95,7 @@ const Places = ({ userId }) => {
         <SavePlaceToWishlist
           selectedCard={selectedCard}
           onCloseButtonClick={handleCloseButton}
+          onSaveButtonClick={handleSaveButton}
         />
       )}
     </>
