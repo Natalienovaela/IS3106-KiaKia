@@ -10,6 +10,13 @@ import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import utc from "dayjs/plugin/utc";
 
@@ -103,10 +110,12 @@ function TripContent() {
     if (!isTripShared) {
       Api.shareTrip(tripId).then(() => {
         reloadData();
+        setOpen(false);
       });
     } else {
       Api.unshareTrip(tripId).then(() => {
         reloadData();
+        setOpen(false);
       });
     }
     //     }
@@ -132,6 +141,17 @@ function TripContent() {
     },
   };
 
+  //for sharing trip
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       {isTripShared != null && (
@@ -142,7 +162,7 @@ function TripContent() {
                 <img src={japan} alt="japan" className="banner-img" />
                 {userRole == "ADMIN" && (
                   <button
-                    onClick={handleShareButtonClick}
+                    onClick={handleClickOpen}
                     className="btn btn-banner"
                     // sx={isTripShared ? sharedStyles : unsharedStyles}
                   >
@@ -284,6 +304,32 @@ function TripContent() {
           </Grid>
         </Grid>
       )}
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {!isTripShared ? "Share your trip to public?" : "Unshare your trip?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {!isTripShared
+              ? "Sharing your trip makes your trip including notes, itineraries, and expenses visible to public in the Explore page. This will help others in planning their trip!"
+              : "Unsharing your trip will remove your trip from the Explore page."}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleShareButtonClick}>
+            {isTripShared ? "Unshare" : "Share"}
+          </Button>
+          <Button onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
