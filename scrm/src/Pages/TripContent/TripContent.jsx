@@ -7,7 +7,6 @@ import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
-import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
@@ -39,6 +38,7 @@ function TripContent() {
   // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
+  const [img, setImg] = useState("");
   const [startDate, setStartDate] = useState(
     moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
   );
