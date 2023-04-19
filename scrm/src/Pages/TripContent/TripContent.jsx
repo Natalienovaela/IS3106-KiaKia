@@ -29,9 +29,7 @@ import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import newyork from "../../Assets/newyork.png";
-import japan from "../../Assets/japan.png";
-import singapore from "../../Assets/singapore.png";
+import japan from "../../Assets/japan2.jpg";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
@@ -51,7 +49,6 @@ function TripContent() {
 
   const [isTripShared, setIsTripShared] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [img, setImg] = useState();
   // console.log(isTripShared);
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();

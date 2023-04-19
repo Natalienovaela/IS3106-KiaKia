@@ -75,6 +75,7 @@
                 gap: 1rem;
                 flex-direction: row;
                 position: relative;
+                margin-left: 12rem;
             
 
                 input {
@@ -101,7 +102,7 @@
                     font-weight: 500;
                     gap: .5rem;
                     top: 50%;
-                    right: .6rem;
+                    left: 11rem;
                     transform: translateY(-50%);
                     position: absolute;
                     background-color: transparent;
