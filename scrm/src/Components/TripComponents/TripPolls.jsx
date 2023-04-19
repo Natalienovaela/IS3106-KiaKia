@@ -22,7 +22,8 @@ const TripPolls = ({ userId, tripId, userRole }) => {
       })
       .then((data) => {
         setPolls(data);
-        // console.log(data);
+        console.log("POLLS IN THIS TRIP " + tripId);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -33,7 +34,9 @@ const TripPolls = ({ userId, tripId, userRole }) => {
     <div className="trip-polls">
       <div className="rowComponent">
         <h2>Polls</h2>
-        {userRole !== "VIEWER" && <CreatePoll setPolls={setPolls} />}
+        {userRole !== "VIEWER" && (
+          <CreatePoll tripId={tripId} userId={userId} setPolls={setPolls} />
+        )}
         {/* <div>
         <button className="note btn container" onClick={handleCreateNote}>
           Create Note
