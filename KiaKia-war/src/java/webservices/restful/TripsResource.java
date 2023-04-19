@@ -330,7 +330,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
         List<Poll> polls;
-        System.out.println("Retrieve all polls in trip triggered");
+        System.out.println("Retrieve all polls in trip triggered, TRIP ID = " + tripId);
         try {
             polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
             return Response.status(200).entity(polls).build();
