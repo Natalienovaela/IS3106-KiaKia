@@ -19,7 +19,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import newyork from "../../Assets/newyork.png";
-import japan from "../../Assets/japan.png";
 import singapore from "../../Assets/singapore.png";
 
 import utc from "dayjs/plugin/utc";
@@ -48,6 +47,7 @@ function TripContent() {
 
   const [isTripShared, setIsTripShared] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [img, setImg] = useState();
   // console.log(isTripShared);
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
@@ -87,14 +87,14 @@ function TripContent() {
           console.log("USER ROLE" + data);
           setUserRole(data);
         }),
-    Api.getTrip(tripId)
-      .then((res) => res.json())
-      .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
-        setName(name);
-        setItinerary(itinerary);
-        setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-        setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+      Api.getTrip(tripId)
+        .then((res) => res.json())
+        .then((trip) => {
+          const { name, startDate, endDate, itinerary, isShared } = trip;
+          setName(name);
+          setItinerary(itinerary);
+          setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+          setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
           console.log(endDate - startDate);
           setIsTripShared(isShared);
           if (name === "Japan") {
@@ -190,16 +190,16 @@ function TripContent() {
           </Grid>
           <div className="hide-grid">
             <Grid item>
-            <aside className="trip-sidebar">
-              <ul className="trip-sidebar-list">
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
+              <aside className="trip-sidebar">
+                <ul className="trip-sidebar-list">
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
                       to="notes"
-                    spy={true}
-                    smooth={true}
-                    duration={500}
-                  >
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
                       Notes
                     </Link>
                   </li>

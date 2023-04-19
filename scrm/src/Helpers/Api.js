@@ -347,7 +347,7 @@ const Api = {
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify(folderName),
+            body: folderName,
         })
     },
     deleteFolder(userId, folderId) {
