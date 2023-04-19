@@ -17,11 +17,11 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
   const [placeLineItem, setPlaceLineItem] = useState([]);
   const [dun2, setdun2] = useState([]);
   const [fullPLI, setFullPLI] = useState([]);
+  const [placeLineItem2, setPlaceLineItem2] = useState([]);
 
   const getRecordedPlaceLineItem = () => {
-    const p = item.placeLineItem.map((place) => place.place);
+    const p = item.placeLineItem;
     setPlaceLineItem(p);
-    console.log(p);
   };
 
   useEffect(() => {
@@ -111,40 +111,17 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
 
   return (
     <>
-      {placeLineItem && (
-        <div className="itinerary-details" key={item.dayItineraryId}>
-          <h2>Day {index + 1}</h2>
-          <div className="placesLineItem">
-            <div className="place-ind">
-              {placeLineItem?.map((placeItem, index) => (
-                <>
-                  <div className="sideway">
-                    <div className="places">
-                      <h3>{index + 1} </h3>
-                      <h3 className="item" key={index}>
-                        {placeItem.name}
-                      </h3>
-                    </div>
-                    {userRole !== "VIEWER" && (
-                      <div className="btn-delete">
-                        <IconButton
-                          onClick={() => {
-                            handleDelete(index);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </div>
-                    )}
-                  </div>
-                </>
-              ))}
-              {placeList.map((placeItem, index) => (
-                <div className="sideway" key={"placeItem" + index}>
+      <div className="itinerary-details" key={item.dayItineraryId}>
+        <h2>Day {index + 1}</h2>
+        <div className="placesLineItem">
+          <div className="place-ind">
+            {placeLineItem?.map((placeItem, index) => (
+              <>
+                <div className="sideway">
                   <div className="places">
                     <h3>{index + 1} </h3>
                     <h3 className="item" key={index}>
-                      {placeItem}
+                      {placeItem.name}
                     </h3>
                   </div>
                   {userRole !== "VIEWER" && (
@@ -159,44 +136,52 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
                     </div>
                   )}
                 </div>
-              ))}
-            </div>
-
-            {toggle && (
-              <>
-                <div className="add-place-div">
-                  <Autocomplete
-                    value={place}
-                    onChange={handlePlaceChange}
-                    inputValue={place}
-                    onInputChange={(event, newInputValue) => {
-                      setPlace(newInputValue);
-                    }}
-                    id="controllable-states-demo"
-                    options={placesDataName}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => (
-                      <TextField {...params} placeholder="Enter a place" />
-                    )}
-                  />
-                  <button onClick={handleSaveButton} className="btn">
-                    save
-                  </button>
-                  <button onClick={handleCancelButton} className="cancel">
-                    cancel
-                  </button>
-                </div>
               </>
-            )}
-
-            {userRole !== "VIEWER" && (
-              <button onClick={handleAddPlace} className="btn">
-                add place
-              </button>
-            )}
+            ))}
+            {placeList.map((placeItem, index) => (
+              <div className="places">
+                <h3>{index + 1} </h3>
+                <h3 className="item" key={index}>
+                  {placeItem}
+                </h3>
+              </div>
+            ))}
           </div>
+
+          {toggle && (
+            <>
+              <div className="add-place-div">
+                <Autocomplete
+                  value={place}
+                  onChange={handlePlaceChange}
+                  inputValue={place}
+                  onInputChange={(event, newInputValue) => {
+                    setPlace(newInputValue);
+                  }}
+                  id="controllable-states-demo"
+                  options={placesDataName}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Enter a place" />
+                  )}
+                />
+                <button onClick={handleSaveButton} className="btn">
+                  save
+                </button>
+                <button onClick={handleCancelButton} className="cancel">
+                  cancel
+                </button>
+              </div>
+            </>
+          )}
+
+          {userRole !== "VIEWER" && (
+            <button onClick={handleAddPlace} className="btn">
+              add place
+            </button>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 };

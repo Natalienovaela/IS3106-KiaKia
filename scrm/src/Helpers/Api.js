@@ -222,7 +222,7 @@ const Api = {
     },
 
     removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}`, {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}/remove`, {
             method: "DELETE",
         })
     },
@@ -258,6 +258,10 @@ const Api = {
 
     getUser(userId) {
         return fetch(`${SERVER_PREFIX}/users/${userId}`);
+    },
+
+    getUsers(tripId) {
+        return fetch(`${SERVER_PREFIX}/users/${tripId}//allUsers`);
     },
 
     emailExists(email) {
@@ -354,9 +358,7 @@ const Api = {
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify({
-                folderName: folderName
-            }),
+            body: folderName,
         })
     },
     deleteFolder(userId, folderId) {
@@ -455,6 +457,10 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/associatedCategories`);
     },
 
+    getAllCategory(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/allCategories`);
+    },
+
     getTotalBudget(tripId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/totalBudget`);
     },
@@ -502,8 +508,8 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/debts`);
     },
 
-    payDebts(tripId, payerId, beneficiaryId, amt) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt?payerId=${payerId}&beneficiaryId=${beneficiaryId}&amt=${amt}`);
+    payDebts(tripId, debtId, amt) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/payDebt/${debtId}?amt=${amt}`);
     },
 
 };

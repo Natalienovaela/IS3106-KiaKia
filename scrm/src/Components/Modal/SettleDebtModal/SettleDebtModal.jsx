@@ -1,41 +1,52 @@
 import React, { useState } from "react";
 import { Button, Select, MenuItem, TextField } from "@mui/material";
 import Modal from "../Modal/Modal";
+import Api from "../../../Helpers/Api";
 
-const SettleDebtModal = ({ open, onClose, maxValue, debts }) => {
-  const [person, setPerson] = useState("");
-  const [amount, setAmount] = useState("");
+const SettleDebtModal = ({ open, onClose, debts, tripId, userId }) => {
+  const [debtId, setDebtId] = useState(null);
+  const [amountOwed, setAmountOwed] = useState(0);
+  const [amountPaid, setAmountPaid] = useState(amountOwed);
 
-  const handlePersonChange = (e) => {
-    setPerson(e.target.value);
+  const handleDebtChange = (e) => {
+    setDebtId(e.target.value);
+    const selectedDebt = debts.find((debt) => debt.debtId === debtId);
+    setAmountOwed(selectedDebt.amount);
   };
 
   const handleAmountChange = (e) => {
-    setAmount(e.target.value);
+    setAmountPaid(e.target.value);
   };
 
   const handleSubmit = () => {
-    // handle form submission
+    Api.payDebts(tripId, debtId, amountPaid)
+      .then(() => console.log('Budget updated successfully'))
+      .catch((error) => console.log(error));
   };
 
   return (
     <Modal title="Settle Debt" open={open} onClose={onClose}>
       <form onSubmit={handleSubmit}>
-        <Select value={person} onChange={handlePersonChange}>
-          {debts.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
+        <Select value={debtId} onChange={handleDebtChange}>
+          {debts.map((debt) => (
+            <MenuItem key={debt.debtId} value={debt.debtId}>
+              {debt.creditor.userId === userId ? debt.debtor.name : debt.creditor.name}
             </MenuItem>
           ))}
         </Select>
-        <TextField
-          label="Amount"
-          type="number"
-          value={amount}
-          onChange={handleAmountChange}
-          inputProps={{ min: 0, max: maxValue }}
-        />
-        <Button type="submit">Submit</Button>
+        {debtId && (
+          <>
+            <TextField
+              label="Amount"
+              type="number"
+              value={amountPaid}
+              onChange={handleAmountChange}
+              inputProps={{ min: 0, max: amountOwed }}
+            />
+            <Button type="submit">Submit</Button>
+          </>
+        )}
+        
       </form>
     </Modal>
   );

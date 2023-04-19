@@ -173,7 +173,7 @@ const Itineraries = ({ userId }) => {
 
     // save selected card into selected folder
     try {
-      await Api.addTripToFolder(selectedFolder.folderId, selectedCard.id);
+      await Api.addTripToFolder(selectedFolder.folderId, selectedCard.tripId);
       setSelectedCard(null);
       setShowPopup(false);
       console.log("Successfully saved trip");

@@ -38,6 +38,8 @@ public interface BudgetSessionBeanLocal
     
     public List<BudgetExpenseCategory> getAssociatedBudgetCategory(Long tripId) throws TripNotFoundException;
     
+    public List<BudgetExpenseCategory> getAllCategories(Long tripId) throws TripNotFoundException;
+    
     public BigDecimal getTotalBudget(Long tripId) throws TripNotFoundException;
         
 }

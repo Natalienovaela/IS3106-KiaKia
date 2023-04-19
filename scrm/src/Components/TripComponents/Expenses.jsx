@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BudgetExpenseCard from "../Card/BudgetExpenseCard/BudgetExpenseCard";
 import ExpenseCard from "../Card/ExpenseCard/ExpenseCard";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddRounded"
 import AddExpenseModal from "../Modal/AddExpenseModal/AddExpenseModal";
+import Api from "../../Helpers/Api";
 
 const Expenses = ({ tripId, userId }) => {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const handleAddExpenseClick = () => {
     setShowAddExpenseModal(true);
   }
+
+  useEffect(() => {
+    Api.getAllCategory(tripId)
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => {
+        console.log("Error while retrieving categories.");
+      })
+  }, [tripId])
+
+  useEffect(() => {
+    Api.getUsers(tripId)
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .catch((error) => {
+        console.log("Error while retrieving users.");
+      })
+  }, [tripId])
 
   const expenses = [
     {
@@ -64,7 +85,14 @@ const Expenses = ({ tripId, userId }) => {
           tripId={tripId}
         />
       ))}
-
+      
+      <AddExpenseModal
+        open={showAddExpenseModal}
+        onClose={() => setShowAddExpenseModal(false)}
+        tripId={tripId}
+        users={users}
+        categories={categories}
+      />
     </div>
   );
 };

@@ -3,24 +3,22 @@ import TextField from "@mui/material/TextField";
 import { MdOutlineEdit } from "react-icons/md";
 import Api from "../../Helpers/Api";
 import HorizontalCard from "../../Components/Card/HorizontalCard/HorizontalCard";
-
+import ItineraryCard from "../../Components/Card/ItineraryCard/ItineraryCard";
 const WishlistFolder = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [selectedFolder, setSelectedFolder] = useState("");
   const folderName = props.folderName;
   const horizontalCards = props.trips?.map((cardData) => (
-    <HorizontalCard {...cardData} />
+    <ItineraryCard {...cardData} />
   ));
   const handleClick = () => {
     setEditMode(true);
-    props.onClick(props.folder);
   };
   const handleCancelFolderNameEdit = () => {
     setEditMode(false);
   };
   const handleSaveFolderName = async () => {
-    // todo: call api to save folder name
     // check if new folder name is there
     if (!newFolderName) {
       alert("Please enter a new folder name");
@@ -37,6 +35,7 @@ const WishlistFolder = (props) => {
 
   const handleNewFolderInput = (event) => {
     const inputNewFolder = event.target.value.trim();
+    console.log(inputNewFolder);
     if (!inputNewFolder) {
       return;
     }

@@ -18,6 +18,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import newyork from "../../Assets/newyork.png";
+import singapore from "../../Assets/singapore.png";
 
 import utc from "dayjs/plugin/utc";
 
@@ -49,6 +51,7 @@ function TripContent() {
 
   const [isTripShared, setIsTripShared] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [img, setImg] = useState();
   // console.log(isTripShared);
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
@@ -184,10 +187,7 @@ function TripContent() {
                 )}
                 <div className="banner-details">
                   <h2>{name}</h2>
-                  <div className="banner-details-2">
-                    <p className="trip-num-of-days">1 day</p>
-                    <p>5 people</p>
-                  </div>
+                  <div className="banner-details-2"></div>
                 </div>
               </div>
             </section>
@@ -216,17 +216,6 @@ function TripContent() {
                       duration={500}
                     >
                       Polls
-                    </Link>
-                  </li>
-                  <li className="trip-sidebar-list-item">
-                    <Link
-                      activeClass="active"
-                      to="checklists"
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                    >
-                      Checklists
                     </Link>
                   </li>
 
@@ -267,7 +256,7 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="polls">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
@@ -276,19 +265,19 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section
+              {/* <section
                 className="trip-main-content-item"
                 title="Checklist"
                 id="checklists"
               >
-                {/*}
+                }
                 <Checklist
                   tripId={tripId}
                   userRole={userRole}
                   userId={userId}
-                />*/}
-              </section>
-              <span className="line"></span>
+                />
+              </section> */}
+
               <section
                 className="trip-main-content-item"
                 title="Itinerary"
