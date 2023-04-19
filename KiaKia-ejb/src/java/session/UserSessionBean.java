@@ -13,6 +13,7 @@ import enumeration.UserRoleEnum;
 import error.InvalidLoginException;
 import error.PlaceNotFoundException;
 import error.ResetPasswordException;
+import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -66,6 +67,15 @@ public class UserSessionBean implements UserSessionBeanLocal {
         } else {
             throw new UserNotFoundException("User ID " + userId + " does not exist!");
         }
+    }
+    
+    @Override
+    public List<User> retrieveAllUsers(Long tripId)
+    {
+        Query query = em.createQuery("SELECT DISTINCT ta.user FROM TripAssignment ta WHERE ta.trip.tripId = :tripId");
+        query.setParameter("tripId", tripId);
+        List<User> users = query.getResultList();
+        return users;
     }
 
     @Override

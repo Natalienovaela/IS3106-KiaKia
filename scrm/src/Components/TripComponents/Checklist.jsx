@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import ChecklistItem from "./ChecklistItem";
 
 const Checklist = ({ tripId, userId, userRole }) => {
-  const [checklists, setChecklists] = useState([]);
+  const [checklists, setChecklists] = useState(null);
 
   useEffect(() => {
     reloadChecklists();
@@ -61,12 +61,12 @@ const Checklist = ({ tripId, userId, userRole }) => {
         )}
       </div>
       {checklists &&
-        checklists.map((note) => (
-          <div key={note.noteId} className="rowComponent">
+        checklists.map((checklist) => (
+          <div key={checklist.checklistId} className="rowComponent">
             <div className="checklistComponent">
               <ChecklistItem
                 tripId={tripId}
-                checklist={checklists}
+                checklist={checklist}
                 userRole={userRole}
                 handleDelete={handleDelete}
               />

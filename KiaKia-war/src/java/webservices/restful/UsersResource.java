@@ -14,11 +14,8 @@ import error.InvalidLoginException;
 import error.PlaceNotFoundException;
 import error.TripNotFoundException;
 import error.UserNotFoundException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -85,6 +82,14 @@ public class UsersResource {
             return Response.status(404).entity(exception)
                     .type(MediaType.APPLICATION_JSON).build();
         }
+    }
+    
+    @GET
+    @Path("/{tripId}/allUsers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsers(@PathParam("tripId") Long tripId) throws TripNotFoundException {
+        List<User> users = userSessionBeanLocal.retrieveAllUsers(tripId);
+        return Response.status(200).entity(users).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET

@@ -19,12 +19,13 @@ const Popup = (props) => {
             <>
               {props.folders.map((folder) => (
                 <div key={folder.id} className="folder-list">
-                  <label>{folder.name}</label>
                   <input
                     type="checkbox"
+                    className="checkBox"
                     checked={props.selectedFolder.name === folder.name}
                     onChange={() => props.onFolderCheckboxChange(folder)}
                   />
+                  <label className="folder-name">{folder.name}</label>
                 </div>
               ))}
               <div className="folder new-folder">

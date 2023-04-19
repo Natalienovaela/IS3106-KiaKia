@@ -6,12 +6,12 @@
 package session;
 
 import entity.Place;
-import entity.PlaceLineItem;
 import entity.Trip;
 import entity.User;
 import error.InvalidLoginException;
 import error.PlaceNotFoundException;
 import error.ResetPasswordException;
+import error.TripNotFoundException;
 import error.UserNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -34,6 +34,8 @@ public interface UserSessionBeanLocal {
     public boolean emailExists(String email) throws UserNotFoundException;
 
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException;
+    
+    public List<User> retrieveAllUsers(Long tripId);
 
     public void updateUser(User u) throws UserNotFoundException;
 

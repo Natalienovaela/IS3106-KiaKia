@@ -191,6 +191,32 @@ public class BudgetExpenseResource
             return Response.status(400).entity(exception).build();
         }
     }
+    
+    @GET
+    @Path("{tripId}/allCategories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCategories(@PathParam("tripId") Long tripId) 
+    {
+        try 
+        {
+            List<BudgetExpenseCategory> allCategories = budgetSessionBeanLocal.getAllCategories(tripId);
+            return Response.status(200).entity(allCategories).build();
+        } 
+        catch (TripNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        } 
+        catch (IllegalArgumentException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
 
     @GET
     @Path("{tripId}/totalBudget")
