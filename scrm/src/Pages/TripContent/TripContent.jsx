@@ -207,7 +207,7 @@ function TripContent() {
                       Polls
                     </Link>
                   </li>
-                  <li className="trip-sidebar-list-item">
+                  {/* <li className="trip-sidebar-list-item">
                     <Link
                       activeClass="active"
                       to="checklists"
@@ -217,7 +217,7 @@ function TripContent() {
                     >
                       Checklists
                     </Link>
-                  </li>
+                  </li> */}
 
                   <li className="trip-sidebar-list-item">
                     <Link
@@ -256,7 +256,7 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="polls">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
@@ -265,19 +265,19 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section
+              {/* <section
                 className="trip-main-content-item"
                 title="Checklist"
                 id="checklists"
-              >
-                {/*}
+              > */}
+              {/*}
                 <Checklist
                   tripId={tripId}
                   userRole={userRole}
                   userId={userId}
                 />*/}
-              </section>
-              <span className="line"></span>
+              {/* </section>
+              <span className="line"></span> */}
               <section
                 className="trip-main-content-item"
                 title="Itinerary"
