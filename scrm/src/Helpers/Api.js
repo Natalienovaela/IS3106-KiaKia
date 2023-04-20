@@ -57,6 +57,17 @@ const Api = {
             }
         )
     },
+    // inviteUserToTrip(tripId, userId, userEmail, userRole) {
+    //     return fetch(`${SERVER_PREFIX}/trips?tripId=${tripId}&userId=${userId}&userEmail=${userEmail}&userRole=${userRole}`,
+    //         {
+    //             headers: {
+    //                 Accept: "application/json",
+    //                 "Content-Type": "application/json",
+    //             },
+    //             method: "POST",
+    //         }
+    //     )
+    // },
     //notes
     createNote(tripId) {
         return fetch(`${SERVER_PREFIX}/trips/${tripId}/notes`, {
@@ -211,7 +222,7 @@ const Api = {
     },
 
     removePlaceLineItem(tripId, itineraryId, placeLineItemId) {
-        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}`, {
+        return fetch(`${SERVER_PREFIX}/trips/${tripId}/itineraries/${itineraryId}/placeLineItems/${placeLineItemId}/remove`, {
             method: "DELETE",
         })
     },
@@ -347,9 +358,7 @@ const Api = {
                 "Content-Type": "application/json",
             },
             method: "PUT",
-            body: JSON.stringify({
-                folderName: folderName
-            }),
+            body: folderName,
         })
     },
     deleteFolder(userId, folderId) {

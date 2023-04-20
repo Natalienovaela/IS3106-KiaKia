@@ -168,6 +168,10 @@ public class PollSessionBean implements PollSessionBeanLocal {
             System.out.println("Exception found");
             throw new TripNotFoundException(ex.getMessage());
         }
+        System.out.println("POLLS IN TRIP ID: " + tripId);
+        for(Poll p: trip.getPolls()) {
+            System.out.println(p.getDescription());
+        }
         return trip.getPolls();
     }
 

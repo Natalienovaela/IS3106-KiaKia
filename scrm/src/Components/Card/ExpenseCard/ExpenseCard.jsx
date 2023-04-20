@@ -11,7 +11,7 @@ const ExpenseCard = (props) => {
     Api.deleteExpense(props.tripId, props.key)
       .then(() => console.log('Expense deleted successfully'))
       .catch((error) => console.log(error));
-  }
+  };
 
   return (
     <div className="card">

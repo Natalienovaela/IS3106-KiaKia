@@ -207,20 +207,20 @@ public class DataInitSessionBean {
             placeLineItemSessionBeanLocal.createPlaceLineItem(8l, 3l);
             placeLineItemSessionBeanLocal.createPlaceLineItem(9l, 4l);
 
-            /*
-            CheckListItem checkListItem = new CheckListItem();
-            checkListItem.setDescription("Passport");
-            em.persist(checkListItem);
-            em.flush();
-            CheckListItem items2 = new CheckListItem();
-            items2.setDescription("Umbrella");
-            em.persist(items2);
-            em.flush();
 
-            CheckList checklistSg1 = checkListSessionBeanLocal.createNewCheckList(2l, "Packing List");
-            checklistSg1.getCheckListItem().add(checkListItem);
-            checklistSg1.getCheckListItem().add(items2);
-           */
+//            CheckListItem checkListItem = new CheckListItem();
+//            em.persist(checkListItem);
+//            checkListItem.setDescription("Passport");
+//            em.flush();
+//            CheckListItem items2 = new CheckListItem();
+//            em.persist(items2);
+//            items2.setDescription("Umbrella");
+//
+//            em.flush();
+//
+//            CheckList checklistSg1 = checkListSessionBeanLocal.createNewCheckList(2l, "Packing List");
+//            checklistSg1.getCheckListItem().add(checkListItem);
+//            checklistSg1.getCheckListItem().add(items2);
             
             Trip japan = new Trip(new GregorianCalendar(2023, Calendar.MAY, 1).getTime(), new GregorianCalendar(2023, Calendar.MAY, 20).getTime(), "Japan", "Our graduation trip to Japan!", CountryEnum.JAPAN);
             em.persist(japan);

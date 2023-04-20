@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import React, { useCallback, useState, useEffect } from "react";
 import { Link, animateScroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
+import { Add } from '@mui/icons-material';
 import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
-import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
@@ -18,6 +18,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import newyork from "../../Assets/newyork.png";
+import singapore from "../../Assets/singapore.png";
 
 import utc from "dayjs/plugin/utc";
 
@@ -27,6 +29,7 @@ import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import japan from "../../Assets/japan2.jpg";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
@@ -35,6 +38,7 @@ function TripContent() {
   // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
+  const [img, setImg] = useState("");
   const [startDate, setStartDate] = useState(
     moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
   );
@@ -84,16 +88,23 @@ function TripContent() {
           console.log("USER ROLE" + data);
           setUserRole(data);
         }),
-    Api.getTrip(tripId)
-      .then((res) => res.json())
-      .then((trip) => {
-        const { name, startDate, endDate, itinerary, isShared } = trip;
-        setName(name);
-        setItinerary(itinerary);
-        setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
-        setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+      Api.getTrip(tripId)
+        .then((res) => res.json())
+        .then((trip) => {
+          const { name, startDate, endDate, itinerary, isShared } = trip;
+          setName(name);
+          setItinerary(itinerary);
+          setStartDate(moment(startDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
+          setEndDate(moment(endDate, "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate());
           console.log(endDate - startDate);
-        setIsTripShared(isShared);
+          setIsTripShared(isShared);
+          if (name === "Japan") {
+            setImg(japan);
+          } else if (name === "New York") {
+            setImg(newyork);
+          } else if (name === "Singapore") {
+            setImg(singapore);
+          }
         }),
     ]);
   }, []);
@@ -166,33 +177,30 @@ function TripContent() {
                   <button
                     onClick={handleClickOpen}
                     className="btn btn-banner"
-                    // sx={isTripShared ? sharedStyles : unsharedStyles}
+                  // sx={isTripShared ? sharedStyles : unsharedStyles}
                   >
                     {isTripShared ? "Unshare Trip" : "Share Trip"}
                   </button>
                 )}
                 <div className="banner-details">
                   <h2>{name}</h2>
-                  <div className="banner-details-2">
-                    <p className="trip-num-of-days">1 day</p>
-                    <p>5 people</p>
-                  </div>
+                  <div className="banner-details-2"></div>
                 </div>
               </div>
             </section>
           </Grid>
           <div className="hide-grid">
             <Grid item>
-            <aside className="trip-sidebar">
-              <ul className="trip-sidebar-list">
-                <li className="trip-sidebar-list-item">
-                  <Link
-                    activeClass="active"
+              <aside className="trip-sidebar">
+                <ul className="trip-sidebar-list">
+                  <li className="trip-sidebar-list-item">
+                    <Link
+                      activeClass="active"
                       to="notes"
-                    spy={true}
-                    smooth={true}
-                    duration={500}
-                  >
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                    >
                       Notes
                     </Link>
                   </li>
@@ -205,17 +213,6 @@ function TripContent() {
                       duration={500}
                     >
                       Polls
-                    </Link>
-                  </li>
-                  <li className="trip-sidebar-list-item">
-                    <Link
-                      activeClass="active"
-                      to="checklists"
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                    >
-                      Checklists
                     </Link>
                   </li>
 
@@ -256,7 +253,7 @@ function TripContent() {
               </section>
               <span className="line"></span>
 
-              <section className="trip-main-content-item">
+              <section className="trip-main-content-item" id="polls">
                 <TripPolls
                   tripId={tripId}
                   userId={userId}
@@ -277,7 +274,7 @@ function TripContent() {
                   userId={userId}
                 />
               </section> */}
-              <span className="line"></span>
+
               <section
                 className="trip-main-content-item"
                 title="Itinerary"

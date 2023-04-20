@@ -69,6 +69,7 @@
   gap: 1rem;
   flex-direction: row;
   position: relative;
+  margin-left: 12rem;
 }
 .top .secContent .contactDiv .inputDiv input {
   width: 100%;
@@ -97,7 +98,7 @@
   font-weight: 500;
   gap: 0.5rem;
   top: 50%;
-  right: 0.6rem;
+  left: 11rem;
   transform: translateY(-50%);
   position: absolute;
   background-color: transparent;

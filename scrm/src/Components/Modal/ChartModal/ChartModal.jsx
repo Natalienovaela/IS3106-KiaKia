@@ -21,10 +21,10 @@ const ChartModal = ({ onClose, tripId }) => {
       .catch((error) => {
         console.log("Error while retrieving total expense by categories.");
       });
-  }, [tripId])
+  }, [tripId]);
 
   useEffect(() => {
-    const ctx = chartRef.current?.getContext("2d");   
+    const ctx = chartRef.current?.getContext("2d");
 
     // Create an array of category labels and amounts
     const categories = expenses.map((expense) => expense.name);
@@ -49,26 +49,26 @@ const ChartModal = ({ onClose, tripId }) => {
               "#ffd966",
               "#6666ff",
               "#ff66cc",
-              "#99ff66"
-            ]
-          }
-        ]
+              "#99ff66",
+            ],
+          },
+        ],
       },
       options: {
         responsive: true,
         legend: {
-          display: false
+          display: false,
         },
         scales: {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     });
 
     // Destroy the chart when the component unmounts

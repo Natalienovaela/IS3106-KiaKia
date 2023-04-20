@@ -207,6 +207,7 @@ const Wishlist = (props) => {
       folderId={data.folderId}
       folder={data}
       userId={props.userId}
+      trips={data.trips}
       {...data}
     />
   ));

@@ -303,13 +303,13 @@ public class TripSessionBean implements TripSessionBeanLocal {
 
                 switch (userRole) {
                     case ADMIN:
-                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        inviteUserToTripWithEmail(trip.getTripId(), email, userRole);
                         break;
                     case EDITOR:
-                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        inviteUserToTripWithEmail(trip.getTripId(), email, userRole);
                         break;
                     case VIEWER:
-                        inviteUserToTrip(trip.getTripId(), email, userRole);
+                        inviteUserToTripWithEmail(trip.getTripId(), email, userRole);
                         break;
                     default:
                         break;
@@ -410,9 +410,41 @@ public class TripSessionBean implements TripSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
+    
+    @Override
+    public void inviteUserToTrip(Long tripId, Long userId, String userEmail, String userRole) throws UserNotFoundException {
+        try {
+            Trip trip = em.find(Trip.class, tripId);
+            User admin = userSessionBeanLocal.retrieveUserByUserId(userId);
+
+
+                UserRoleEnum userRoleEnum = UserRoleEnum.valueOf(userRole);
+                User user = userSessionBeanLocal.retrieveUserByEmail(userEmail);
+
+                switch (userRoleEnum) {
+                    case ADMIN:
+                        TripAssignment tripAssignment2 = new TripAssignment(user, trip, UserRoleEnum.ADMIN);
+                        em.persist(tripAssignment2);
+                        break;
+                    case EDITOR:
+                        TripAssignment tripAssignment3 = new TripAssignment(user, trip, UserRoleEnum.EDITOR);
+                        em.persist(tripAssignment3);
+                        break;
+                    case VIEWER:
+                        TripAssignment tripAssignment4 = new TripAssignment(user, trip, UserRoleEnum.VIEWER);
+                        em.persist(tripAssignment4);
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println("add assignments");
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
 
     @Override
-    public void inviteUserToTrip(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException {
+    public void inviteUserToTripWithEmail(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException {
         try {
             Trip trip = em.find(Trip.class, tripId);
             User user = userSessionBeanLocal.retrieveUserByEmail(email);

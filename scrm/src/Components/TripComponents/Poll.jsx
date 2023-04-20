@@ -17,13 +17,9 @@ import Api from "../../Helpers/Api";
 
 const Poll = ({ userId, tripId, pollId, userRole, setPolls }) => {
   const [poll, setPoll] = useState(null);
-
   const [options, setOptions] = useState(null);
-
   const [selectedOption, setSelectedOption] = useState(null);
-
   const [submitted, setSubmitted] = useState(null);
-
   const [percentage, setPercentage] = useState(null);
 
   const reloadPoll = () => {
