@@ -15,6 +15,7 @@
     "admin-lte": "^3.1.0",
     "antd": "^5.3.3",
     "aos": "^2.3.4",
+    "big.js": "^6.2.1",
     "chart.js": "^4.2.1",
     "daterangepicker": "^3.1.0",
     "dayjs": "^1.11.7",

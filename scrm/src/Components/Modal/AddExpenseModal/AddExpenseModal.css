@@ -11,23 +11,18 @@
   width: 100%;
 }
 .add-expense-form .form-control label {
-  margin-bottom: 5px;
   color: #6B7280;
 }
 .add-expense-form .form-control .MuiSelect-select {
-  padding: 10px;
   border-radius: 5px;
   width: 100%;
   background-color: #fff;
-  border: 1px solid #ccc;
   font-size: 16px;
 }
 .add-expense-form .form-control .MuiSelect-select:focus {
   outline: none;
-  border-color: #f37e30;
 }
 .add-expense-form .form-control .MuiInputLabel-shrink {
-  transform: translate(0, 1.5px) scale(0.75);
   color: #f37e30;
 }
 .add-expense-form .form-control .MuiInput-underline:before,
@@ -47,12 +42,16 @@
   border-radius: 25px;
   padding: 10px 30px;
   font-size: 16px;
-  font-weight: bold;
   background-color: #f37e30;
   color: #fff;
+  text-transform: capitalize;
 }
 .add-expense-form .submit-button:hover {
   background-color: #e56c22;
+}
+.add-expense-form .submit-button:disabled {
+  background-color: #f5bfa2;
+  color: #7d7d7d;
 }
 
 .modal-content {

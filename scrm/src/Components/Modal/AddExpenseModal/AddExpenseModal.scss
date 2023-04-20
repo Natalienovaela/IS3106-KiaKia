@@ -11,26 +11,21 @@
     width: 100%;
 
     label {
-      margin-bottom: 5px;
       color: #6B7280;
     }
 
     .MuiSelect-select {
-      padding: 10px;
       border-radius: 5px;
       width: 100%;
       background-color: #fff;
-      border: 1px solid #ccc;
       font-size: 16px;
 
       &:focus {
         outline: none;
-        border-color: #f37e30;
       }
     }
 
     .MuiInputLabel-shrink {
-      transform: translate(0, 1.5px) scale(0.75);
       color: #f37e30;
     }
 
@@ -55,12 +50,17 @@
     border-radius: 25px;
     padding: 10px 30px;
     font-size: 16px;
-    font-weight: bold;
     background-color: #f37e30;
     color: #fff;
+    text-transform: capitalize;
 
     &:hover {
       background-color: #e56c22;
+    }
+
+    &:disabled {
+      background-color: #f5bfa2;
+      color: #7d7d7d ;
     }
   }
 }

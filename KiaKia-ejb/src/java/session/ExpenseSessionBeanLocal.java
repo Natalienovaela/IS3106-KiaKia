@@ -10,6 +10,7 @@ import error.CategoryNotFoundException;
 import error.ExpenseNotFoundException;
 import error.TripNotFoundException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
 
@@ -26,6 +27,8 @@ public interface ExpenseSessionBeanLocal
     public void updateExpense(Expense expense) throws ExpenseNotFoundException;
     
     public void deleteExpense(Long expenseId, Long tripId) throws ExpenseNotFoundException, TripNotFoundException;
+    
+    public List<Expense> getAllExpenses(Long tripId) throws TripNotFoundException;
     
     public Map<String, BigDecimal> getTotalExpenseByCategories(Long tripId) throws TripNotFoundException;
     

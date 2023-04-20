@@ -1,1 +1,21 @@
-/*# sourceMappingURL=SettleDebtModal.css.map */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+.form .select-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.form .text-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.form .submit-button {
+  margin-top: 1rem;
+}
+
+.close-button {
+  align-self: flex-end;
+}/*# sourceMappingURL=SettleDebtModal.css.map */

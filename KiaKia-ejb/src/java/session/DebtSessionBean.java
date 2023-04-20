@@ -35,7 +35,7 @@ public class DebtSessionBean implements DebtSessionBeanLocal
     {
         User payer = e.getPayer();
         List<User> payees = e.getPayees();
-        BigDecimal amtPerUser = e.getExpenseAmt().divide(new BigDecimal(payees.size() + 1));
+        BigDecimal amtPerUser = e.getExpenseAmt().divide(new BigDecimal(payees.size()));
         BigDecimal splitAmt = isAddExpense ? amtPerUser : amtPerUser.negate();
 
         for (User u: payees)

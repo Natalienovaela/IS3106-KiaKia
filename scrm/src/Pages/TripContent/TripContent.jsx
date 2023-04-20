@@ -292,7 +292,7 @@ function TripContent() {
                 id="expenses"
               >
                 <h2>Expenses</h2>
-                <Expenses tripId={tripId} userId={userId} />
+                <Expenses tripId={tripId} userId={userId} userRole={userRole} />
               </section>
             </div>
           </Grid>

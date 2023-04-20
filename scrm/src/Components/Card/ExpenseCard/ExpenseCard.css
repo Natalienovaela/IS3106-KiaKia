@@ -8,6 +8,10 @@
   height: 65px;
   box-shadow: 0 0px 0px;
 }
+.card .delete-button {
+  color: #000;
+  cursor: pointer;
+}
 .card .card-content {
   flex-shrink: 0;
   background-color: #FAFAFA;

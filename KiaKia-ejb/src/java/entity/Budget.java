@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -26,9 +25,6 @@ public class Budget implements Serializable {
     private Long budgetId;
     private BigDecimal budgetAmt;
     private boolean isShared;
-    
-    @OneToOne(mappedBy = "budget")
-    private BudgetExpenseCategory category;
 
     public Budget() {
     }
@@ -44,14 +40,6 @@ public class Budget implements Serializable {
 
     public void setBudgetId(Long budgetId) {
         this.budgetId = budgetId;
-    }
-
-    public BudgetExpenseCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(BudgetExpenseCategory category) {
-        this.category = category;
     }
 
     public BigDecimal getBudgetAmt() {

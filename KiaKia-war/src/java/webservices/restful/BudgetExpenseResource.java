@@ -55,7 +55,7 @@ public class BudgetExpenseResource
     ExpenseSessionBeanLocal expenseSessionBeanLocal;
     
     @POST
-    @Path("/{tripId}/budget/{categoryId}")
+    @Path("{tripId}/budget/{categoryId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response setBudget(@PathParam("tripId") Long tripId, Long amt, @PathParam("categoryId") Long categoryId) 
@@ -83,7 +83,7 @@ public class BudgetExpenseResource
     }
 
     @PUT
-    @Path("/updateBudget/{budgetId}")
+    @Path("updateBudget/{budgetId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBudget( @PathParam("budgetId") Long budgetId, @QueryParam("budgetAmt") Long budgetAmt) 
@@ -103,16 +103,16 @@ public class BudgetExpenseResource
     }
 
     @DELETE
-    @Path("/{tripId}/budget/{budgetId}")
+    @Path("{tripId}/deleteBudget/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteBudget(@PathParam("tripId") Long tripId, @PathParam("budgetId") Long budgetId) 
+    public Response deleteBudget(@PathParam("tripId") Long tripId, @PathParam("categoryId") Long categoryId) 
     {
         try 
         {
-            budgetSessionBeanLocal.deleteBudget(budgetId, tripId);
+            budgetSessionBeanLocal.deleteBudget(categoryId, tripId);
             return Response.status(204).build();
         } 
-        catch (BudgetNotFoundException | TripNotFoundException ex) 
+        catch (BudgetNotFoundException | TripNotFoundException | CategoryNotFoundException ex) 
         {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
@@ -122,16 +122,16 @@ public class BudgetExpenseResource
     }
 
     @GET
-    @Path("/{tripId}/budget/category/{categoryId}")
+    @Path("budget/category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBudgetByCategory(@PathParam("tripId") Long tripId, @PathParam("categoryId") Long categoryId) 
+    public Response getBudgetByCategory(@PathParam("categoryId") Long categoryId) 
     {
         try 
         {
-            Map<Long, BigDecimal> budget = budgetSessionBeanLocal.getBudgetByCategory(tripId, categoryId);
+            Map<Long, BigDecimal> budget = budgetSessionBeanLocal.getBudgetByCategory(categoryId);
             return Response.status(200).entity(budget).build();
         } 
-        catch (BudgetNotFoundException | TripNotFoundException | CategoryNotFoundException ex) 
+        catch (BudgetNotFoundException | CategoryNotFoundException ex) 
         {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
@@ -245,7 +245,7 @@ public class BudgetExpenseResource
     }
 
     @POST
-    @Path("/{tripId}/expense")
+    @Path("{tripId}/expense")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addExpense(@PathParam("tripId") Long tripId, Expense expense) 
@@ -265,7 +265,7 @@ public class BudgetExpenseResource
     }
 
     @DELETE
-    @Path("/{tripId}/expense/{expenseId}")
+    @Path("{tripId}/expense/{expenseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteExpense(@PathParam("expenseId") Long expenseId, @PathParam("tripId") Long tripId) 
     {
@@ -282,9 +282,28 @@ public class BudgetExpenseResource
             return Response.status(404).entity(exception).build();
         }
     }
+    
+    @GET
+    @Path("{tripId}/allExpenses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllExpenses(@PathParam("tripId") Long tripId) 
+    {
+        try 
+        {
+            List<Expense> expenses = expenseSessionBeanLocal.getAllExpenses(tripId);
+            return Response.status(200).entity(expenses).build();
+        } 
+        catch (TripNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
 
     @GET
-    @Path("/{tripId}/totalExpenseByCategory")
+    @Path("{tripId}/totalExpenseByCategory")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTotalExpenseByCategories(@PathParam("tripId") Long tripId) 
     {
@@ -303,7 +322,7 @@ public class BudgetExpenseResource
     }
     
     @GET
-    @Path("/{tripId}/totalExpenseByCategory/{categoryId}")
+    @Path("{tripId}/totalExpenseByCategory/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTotalExpenseByCategory(@PathParam("tripId") Long tripId, @PathParam("categoryId") Long categoryId) 
     {
@@ -329,7 +348,7 @@ public class BudgetExpenseResource
     }    
     
     @GET
-    @Path("/{tripId}/totalExpense")
+    @Path("{tripId}/totalExpense")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTotalExpense(@PathParam("tripId") Long tripId) 
     {
@@ -355,7 +374,7 @@ public class BudgetExpenseResource
     }
 
     @GET
-    @Path("/{tripId}/totalExpense/user/{userId}")
+    @Path("{tripId}/totalExpense/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTotalExpenseByUser(@PathParam("userId") Long userId, @PathParam("tripId") Long tripId) 
     {
@@ -381,7 +400,7 @@ public class BudgetExpenseResource
     }
     
     @GET
-    @Path("/{tripId}/debts/user/{userId}")
+    @Path("{tripId}/debts/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDebtsByUser(@PathParam("userId") Long userId, @PathParam("tripId") Long tripId) 
     {
@@ -408,7 +427,7 @@ public class BudgetExpenseResource
     }
     
     @GET
-    @Path("/{tripId}/owedDebts/user/{userId}")
+    @Path("{tripId}/owedDebts/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDebtsOwedByUser(@PathParam("userId") Long userId, @PathParam("tripId") Long tripId) 
     {
@@ -435,7 +454,7 @@ public class BudgetExpenseResource
     }
     
     @GET
-    @Path("/{tripId}/debts")
+    @Path("{tripId}/debts")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOverallDebts(@PathParam("tripId") Long tripId) 
     {
@@ -462,7 +481,7 @@ public class BudgetExpenseResource
     }
     
     @PUT
-    @Path("/{tripId}/payDebt/{debtId}")
+    @Path("{tripId}/payDebt/{debtId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response payDebt(@PathParam("tripId") Long tripId,
                             @PathParam("debtId") Long debtId,

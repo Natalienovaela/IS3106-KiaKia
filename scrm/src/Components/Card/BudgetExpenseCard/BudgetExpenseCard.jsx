@@ -15,13 +15,13 @@ import ChartModal from "../../Modal/ChartModal/ChartModal";
 import DebtSummaryModal from "../../Modal/DebtSummaryModal/DebtSummaryModal";
 import EditBudgetModal from "../../Modal/EditBudgetModal/EditBudgetModal";
 
-const BudgetExpenseCard = ({ tripId, userId }) => {
+const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
   const [showSetBudgetModal, setShowSetBudgetModal] = useState(false);
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
   const [showSettleDebtModal, setShowSettleDebtModal] = useState(false);
   const [showViewBreakdownModal, setShowViewBreakdownModal] = useState(false);
   const [showViewDebtSummModal, setShowViewDebtSummModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState({ value: -1, label: "All"});
   const [availableCategories, setAvailableCategories] = useState([]);
   const [associatedCategoriesAll, setAssociatedCategoriesAll] = useState([]);
   const [associatedCategories, setAssociatedCategories] = useState([]);
@@ -47,7 +47,7 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
         setAssociatedCategories(data);
         const options = [
           { value: 0, label: "All" },
-          ...data.map((category) => ({ value: category.id, label: category.name }))
+          ...data.map((category) => ({ value: category.categoryId, label: category.name }))
         ];
         setAssociatedCategoriesAll(options);
       })
@@ -65,9 +65,28 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
       })
   }, [tripId, userId])
 
+  useEffect(() => {
+    Api.getTotalBudget(tripId)
+        .then((response) => response.json())
+        .then((data) => setBudgetAmt(data))
+        .catch((error) => {
+          console.log("Error while retrieving total budget.");
+        });
+    
+    Api.getTotalExpense(tripId)
+      .then((response) => response.json())
+      .then((data) => setSpent(data))
+      .catch((error) => {
+        console.log("Error while retrieving total expense.");
+      });
+  }, [tripId]);
+
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value)
-    if (selectedCategory.categoryId === 0)
+    const selectedCategoryId = event.target.value;
+    console.log("value", selectedCategoryId);
+    setSelectedCategory(selectedCategoryId);
+    console.log("aft", selectedCategory);
+    if (selectedCategoryId === "0")
     {
       Api.getTotalBudget(tripId)
         .then((response) => response.json())
@@ -85,7 +104,7 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
     } 
     else 
     {
-      Api.getBudgetByCategory(tripId, selectedCategory.categoryId)
+      Api.getBudgetByCategory(selectedCategoryId)
         .then((response) => response.json())
         .then((data) => {
           const [key, value] = Object.entries(data)[0];
@@ -95,7 +114,7 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
           console.log("Error while retrieving total budget.");
         });
     
-      Api.getTotalExpenseByCategory(tripId, selectedCategory.categoryId)
+      Api.getTotalExpenseByCategory(tripId, selectedCategoryId)
         .then((response) => response.json())
         .then((data) => setSpent(data))
         .catch((error) => {
@@ -138,17 +157,19 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
         <div className="progress-bar-container">
           <ProgressBar budget={budgetAmt} spent={spent} />
         </div>
-        <div className="button-container">
-          <Button className="buttons" startIcon={<SetBudgetIcon />} onClick={handleSetBudgetClick}>
-            Set Budget
-          </Button>
-          <Button className="buttons" startIcon={<EditIcon />} onClick={handleEditBudgetClick}>
-            Edit Budget
-          </Button>
-          <Button className="buttons" startIcon={<SettleIcon />} onClick={handleSettleDebtClick}>
-            Settle Up
-          </Button>
-        </div>
+        {userRole !== "VIEWER" && 
+          <div className="button-container">
+            <Button className="buttons" startIcon={<SetBudgetIcon />} onClick={handleSetBudgetClick}>
+              Set Budget
+            </Button>
+            <Button className="buttons" startIcon={<EditIcon />} onClick={handleEditBudgetClick}>
+              Edit Budget
+            </Button>
+            <Button className="buttons" startIcon={<SettleIcon />} onClick={handleSettleDebtClick}>
+              Settle Up
+            </Button>
+          </div>
+        }
       </div>
       <div className="overview-container">
         <Button className="overview-buttons" startIcon={<ChartIcon />} onClick={handleViewBreakdownClick}>
@@ -166,11 +187,11 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
         tripId={tripId}
       />
 
-      <ChartModal
-        open={showViewBreakdownModal}
-        tripId={tripId}
-        onClose={() => setShowViewBreakdownModal(false)}
-      />
+      {showViewBreakdownModal &&
+        <ChartModal
+          tripId={tripId}
+          onClose={() => setShowViewBreakdownModal(false)}
+        />}
 
       <DebtSummaryModal
         open={showViewDebtSummModal}
@@ -182,7 +203,7 @@ const BudgetExpenseCard = ({ tripId, userId }) => {
       {/* <EditBudgetModal
         open={showEditBudgetModal}
         onClose={() => setShowEditBudgetModal(false)}
-        categories={associatedCategories}
+        categories={availableCategories}
         tripId={tripId}
       /> */}
 

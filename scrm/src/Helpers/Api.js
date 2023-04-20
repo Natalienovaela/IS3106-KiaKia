@@ -250,7 +250,7 @@ const Api = {
     },
 
     getUsers(tripId) {
-        return fetch(`${SERVER_PREFIX}/users/${tripId}//allUsers`);
+        return fetch(`${SERVER_PREFIX}/users/${tripId}/allUsers`);
     },
 
     emailExists(email) {
@@ -436,8 +436,8 @@ const Api = {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`);
     },
 
-    getBudgetByCategory(tripId, categoryId) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/category/${categoryId}`);
+    getBudgetByCategory(categoryId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/budget/category/${categoryId}`);
     },
 
     getAvailableCategory(tripId) {
@@ -469,6 +469,10 @@ const Api = {
 
     deleteExpense(tripId, expenseId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense/${expenseId}`);
+    },
+
+    getAllExpenses(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/allExpenses`)
     },
 
     getTotalExpenseByCategories(tripId) {
