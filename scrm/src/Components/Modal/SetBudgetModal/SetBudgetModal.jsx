@@ -48,11 +48,11 @@ const SetBudgetModal = ({ open, onClose, options, tripId }) => {
   return (
     <Modal title="Set Budget" open={open} onClose={onClose} className="modal">
       <form onSubmit={handleSubmit} className="form">
-      <div className="close-button">
-        <IconButton onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </div>
+        <div className="close-button">
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
         <Select 
           value={category || ''} 
           onChange={handleCategoryChange} 
@@ -74,7 +74,6 @@ const SetBudgetModal = ({ open, onClose, options, tripId }) => {
           type="number"
           value={amount}
           onChange={handleAmountChange}
-          inputProps={{ min: 1 }}
           className="input"
         />
         {error && <p className="error">{error}</p>}

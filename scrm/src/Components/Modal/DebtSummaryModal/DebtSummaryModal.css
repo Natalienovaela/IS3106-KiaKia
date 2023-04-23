@@ -23,7 +23,7 @@
 .view-debt-summary-modal .debt-list li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
@@ -35,6 +35,8 @@
   margin-right: 0;
 }
 .view-debt-summary-modal .close-button {
+  position: relative;
+  align-self: center;
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #FB923C;

@@ -23,9 +23,7 @@ public interface ExpenseSessionBeanLocal
 {
     
     public void addExpense(Long tripId, Expense newE) throws TripNotFoundException, CategoryNotFoundException;
-    
-    public void updateExpense(Expense expense) throws ExpenseNotFoundException;
-    
+        
     public void deleteExpense(Long expenseId, Long tripId) throws ExpenseNotFoundException, TripNotFoundException;
     
     public List<Expense> getAllExpenses(Long tripId) throws TripNotFoundException;

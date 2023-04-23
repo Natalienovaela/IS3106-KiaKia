@@ -86,7 +86,7 @@ public class BudgetExpenseResource
     @Path("updateBudget/{budgetId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBudget( @PathParam("budgetId") Long budgetId, @QueryParam("budgetAmt") Long budgetAmt) 
+    public Response updateBudget( @PathParam("budgetId") Long budgetId, Long budgetAmt) 
     {
         try 
         {
@@ -174,6 +174,32 @@ public class BudgetExpenseResource
         try 
         {
             List<BudgetExpenseCategory> availableCategories = budgetSessionBeanLocal.getAssociatedCategory(tripId);
+            return Response.status(200).entity(availableCategories).build();
+        } 
+        catch (TripNotFoundException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        } 
+        catch (IllegalArgumentException ex) 
+        {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("{tripId}/associatedBudgetCategories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssociatedBudgetCategory(@PathParam("tripId") Long tripId) 
+    {
+        try 
+        {
+            List<BudgetExpenseCategory> availableCategories = budgetSessionBeanLocal.getAssociatedBudgetCategory(tripId);
             return Response.status(200).entity(availableCategories).build();
         } 
         catch (TripNotFoundException ex) 

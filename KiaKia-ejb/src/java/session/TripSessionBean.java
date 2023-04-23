@@ -284,7 +284,7 @@ public class TripSessionBean implements TripSessionBeanLocal {
                 em.flush();
             }
             
-            String[] categoryNames = {"Accomodation", "Entertainment", "Food", "Transportation", "Others"};
+            String[] categoryNames = {"Accommodation", "Entertainment", "Food", "Transportation", "Others"};
             List<BudgetExpenseCategory> categories = new ArrayList<>();
             for (String name : categoryNames) {
                 BudgetExpenseCategory c = new BudgetExpenseCategory(name);

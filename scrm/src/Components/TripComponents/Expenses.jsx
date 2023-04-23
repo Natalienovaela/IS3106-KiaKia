@@ -35,38 +35,37 @@ const Expenses = ({ tripId, userId, userRole }) => {
       })
   }, [tripId])
 
+  const fetchExpenses = () => {
+    return Api.getAllExpenses(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error("Failed to retrieve total expense.");
+      }})
+      .then((data) => {
+        setExpenses(data);
+      })
+  }
+
   useEffect(() => {
+    fetchExpenses(tripId)
+      .catch((error) => {
+        console.log("Error while retrieving expenses.");
+      });
+  }, [tripId])
+
+  const closeModal = () => {
+    setShowAddExpenseModal(false);
     Api.getAllExpenses(tripId)
       .then((response) => response.json())
-      .then((data) => setExpenses(data))
+      .then((data) => {
+        setExpenses(data);
+      })
       .catch((error) => {
         console.log("Error while retrieving expenses.");
       })
-}, [tripId])
-
-  // const expenses = [
-  //   {
-  //     id: 1,
-  //     category: "Food",
-  //     description: "KaiKai Restaurant",
-  //     date: "25 Mar",
-  //     amount: 120,
-  //   },
-  //   {
-  //     id: 2,
-  //     category: "Travel",
-  //     description: "Uber Ride",
-  //     date: "27 Mar",
-  //     amount: 30,
-  //   },
-  //   {
-  //     id: 3,
-  //     category: "Shopping",
-  //     description: "Shoes",
-  //     date: "28 Mar",
-  //     amount: 200,
-  //   },
-  // ];
+  }
 
   return (
     <div style={({width: "706px"})}>
@@ -90,10 +89,10 @@ const Expenses = ({ tripId, userId, userRole }) => {
       }
       {expenses.map((expense) => (
         <ExpenseCard
-          key={expense.id}
+          key={expense.expenseId}
+          expenseId={expense.expenseId}
           category={expense.category}
           description={expense.description}
-          date={expense.date}
           amount={expense.expenseAmt}
           tripId={tripId}
           userRole={userRole}
@@ -102,7 +101,7 @@ const Expenses = ({ tripId, userId, userRole }) => {
       
       <AddExpenseModal
         open={showAddExpenseModal}
-        onClose={() => setShowAddExpenseModal(false)}
+        onClose={closeModal}
         tripId={tripId}
         users={users}
         categories={categories}

@@ -438,11 +438,20 @@ const Api = {
     },
 
     updateBudget(budgetId, budgetAmt) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/updateBudget/${budgetId}?budgetAmt=${budgetAmt}`);
+        return fetch(`${SERVER_PREFIX}/budgetExpense/updateBudget/${budgetId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(budgetAmt),
+        });
     },
 
     deleteBudget(tripId, budgetId) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`);
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/budget/${budgetId}`, {
+            method: "DELETE",
+        });
     },
 
     getBudgetByCategory(categoryId) {
@@ -455,6 +464,10 @@ const Api = {
 
     getAssociatedCategory(tripId) {
         return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/associatedCategories`);
+    },
+
+    getAssociatedBudgetCategory(tripId) {
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/associatedBudgetCategories`);
     },
 
     getAllCategory(tripId) {
@@ -477,7 +490,9 @@ const Api = {
     },
 
     deleteExpense(tripId, expenseId) {
-        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense/${expenseId}`);
+        return fetch(`${SERVER_PREFIX}/budgetExpense/${tripId}/expense/${expenseId}`, {
+            method: "DELETE",
+        });
     },
 
     getAllExpenses(tripId) {

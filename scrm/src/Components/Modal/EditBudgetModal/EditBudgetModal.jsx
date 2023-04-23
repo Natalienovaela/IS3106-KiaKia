@@ -1,23 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextField, Button, Select, MenuItem } from '@mui/material';
 import Api from '../../../Helpers/Api';
 import Modal from '../Modal/Modal';
+import "./EditBudgetModal.css"
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-function EditBudgetModal( categories, tripId, open, onClose ) {
+function EditBudgetModal({ open, onClose, tripId, categories }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [budgetId, setBudgetId] = useState(null);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
+
+  useEffect(() => {
+    if (open) {
+      setSelectedCategory(null);
+      setBudgetId(null);
+      setAmount(null);
+    }
+  }, [open]);
 
   const handleCategoryChange = (event) => {
-    // Retrieve budget for selected category from backend and set it in state
-    Api.getBudgetByCategory(tripId, event.target.value)
+    setSelectedCategory(event.target.value);
+    Api.getBudgetByCategory(event.target.value)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve available categories.");
+        }
+      })
       .then((budget) => {
         const [key, value] = Object.entries(budget)[0];
         setBudgetId(key);
         setAmount(value);
       })
       .catch((error) => {
-        console.log("Error while retrieving budget by category.");
+        console.log(error.message);
       });
   };
 
@@ -27,7 +45,7 @@ function EditBudgetModal( categories, tripId, open, onClose ) {
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (amount === 0)
+    if (amount === "0")
     {
       Api.deleteBudget(tripId, budgetId)
         .then(() => console.log('Budget removed successfully'))
@@ -43,36 +61,50 @@ function EditBudgetModal( categories, tripId, open, onClose ) {
   };
 
   return (
-    <Modal title="Edit Budget" open={open} onClose={onClose}>
-    {Array.isArray(categories) && categories.length === 0 ? (
-      <p>You have not set any budgets.</p>
-    ) : (
-      <div>
-        <Select value={selectedCategory} onChange={handleCategoryChange}>
-          <MenuItem value="" disabled>
-            Category
+    <Modal title="Edit Budget" open={open} onClose={onClose} className="modal">
+      <div className='form'>
+        <div className="close-button">
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Select 
+          value={selectedCategory || ''} 
+          onChange={handleCategoryChange}
+          className="select"
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value="" disabled style={{ display: 'none' }}>
+            Select Category
           </MenuItem>
           {categories.map((category) => (
-            <MenuItem key={category.id} value={category.id}>
+            <MenuItem key={category.categoryId} value={category.categoryId}>
               {category.name}
             </MenuItem>
           ))}
         </Select>
-        {amount && (
+        {amount !== null && (
           <>
             <TextField
               type="number"
               label="Amount"
               value={amount}
+              className="input"
               onChange={handleAmountChange}
-              inputProps={{ min: 0, step: 1 }}
+              inputProps={{ step: 1 }}
             />
-            <Button onClick={handleSave}>Save</Button>
+            <Button 
+              onClick={handleSave}
+              className="button" 
+              disabled={!selectedCategory}
+            >
+              Save
+            </Button>
           </>
         )}
       </div>
-    )}
-  </Modal>
+    </Modal>
   );
 }
 

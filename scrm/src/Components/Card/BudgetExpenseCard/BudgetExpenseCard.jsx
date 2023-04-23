@@ -24,27 +24,132 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
   const [selectedCategory, setSelectedCategory] = useState({ value: -1, label: "All"});
   const [availableCategories, setAvailableCategories] = useState([]);
   const [associatedCategoriesAll, setAssociatedCategoriesAll] = useState([]);
-  const [associatedCategories, setAssociatedCategories] = useState([]);
+  const [associatedBudgetCategories, setAssociatedBudgetCategories] = useState([]);
   const [debtsOwed, setDebtsOwed] = useState([]);
   const [budgetAmt, setBudgetAmt] = useState(0);
   const [spent, setSpent] = useState(0);
 
-  useEffect(() => {
-    Api.getAvailableCategory(tripId)
-      .then((response) => response.json())
-      .then((data) => {
-        setAvailableCategories(data);
+  const fetchAvailableCategories = (tripId) => {
+    return Api.getAvailableCategory(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve available categories.");
+        }
       })
-      .catch((error) => {
-        console.log("Error while retrieving available categories.");
+      .then((data) => {
+        return data;
       });
-  }, [tripId]);
+  };
+
+  const fetchAssociatedCategories = (tripId) => {
+    return Api.getAssociatedCategory(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve associated categories.");
+        }
+      })
+      .then((data) => {
+        return data;
+      });
+  }
+
+  const fetchAssociatedBudgetCategories = (tripId) => {
+    return Api.getAssociatedBudgetCategory(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve associated budget categories.");
+        }
+      })
+      .then((data) => {
+        return data;
+      });
+  }
+
+  const fetchDebtsOwedByUser = (tripId, userId) => {
+    return Api.getDebtsByUser(tripId, userId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve debts owed by user.");
+        }
+      })
+      .then((data) => {
+        return data;
+      });
+  }
+
+  const fetchTotalBudget = (tripId) => {
+    return Api.getTotalBudget(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve total budget.");
+        }
+      })
+      .then((data) => {
+        return data;
+      })
+  }
+
+  const fetchTotalExpense = (tripId) => {
+    return Api.getTotalExpense(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve total expense.");
+        }
+      })
+      .then((data) => {
+        return data;
+      })
+  }
+
+  const fetchBudgetByCategory = (selectedCategoryId) => {
+    return Api.getBudgetByCategory(selectedCategoryId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve budget by category.");
+        }
+      })
+      .then((data) => {
+        return data;
+      })
+  }
+
+  const fetchTotalExpenseByCategory = (tripId, selectedCategoryId) => {
+    return Api.getTotalExpenseByCategory(tripId, selectedCategoryId)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to retrieve total expense by category.");
+        }
+      })
+      .then((data) => {
+        return data;
+      })
+  }
 
   useEffect(() => {
-    Api.getAssociatedCategory(tripId)
-      .then((response) => response.json())
+    fetchAvailableCategories(tripId)
+      .then((data) => setAvailableCategories(data))
+      .catch((error) => {
+        console.log("Failed to retrieve available categories.");
+      });
+
+    fetchAssociatedCategories(tripId)
       .then((data) => {
-        setAssociatedCategories(data);
         const options = [
           { value: 0, label: "All" },
           ...data.map((category) => ({ value: category.categoryId, label: category.name }))
@@ -54,49 +159,65 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
       .catch((error) => {
         console.log("Error while retrieving associated categories.");
       });
-  }, [tripId]);
 
-  useEffect(() => {
-    Api.getDebtsOwedByUser(tripId, userId)
-      .then((response) => response.json())
-      .then((data) => setDebtsOwed(data))
-      .catch((error) => {
-        console.log("Error while retrieving debts owed by user.");
+    fetchAssociatedBudgetCategories(tripId)
+      .then((data) => {
+        setAssociatedBudgetCategories(data);
       })
-  }, [tripId, userId])
-
-  useEffect(() => {
-    Api.getTotalBudget(tripId)
-        .then((response) => response.json())
-        .then((data) => setBudgetAmt(data))
-        .catch((error) => {
-          console.log("Error while retrieving total budget.");
-        });
-    
-    Api.getTotalExpense(tripId)
-      .then((response) => response.json())
-      .then((data) => setSpent(data))
       .catch((error) => {
-        console.log("Error while retrieving total expense.");
+        console.log("Error while retrieving associated budget categories.");
       });
-  }, [tripId]);
+    
+    fetchDebtsOwedByUser(tripId, userId)
+      .then((data) => {
+        setDebtsOwed(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving debts owed by user");
+      });
 
-  const handleCategoryChange = (event) => {
-    const selectedCategoryId = event.target.value;
-    console.log("value", selectedCategoryId);
-    setSelectedCategory(selectedCategoryId);
-    console.log("aft", selectedCategory);
+    fetchTotalBudget(tripId)
+      .then((data) => {
+        if (data > 0) {
+          setBudgetAmt(data);
+        } else {
+          setBudgetAmt(0);
+        }
+        
+      })
+      .catch((error) => {
+        console.log("Error while retrieving total budget.");
+        setBudgetAmt(0);
+      });
+
+    fetchTotalExpense(tripId)
+    .then((data) => setSpent(data))
+    .catch((error) => {
+      console.log("Error while retrieving total expense.");
+    });
+  }, [tripId, userId]);
+
+  const reloadTotalBudgetExpense = (selectedCategoryId) => {
     if (selectedCategoryId === "0")
     {
-      Api.getTotalBudget(tripId)
-        .then((response) => response.json())
-        .then((data) => setBudgetAmt(data))
+      console.log("fetching");
+      fetchTotalBudget(tripId)
+        .then((data) => {
+          if (data > 0) {
+            console.log("bef", data);
+            setBudgetAmt(data);
+          } else {
+            setBudgetAmt(0);
+          }
+          
+        })
         .catch((error) => {
           console.log("Error while retrieving total budget.");
+          setBudgetAmt(0);
         });
     
-      Api.getTotalExpense(tripId)
-        .then((response) => response.json())
+      fetchTotalExpense(tripId)
         .then((data) => setSpent(data))
         .catch((error) => {
           console.log("Error while retrieving total expense.");
@@ -104,23 +225,32 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
     } 
     else 
     {
-      Api.getBudgetByCategory(selectedCategoryId)
-        .then((response) => response.json())
+      fetchBudgetByCategory(selectedCategoryId)
         .then((data) => {
           const [key, value] = Object.entries(data)[0];
-          setBudgetAmt(value);
+          if (value > 0) {
+            setBudgetAmt(value);
+          } else {
+            setBudgetAmt(0);
+          }
         })
         .catch((error) => {
-          console.log("Error while retrieving total budget.");
+          console.log("Error while retrieving budget by category.");
+          setBudgetAmt(0);
         });
     
-      Api.getTotalExpenseByCategory(tripId, selectedCategoryId)
-        .then((response) => response.json())
+      fetchTotalExpenseByCategory(tripId, selectedCategoryId)
         .then((data) => setSpent(data))
         .catch((error) => {
-          console.log("Error while retrieving total expense.");
+          console.log("Error while retrieving total expense by category.");
         });
-    }    
+    }
+  }
+
+  const handleCategoryChange = (event) => {
+    const selectedCategoryId = event.target.value;
+    setSelectedCategory(selectedCategoryId);
+    reloadTotalBudgetExpense(selectedCategoryId);
   }
 
   const handleSetBudgetClick = () => {
@@ -141,6 +271,16 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
 
   const handleViewDebtSummClick = () => {
     setShowViewDebtSummModal(true);
+  }
+
+  const closeEditBudgetModal = () => {
+    setShowEditBudgetModal(false);
+    reloadTotalBudgetExpense(selectedCategory);
+  }
+
+  const closeSetBudgetModal = () => {
+    setShowSetBudgetModal(false);
+    reloadTotalBudgetExpense(selectedCategory);
   }
 
   return (
@@ -182,7 +322,7 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
 
       <SetBudgetModal 
         open={showSetBudgetModal}
-        onClose={() => setShowSetBudgetModal(false)}
+        onClose={() => closeSetBudgetModal()}
         options={availableCategories}
         tripId={tripId}
       />
@@ -200,12 +340,12 @@ const BudgetExpenseCard = ({ tripId, userId, userRole, expenses }) => {
         userId={userId}
       />
 
-      {/* <EditBudgetModal
+      <EditBudgetModal
         open={showEditBudgetModal}
-        onClose={() => setShowEditBudgetModal(false)}
-        categories={availableCategories}
+        onClose={() => closeEditBudgetModal()}
         tripId={tripId}
-      /> */}
+        categories={associatedBudgetCategories}
+      />
 
       <SettleDebtModal
         open={showSettleDebtModal}

@@ -40,6 +40,11 @@ public class DebtSessionBean implements DebtSessionBeanLocal
 
         for (User u: payees)
         {             
+            if (u.equals(payer))
+            {
+                break;
+            }
+            
             Debt debt = getDebtByPayerAndBeneficiary(trip.getDebts(), payer.getUserId(), u.getUserId());
             
             if (debt != null)
@@ -106,8 +111,8 @@ public class DebtSessionBean implements DebtSessionBeanLocal
     {
         for (Debt d: debts)
         {
-            if ((d.getDebtor().getUserId().equals(payerId) && d.getCreditor().getUserId().equals(payerId)) 
-                  || (d.getDebtor().getUserId().equals(beneficiaryId) && d.getCreditor().getUserId().equals(beneficiaryId)))
+            if ((d.getDebtor().getUserId().equals(payerId) && d.getCreditor().getUserId().equals(beneficiaryId)) 
+                  || (d.getDebtor().getUserId().equals(beneficiaryId) && d.getCreditor().getUserId().equals(payerId)))
                 {
                     return d;
                 }

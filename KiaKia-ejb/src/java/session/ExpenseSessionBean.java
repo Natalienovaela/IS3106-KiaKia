@@ -46,7 +46,7 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
     {
         expense.setExpenseDate(new Date());
         
-         if (tripId == null || expense.getCategory().getCategoryId() == null) 
+        if (tripId == null || expense.getCategory().getCategoryId() == null) 
         {
             throw new IllegalArgumentException("Trip ID or Category ID cannot be null.");
         }
@@ -80,27 +80,6 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
     }
 
     @Override
-    public void updateExpense(Expense expense) throws ExpenseNotFoundException
-    {
-        try
-        {
-            Expense oldE = em.find(Expense.class, expense.getExpenseId());
-            oldE.setDescription(expense.getDescription());
-            oldE.setExpenseAmt(expense.getExpenseAmt());
-            // if payer and payee is changed, debts need to be changed
-            // relink category if changed
-            // change splitType too?
-            // need to pass both old and new?
-            // use some data structure to store the changes in the amt of debt, changes can be (-) and (+)
-            em.merge(oldE);
-        }
-        catch (NoResultException e)
-        {
-            throw new ExpenseNotFoundException("Expense not found");
-        }
-    }
-
-    @Override
     public void deleteExpense(Long expenseId, Long tripId) throws ExpenseNotFoundException, TripNotFoundException
     {
         if (tripId == null || expenseId == null) 
@@ -121,7 +100,7 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
         }
         
         trip.getExpenses().remove(e);        
-        e.setExpenseAmt(e.getExpenseAmt().negate());
+        e.setExpenseAmt(e.getExpenseAmt());
         
         updateUserExpenses(e, trip);
         try 
