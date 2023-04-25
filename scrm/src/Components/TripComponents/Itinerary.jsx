@@ -36,7 +36,7 @@ const Itinerary = (props) => {
         console.log(endDate);
       });
 
-      Api.createItinerary(1, {
+      Api.createItinerary(tripId, {
         startDate: start,
         endDate: end,
       })
@@ -68,7 +68,7 @@ const Itinerary = (props) => {
   useEffect(() => {
     reloadData();
     console.log(tripId);
-  }, [reloadData]);
+  }, [reloadData, itinerary]);
 
   return (
     <>

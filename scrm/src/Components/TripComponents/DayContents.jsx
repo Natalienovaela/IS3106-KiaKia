@@ -17,16 +17,15 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
   const [placeLineItem, setPlaceLineItem] = useState([]);
   const [dun2, setdun2] = useState([]);
   const [fullPLI, setFullPLI] = useState([]);
-  const [placeLineItem2, setPlaceLineItem2] = useState([]);
+  const [trigger, setTrigger] = useState(false);
 
-  const getRecordedPlaceLineItem = () => {
-    const p = item.placeLineItem;
+  function getRecordedPlaceLineItem() {
+    const p = item.placeLineItem?.map((place) => place.place);
     setPlaceLineItem(p);
-  };
+    console.log("p:", p);
+  }
+  useEffect(() => getRecordedPlaceLineItem(), [placeLineItem, trigger]);
 
-  useEffect(() => {
-    getRecordedPlaceLineItem();
-  }, []);
   // get places data that match country
   const getPlaces = () => {
     Api.getAllPlaces()
@@ -80,14 +79,12 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
       console.log("this is selected place" + selectedPlace[0]);
       const placeId = selectedPlace[0].placeId;
       const placeName = selectedPlace[0].name;
-      setPlaceList([...placeList, placeName]);
-      console.log(place);
-      console.log(placeId);
-
-      console.log({ item });
+      const newPlace = { id: placeId, name: placeName };
       saveToPlaceLineItem(placeId);
       setPlace("");
       setToggle(false);
+      setPlaceLineItem([...placeLineItem, newPlace]);
+      getRecordedPlaceLineItem();
     }
   };
 
@@ -100,13 +97,22 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
     setPlace(placeValue);
   };
 
-  const handleDelete = (index) => {
-    Api.removePlaceLineItem(
+  const handleDelete = async (index) => {
+    await Api.removePlaceLineItem(
       tripId,
       item.dayItineraryId,
       item.placeLineItem[index].placeLineItemId
     );
-    console.log(item.placeLineItem[index].placeLineItemId + " removed");
+
+    setPlaceLineItem((prevPlaceLineItem) => {
+      const newPlaceLineItem = [...prevPlaceLineItem];
+      newPlaceLineItem.splice(index, 1);
+      return newPlaceLineItem;
+    });
+    setTrigger(!trigger);
+    //const thing = [placeLineItem?.map((place) => place.place)];
+    console.log(index);
+    //console.log(item.placeLineItem[index].placeLineItemId + " removed");
   };
 
   return (
@@ -138,12 +144,24 @@ const DayContents = ({ index, item, tripId, userRole }, { ...props }) => {
                 </div>
               </>
             ))}
+
             {placeList.map((placeItem, index) => (
               <div className="places">
                 <h3>{index + 1} </h3>
                 <h3 className="item" key={index}>
                   {placeItem}
                 </h3>
+                {userRole !== "VIEWER" && (
+                  <div className="btn-delete">
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(placeItem);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                )}
               </div>
             ))}
           </div>
