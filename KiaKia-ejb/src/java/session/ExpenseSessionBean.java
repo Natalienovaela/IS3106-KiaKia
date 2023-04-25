@@ -15,7 +15,9 @@ import error.DebtNotFoundException;
 import error.ExpenseNotFoundException;
 import error.TripNotFoundException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,9 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
     @Override
     public void addExpense(Long tripId, Expense expense) throws TripNotFoundException, CategoryNotFoundException
     {
-         if (tripId == null || expense.getCategory().getCategoryId() == null) 
+        expense.setExpenseDate(new Date());
+        
+        if (tripId == null || expense.getCategory().getCategoryId() == null) 
         {
             throw new IllegalArgumentException("Trip ID or Category ID cannot be null.");
         }
@@ -60,7 +64,6 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
         }
 
         trip.getExpenses().add(expense);
-        category.getExpenses().add(expense);
         
         updateUserExpenses(expense, trip);
         
@@ -73,27 +76,6 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
         catch (DebtNotFoundException ex) 
         {
             System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void updateExpense(Expense expense) throws ExpenseNotFoundException
-    {
-        try
-        {
-            Expense oldE = em.find(Expense.class, expense.getExpenseId());
-            oldE.setDescription(expense.getDescription());
-            oldE.setExpenseAmt(expense.getExpenseAmt());
-            // if payer and payee is changed, debts need to be changed
-            // relink category if changed
-            // change splitType too?
-            // need to pass both old and new?
-            // use some data structure to store the changes in the amt of debt, changes can be (-) and (+)
-            em.merge(oldE);
-        }
-        catch (NoResultException e)
-        {
-            throw new ExpenseNotFoundException("Expense not found");
         }
     }
 
@@ -117,9 +99,8 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
             throw new ExpenseNotFoundException("Expense not found");
         }
         
-        e.getCategory().getExpenses().remove(e);
         trip.getExpenses().remove(e);        
-        e.setExpenseAmt(e.getExpenseAmt().negate());
+        e.setExpenseAmt(e.getExpenseAmt());
         
         updateUserExpenses(e, trip);
         try 
@@ -132,6 +113,23 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
         }
         
         em.remove(e);
+    }
+    
+    @Override
+    public List<Expense> getAllExpenses(Long tripId) throws TripNotFoundException
+    {
+        if (tripId == null) 
+        {
+            throw new IllegalArgumentException("Trip ID cannot be null.");
+        }
+        
+        Trip trip = em.find(Trip.class, tripId);
+        if (trip == null)
+        {
+            throw new TripNotFoundException("Trip not found");
+        }
+        
+        return trip.getExpenses();
     }
     
     @Override
@@ -269,21 +267,28 @@ public class ExpenseSessionBean implements ExpenseSessionBeanLocal
     public void updateUserExpenses(Expense expense, Trip trip)
     {
         List<User> payees = expense.getPayees();
-        BigDecimal splitAmt = expense.getExpenseAmt().divide(new BigDecimal(payees.size() + 1));
-        
-        UserExpense payerE = new UserExpense();
-        payerE.setUser(expense.getPayer());
-        payerE.setExpenseAmt(splitAmt);
-        trip.getUserExpenses().add(payerE);
-        em.persist(payerE);
+        BigDecimal splitAmt = expense.getExpenseAmt().setScale(4, RoundingMode.HALF_UP).divide(new BigDecimal(payees.size()), 2, RoundingMode.HALF_UP);
         
         for (User u: payees)
         {
-            UserExpense payeeE = new UserExpense();
-            payeeE.setUser(u);
-            payeeE.setExpenseAmt(splitAmt);
-            trip.getUserExpenses().add(payeeE);
-            em.persist(payeeE);
+            boolean found = false;
+            for (UserExpense payeeE : trip.getUserExpenses()) 
+            {
+                if (payeeE.getUser().equals(u)) 
+                {
+                    payeeE.setExpenseAmt(payeeE.getExpenseAmt().add(splitAmt));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) 
+            {
+                UserExpense payeeE = new UserExpense();
+                payeeE.setUser(u);
+                payeeE.setExpenseAmt(splitAmt);
+                trip.getUserExpenses().add(payeeE);
+                em.persist(payeeE);
+            }
         }
     }
 

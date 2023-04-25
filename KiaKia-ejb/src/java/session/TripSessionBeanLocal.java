@@ -52,7 +52,7 @@ public interface TripSessionBeanLocal {
 
     public Trip retrieveTripByInviteToken(String token) throws TripNotFoundException;
 
-    public void inviteUserToTrip(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException;
+    public void inviteUserToTripWithEmail(Long tripId, String email, UserRoleEnum role) throws UserNotFoundException;
 
     public void createAndInviteUserToTrip(Trip trip, Long userId, List<String> userEmails, List<String> userRoles) throws UserNotFoundException;
 
@@ -81,5 +81,7 @@ public interface TripSessionBeanLocal {
     public int findNumberOfUsersInTrip(Long tripId);
 
     public int getNumOfDaysInTrip(Long tripId);
+
+    public void inviteUserToTrip(Long tripId, Long userId, String userEmail, String userRole) throws UserNotFoundException;
     
 }

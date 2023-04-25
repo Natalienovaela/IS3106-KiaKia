@@ -25,6 +25,8 @@
   margin-bottom: 20px;
 }
 .view-breakdown-modal .modal-content .close-button {
+  position: relative;
+  align-self: center;
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #FB923C;

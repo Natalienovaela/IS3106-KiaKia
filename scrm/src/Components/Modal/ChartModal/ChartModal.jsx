@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import "./ChartModal.scss";
-import Modal from "../Modal/Modal";
 import Api from "../../../Helpers/Api";
 
-const ChartModal = ({ open, onClose, tripId }) => {
+const ChartModal = ({ onClose, tripId }) => {
   const chartRef = useRef();
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    Api.getTotalExpenseByCategory(tripId)
+    Api.getTotalExpenseByCategories(tripId)
       .then((response) => response.json())
       .then((data) => {
         const expensesArr = Object.entries(data).map(([name, value]) => ({
@@ -17,6 +16,7 @@ const ChartModal = ({ open, onClose, tripId }) => {
           value,
         }));
         setExpenses(expensesArr);
+        console.log("expense", expensesArr)
       })
       .catch((error) => {
         console.log("Error while retrieving total expense by categories.");
@@ -27,8 +27,8 @@ const ChartModal = ({ open, onClose, tripId }) => {
     const ctx = chartRef.current?.getContext("2d");
 
     // Create an array of category labels and amounts
-    const categories = expenses.map(([category, amount]) => category);
-    const amounts = expenses.map(([category, amount]) => amount);
+    const categories = expenses.map((expense) => expense.name);
+    const amounts = expenses.map((expense) => expense.value);
 
     // Create the chart
     const chart = new Chart(ctx, {
@@ -78,16 +78,14 @@ const ChartModal = ({ open, onClose, tripId }) => {
   }, [expenses]);
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <div className="view-breakdown-modal">
-        <div className="modal-content">
-          <canvas ref={chartRef} />
-          <button className="close-button" onClick={onClose}>
-            Close
-          </button>
-        </div>
+    <div className="view-breakdown-modal">
+      <div className="modal-content">
+        <canvas ref={chartRef} />
+        <button className="close-button" onClick={onClose}>
+          Close
+        </button>
       </div>
-    </Modal>
+    </div>
   );
 };
 

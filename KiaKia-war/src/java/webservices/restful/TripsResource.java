@@ -330,7 +330,7 @@ public class TripsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response retrieveAllPollsInTrip(@PathParam("trip_id") Long tripId) {
         List<Poll> polls;
-        System.out.println("Retrieve all polls in trip triggered");
+        System.out.println("Retrieve all polls in trip triggered, TRIP ID = " + tripId);
         try {
             polls = pollSessionBeanLocal.retrieveAllPollsInTrip(tripId);
             return Response.status(200).entity(polls).build();
@@ -528,6 +528,32 @@ public class TripsResource {
             return Response.status(404).entity(exception).build();
         }
     }
+    
+//    @POST
+//    @Path("/{tripId}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response inviteUserToTrip(@PathParam("tripId") Long tripId, @QueryParam("userId") Long userId, @QueryParam("userEmail") String userEmail, @QueryParam("userRole") String userRole) {
+//        try {
+//            System.out.println("Received request to create and invite user to trip.");
+//            System.out.println("Trip: " + tripId);
+//            System.out.println("UserId: " + userId);
+//            System.out.println("UserEmail: " + userEmail);
+//            System.out.println("UserRole: " + userRole);
+//
+//            tripSessionBeanLocal.inviteUserToTrip(tripId, userId, userEmail, userRole);
+//            Trip t = tripSessionBeanLocal.getTrip(tripId);
+//            System.out.println("Trip created and users invited successfully.");
+//            System.out.println("Adding trip to response: " + t);
+//            return Response.status(200).entity(t).type(MediaType.APPLICATION_JSON).build();
+//        } catch (UserNotFoundException | TripNotFoundException ex) {
+//            System.err.println("Failed to create and invite users to trip: " + ex.getMessage());
+//            JsonObject exception = Json.createObjectBuilder()
+//                    .add("error", ex.getMessage())
+//                    .build();
+//            return Response.status(404).entity(exception).build();
+//        }
+//    }
     
     @GET
     @Path("/{tripId}/users")

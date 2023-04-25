@@ -11,11 +11,12 @@ const DebtSummaryModal = ({ open, tripId, userId, onClose }) => {
       .then((response) => response.json())
       .then((data) => {
         setDebts(data);
+        console.log("user", data);
       })
       .catch((error) => {
         console.log("Error while retrieving debts summary.");
       });
-  }, [tripId])
+  }, [tripId, userId])
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -26,21 +27,21 @@ const DebtSummaryModal = ({ open, tripId, userId, onClose }) => {
         ) : (
           <>
             <ul className="debt-list">
-              {debts.filter((debt) => debt.amount > 0).map((debt, index) => (
-                <li key={index}>
-                  <span>{debt.creditor.userId === userId ? "You" : debt.creditor.name}</span>
-                  <span>owes</span>
-                  <span>{debt.debtor.userId === userId ? "You" : debt.debtor.name}</span>
+              {debts.filter((debt) => debt.amtOwed > 0).map((debt) => (
+                <li key={debt.debtId}>
+                  <span>{debt.creditor.userId.toString() === userId ? "You" : debt.creditor.name}</span>
+                  <span>{debt.creditor.userId.toString() === userId ? "owe" : "owes"}</span>
+                  <span>{debt.debtor.userId.toString() === userId ? "You" : debt.debtor.name}</span>
                   <span>{`$${Math.abs(debt.amtOwed)}`}</span>
                 </li>
               ))}
             </ul>
             <ul className="debt-list">
-              {debts.filter((debt) => debt.amount < 0).map((debt, index) => (
-                <li key={index}>
-                  <span>{debt.debtor.userId === userId ? "You" : debt.debtor.name}</span>
-                  <span>is owed by</span>
-                  <span>{debt.creditor.userId === userId ? "You" : debt.creditor.name}</span>
+              {debts.filter((debt) => debt.amtOwed < 0).map((debt) => (
+                <li key={debt.debtId}>
+                  <span>{debt.debtor.userId.toString() === userId ? "You" : debt.debtor.name}</span>
+                  <span>{debt.debtor.userId.toString() === userId ? "are owed by" : "is owed by"}</span>
+                  <span>{debt.creditor.userId.toString() === userId ? "You" : debt.creditor.name}</span>
                   <span>{`$${Math.abs(debt.amtOwed)}`}</span>
                 </li>
               ))}

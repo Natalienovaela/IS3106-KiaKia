@@ -28,9 +28,9 @@ public interface BudgetSessionBeanLocal
     
     public void updateBudget(Long budgetId, Long budgetAmt) throws BudgetNotFoundException;
     
-    public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException;
+    public void deleteBudget(Long categoryId, Long tripId) throws CategoryNotFoundException, BudgetNotFoundException, TripNotFoundException;
     
-    public Map<Long, BigDecimal> getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException;
+    public Map<Long, BigDecimal> getBudgetByCategory(Long categoryId) throws BudgetNotFoundException, CategoryNotFoundException;
     
     public List<BudgetExpenseCategory> getAvailableBudgetCategory(Long tripId) throws TripNotFoundException;
     

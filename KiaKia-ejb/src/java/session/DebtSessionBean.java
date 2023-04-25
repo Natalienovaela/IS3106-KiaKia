@@ -35,11 +35,16 @@ public class DebtSessionBean implements DebtSessionBeanLocal
     {
         User payer = e.getPayer();
         List<User> payees = e.getPayees();
-        BigDecimal amtPerUser = e.getExpenseAmt().divide(new BigDecimal(payees.size() + 1));
+        BigDecimal amtPerUser = e.getExpenseAmt().divide(new BigDecimal(payees.size()));
         BigDecimal splitAmt = isAddExpense ? amtPerUser : amtPerUser.negate();
 
         for (User u: payees)
         {             
+            if (u.equals(payer))
+            {
+                break;
+            }
+            
             Debt debt = getDebtByPayerAndBeneficiary(trip.getDebts(), payer.getUserId(), u.getUserId());
             
             if (debt != null)
@@ -106,8 +111,8 @@ public class DebtSessionBean implements DebtSessionBeanLocal
     {
         for (Debt d: debts)
         {
-            if ((d.getDebtor().getUserId().equals(payerId) && d.getCreditor().getUserId().equals(payerId)) 
-                  || (d.getDebtor().getUserId().equals(beneficiaryId) && d.getCreditor().getUserId().equals(beneficiaryId)))
+            if ((d.getDebtor().getUserId().equals(payerId) && d.getCreditor().getUserId().equals(beneficiaryId)) 
+                  || (d.getDebtor().getUserId().equals(beneficiaryId) && d.getCreditor().getUserId().equals(payerId)))
                 {
                     return d;
                 }

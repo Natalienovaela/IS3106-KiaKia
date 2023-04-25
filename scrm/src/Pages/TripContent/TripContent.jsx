@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import React, { useCallback, useState, useEffect } from "react";
 import { Link, animateScroll } from "react-scroll";
 import { Divider, Grid, Popover } from "@mui/material";
+import { Add } from '@mui/icons-material';
 import Api from "../../Helpers/Api";
 import { DatePicker } from "antd";
 import moment from "moment-timezone";
 import dayjs from "dayjs";
-import japan from "../../Assets/japan2.jpg";
 import { ConfigProvider } from "antd";
 import "./tripcontent.css";
 import "../../Components/TripComponents/Itinerary";
@@ -29,6 +29,7 @@ import TripPolls from "../../Components/TripComponents/TripPolls";
 import Itinerary from "../../Components/TripComponents/Itinerary";
 import Expenses from "../../Components/TripComponents/Expenses";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import japan from "../../Assets/japan2.jpg";
 const { RangePicker } = DatePicker;
 
 function TripContent() {
@@ -37,6 +38,7 @@ function TripContent() {
   // const id = 1;
   const [itinerary, setItinerary] = useState([]);
   const [name, setName] = useState("");
+  const [img, setImg] = useState("");
   const [startDate, setStartDate] = useState(
     moment("1990-01-01", "YYYY-MM-DDTHH:mm:ssZ[UTC]").toDate()
   );
@@ -47,7 +49,6 @@ function TripContent() {
 
   const [isTripShared, setIsTripShared] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [img, setImg] = useState();
   // console.log(isTripShared);
   const handleDateRangeChange = (value) => {
     const start = value[0].toDate();
@@ -176,7 +177,7 @@ function TripContent() {
                   <button
                     onClick={handleClickOpen}
                     className="btn btn-banner"
-                    // sx={isTripShared ? sharedStyles : unsharedStyles}
+                  // sx={isTripShared ? sharedStyles : unsharedStyles}
                   >
                     {isTripShared ? "Unshare Trip" : "Share Trip"}
                   </button>
@@ -288,7 +289,7 @@ function TripContent() {
                 id="expenses"
               >
                 <h2>Expenses</h2>
-                <Expenses tripId={tripId} userId={userId} />
+                <Expenses tripId={tripId} userId={userId} userRole={userRole} />
               </section>
             </div>
           </Grid>

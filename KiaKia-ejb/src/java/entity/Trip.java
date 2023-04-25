@@ -67,19 +67,19 @@ public class Trip implements Serializable {
     private List<DayItinerary> itinerary = new ArrayList<>();
     
     @OneToMany
-    private List<Budget> budgets;
+    private List<Budget> budgets = new ArrayList<>();
     
     @OneToMany
-    private List<Expense> expenses;
+    private List<Expense> expenses = new ArrayList<>();
     
     @OneToMany
-    private List<Debt> debts;
+    private List<Debt> debts = new ArrayList<>();
 
     @OneToMany
-    private List<BudgetExpenseCategory> categories;
+    private List<BudgetExpenseCategory> categories = new ArrayList<>();
     
     @OneToMany
-    private List<UserExpense> userExpenses;
+    private List<UserExpense> userExpenses = new ArrayList<>();
     
     @ManyToOne(optional = false)
     @Enumerated(EnumType.STRING)

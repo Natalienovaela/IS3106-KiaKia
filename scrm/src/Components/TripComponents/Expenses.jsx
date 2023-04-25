@@ -6,13 +6,15 @@ import AddIcon from "@mui/icons-material/AddRounded"
 import AddExpenseModal from "../Modal/AddExpenseModal/AddExpenseModal";
 import Api from "../../Helpers/Api";
 
-const Expenses = ({ tripId, userId }) => {
+const Expenses = ({ tripId, userId, userRole }) => {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
+  const [expenses, setExpenses] = useState([]);
 
   const handleAddExpenseClick = () => {
     setShowAddExpenseModal(true);
+    console.log("categories", categories)
   }
 
   useEffect(() => {
@@ -33,62 +35,73 @@ const Expenses = ({ tripId, userId }) => {
       })
   }, [tripId])
 
-  const expenses = [
-    {
-      id: 1,
-      category: "Food",
-      description: "KaiKai Restaurant",
-      date: "25 Mar",
-      amount: 120,
-    },
-    {
-      id: 2,
-      category: "Travel",
-      description: "Uber Ride",
-      date: "27 Mar",
-      amount: 30,
-    },
-    {
-      id: 3,
-      category: "Shopping",
-      description: "Shoes",
-      date: "28 Mar",
-      amount: 200,
-    },
-  ];
+  const fetchExpenses = () => {
+    return Api.getAllExpenses(tripId)
+      .then((response) => {
+        if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error("Failed to retrieve total expense.");
+      }})
+      .then((data) => {
+        setExpenses(data);
+      })
+  }
+
+  useEffect(() => {
+    fetchExpenses(tripId)
+      .catch((error) => {
+        console.log("Error while retrieving expenses.");
+      });
+  }, [tripId])
+
+  const closeModal = () => {
+    setShowAddExpenseModal(false);
+    Api.getAllExpenses(tripId)
+      .then((response) => response.json())
+      .then((data) => {
+        setExpenses(data);
+      })
+      .catch((error) => {
+        console.log("Error while retrieving expenses.");
+      })
+  }
 
   return (
     <div style={({width: "706px"})}>
-      <BudgetExpenseCard tripId={tripId} userId={userId} />
-      <Button 
-        className="add-expense" 
-        startIcon={<AddIcon />} 
-        onClick={handleAddExpenseClick}
-        style={{
-          backgroundColor: "#f37e30",
-          color: "white",
-          borderRadius: "20px",
-          padding: "5px 15px",
-          marginBottom: "15px",
-          textTransform: "capitalise",
-          float: "right",
-        }}>
-        Add Expense
-      </Button>
+      <BudgetExpenseCard tripId={tripId} userId={userId} userRole={userRole} />
+      {userRole !== "VIEWER" &&  
+        <Button 
+          className="add-expense" 
+          startIcon={<AddIcon />} 
+          onClick={handleAddExpenseClick}
+          style={{
+            backgroundColor: "#f37e30",
+            color: "white",
+            borderRadius: "20px",
+            padding: "5px 15px",
+            marginBottom: "15px",
+            textTransform: "capitalize",
+            float: "right",
+          }}>
+          Add Expense
+        </Button>
+      }
       {expenses.map((expense) => (
         <ExpenseCard
-          key={expense.id}
+          key={expense.expenseId}
+          expenseId={expense.expenseId}
           category={expense.category}
           description={expense.description}
-          date={expense.date}
-          amount={expense.amount}
+          amount={expense.expenseAmt}
           tripId={tripId}
+          userRole={userRole}
         />
       ))}
       
       <AddExpenseModal
         open={showAddExpenseModal}
-        onClose={() => setShowAddExpenseModal(false)}
+        onClose={closeModal}
         tripId={tripId}
         users={users}
         categories={categories}

@@ -55,9 +55,9 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         if (category.getBudget() == null)
         {
             category.setBudget(newB);
-            newB.setCategory(category);
             trip.getBudgets().add(newB);
             em.persist(newB);
+            em.flush();
         }
         else
         {
@@ -79,43 +79,19 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         oldB.setBudgetAmt(new BigDecimal(budgetAmt));
         
         em.merge(oldB);
+        em.flush();
     }
 
     @Override
-    public void deleteBudget(Long budgetId, Long tripId) throws BudgetNotFoundException, TripNotFoundException
+    public void deleteBudget(Long categoryId, Long tripId) throws CategoryNotFoundException, BudgetNotFoundException, TripNotFoundException
     {
-        if (tripId == null || budgetId == null) 
+        if (tripId == null || categoryId == null) 
         {
-            throw new IllegalArgumentException("Trip ID or Budget ID cannot be null.");
+            throw new IllegalArgumentException("Trip ID or Category ID cannot be null.");
         }
         
         Trip trip = em.find(Trip.class, tripId);
         if (trip == null)
-        {
-            throw new TripNotFoundException("Trip not found.");
-        }
-        
-        Budget budget = em.find(Budget.class, budgetId);
-        if (budget == null)
-        {
-            throw new BudgetNotFoundException("Budget not found.");
-        }
-        
-        trip.getBudgets().remove(budget);
-        budget.getCategory().setBudget(null);
-        em.remove(budget);
-    }
-
-    @Override
-    public Map<Long, BigDecimal> getBudgetByCategory(Long tripId, Long categoryId) throws BudgetNotFoundException, TripNotFoundException, CategoryNotFoundException
-    {   
-        if (tripId == null || categoryId == null) 
-        {
-            throw new IllegalArgumentException("Trip ID and Category ID cannot be null.");
-        }
-
-        Trip trip = em.find(Trip.class, tripId);
-        if (trip == null) 
         {
             throw new TripNotFoundException("Trip not found.");
         }
@@ -125,12 +101,29 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         {
             throw new CategoryNotFoundException("Category not found.");
         }
+        
+        Budget budget = category.getBudget();
+        if (budget == null)
+        {
+            throw new BudgetNotFoundException("Budget not found.");
+        }
+        
+        category.setBudget(null);
+        trip.getBudgets().remove(budget);
+        em.remove(budget);
+        em.flush();
+    }
 
-        Budget budget = trip.getBudgets()
-                          .stream()
-                          .filter(b -> b.getCategory() == category)
-                          .findFirst()
-                          .orElse(null);
+    @Override
+    public Map<Long, BigDecimal> getBudgetByCategory(Long categoryId) throws BudgetNotFoundException, CategoryNotFoundException
+    {   
+        BudgetExpenseCategory category = em.find(BudgetExpenseCategory.class, categoryId);
+        if (category == null)
+        {
+            throw new CategoryNotFoundException("Category not found.");
+        }
+
+        Budget budget = category.getBudget();
 
         if (budget != null) 
         {
@@ -184,7 +177,7 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
         
         List<BudgetExpenseCategory> categories = trip.getCategories();
         List<BudgetExpenseCategory> associatedCategories = new ArrayList<>();
-        categories.stream().filter(c -> (c.getBudget() != null || !c.getExpenses().isEmpty())).forEachOrdered(c -> {
+        categories.stream().filter(c -> (c.getBudget() != null || trip.getExpenses().stream().anyMatch(e -> e.getCategory().equals(c)))).forEachOrdered(c -> {
             associatedCategories.add(c);
         });
         
@@ -228,7 +221,10 @@ public class BudgetSessionBean implements BudgetSessionBeanLocal
             throw new TripNotFoundException("Trip not found.");
         }
         
-        return trip.getCategories();
+        List<BudgetExpenseCategory> categories = trip.getCategories();
+        List<BudgetExpenseCategory> allC = new ArrayList<>(categories);
+        
+        return allC;
     }
 
     @Override

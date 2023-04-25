@@ -17,9 +17,9 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 
 // const CreatePoll = ({ tripId, userId }) => {
-const CreatePoll = ({ setPolls }) => {
-  const tripId = 1;
-  const userId = 1;
+const CreatePoll = ({ tripId, userId, setPolls }) => {
+  // const tripId = 1;
+  // const userId = 1;
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([{ option: "" }]);

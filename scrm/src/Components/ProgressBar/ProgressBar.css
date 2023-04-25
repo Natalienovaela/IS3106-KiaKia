@@ -5,8 +5,7 @@
   align-items: center;
   width: 100%;
 }
-
-.budget-spent {
+.progress .budget-spent {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -14,38 +13,37 @@
   flex-direction: row;
   margin-bottom: 30px;
 }
-
-.spent {
+.progress .budget-spent .spent {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   line-height: 1%;
 }
-
-.spent-value {
+.progress .budget-spent .spent .spent-value {
   font-size: 40px;
   font-weight: bold;
   color: #f37e30;
   margin-top: 35px;
 }
-
-.budget {
+.progress .budget-spent .budget {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   line-height: 10%;
 }
-
-.bar-container {
+.progress .bar-container {
   height: 10px;
   width: 100%;
   background-color: #FFEDD5;
   border-radius: 5px;
 }
-
-.bar {
+.progress .bar-container .bar {
   height: 100%;
   background-color: #f37e30;
   border-radius: 5px;
+}
+.progress .warning-message {
+  color: red;
+  font-size: 12px;
 }/*# sourceMappingURL=ProgressBar.css.map */

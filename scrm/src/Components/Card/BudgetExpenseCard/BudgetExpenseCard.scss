@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-radius: 10px;
-  width: 706px;
-  height: 210px;
+  border-radius: 20px;
+  background-color: #FAFAFA;
   margin-bottom: 20px;
   margin-top: 20px;
 
@@ -12,7 +11,7 @@
     display: flex;
     flex-direction: column;
     background-color: #FAFAFA;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 2px 2px 0 rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     padding: 20px;
     width: 70%;
@@ -44,10 +43,9 @@
 
   .overview-container {
     display: flex;
+    gap: 10px;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #FAFAFA;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     padding: 20px;
     padding-right: 5px;
